@@ -210,9 +210,10 @@ try {
 
 
 
-        Button btFin = new Button("Fin");
+        Button btFin = new Button("Home");
         pane.add(btFin, 6, 5);
         btFin.setOnAction(evt -> {
+          primaryStage.close();
             
             
             
@@ -275,14 +276,3 @@ try {
     }
 }
 
-
-
-
-// Surface mur haut bas = hauteur plafond x largeur - nb porte - nb fenetre
-// Surface mur droite gauche = hauteur plafond x longueur - nb porte - nb fenetre
-// Surface Sol = longueur x largeur - tremis
-
-
-// prix mur haut bas = (prix m2)x(Surface) + prix porte + prix fenetre
-// prix mur droite gauche = (prix m2)x(Surface) + prix porte + prix fenetre
-// prix sol = (prix m2)xsurface + prix trémis
