@@ -24,6 +24,8 @@ public class Ajout extends Application {
     private Stage primaryStage;
     private App app;
     private Button addButton;
+    private int idNiveau; // Attribut pour stocker l'identifiant du niveau
+    private double hauteurSousPlafond; // Attribut pour stocker la hauteur sous plafond
 
     public Ajout(App app) {
         this.app = app;
@@ -33,24 +35,34 @@ public class Ajout extends Application {
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
 
-        // HBox pour contenir le label et le champ de texte pour le niveau
+        // HBox pour l'identifiant de niveau
         HBox levelInputBox = new HBox(5);
         levelInputBox.setAlignment(Pos.CENTER);
         Label levelLabel = new Label("Niveau:");
         TextField levelField = new TextField();
         levelField.setPromptText("Entrez un niveau");
-        levelField.setPrefWidth(100); // Réduire la taille du champ de texte
+        levelField.setPrefWidth(100);
         levelInputBox.getChildren().addAll(levelLabel, levelField);
 
-        // Bouton pour valider le niveau
+        // HBox pour la hauteur sous plafond
+        HBox heightInputBox = new HBox(5);
+        heightInputBox.setAlignment(Pos.CENTER);
+        Label heightLabel = new Label("Hauteur sous plafond:");
+        TextField heightField = new TextField();
+        heightField.setPromptText("Entrez la hauteur");
+        heightField.setPrefWidth(100);
+        heightInputBox.getChildren().addAll(heightLabel, heightField);
+
+        // Bouton pour valider les entrées
         Button validateButton = new Button("Valider");
         validateButton.setOnAction(event -> {
             try {
-                Integer.parseInt(levelField.getText());
-                addButton.setVisible(true);
+                idNiveau = Integer.parseInt(levelField.getText());
+                hauteurSousPlafond = Double.parseDouble(heightField.getText());
+                addButton.setVisible(true); // Affiche le bouton Ajouter Pièce si les entrées sont valides
             } catch (NumberFormatException e) {
-                addButton.setVisible(false);
-                System.out.println("Veuillez entrer un nombre valide.");
+                addButton.setVisible(false); // Cache le bouton si une entrée n'est pas valide
+                System.out.println("Veuillez entrer des valeurs valides.");
             }
         });
 
@@ -65,9 +77,9 @@ public class Ajout extends Application {
         // VBox pour aligner tous les éléments verticalement et centrer
         VBox root = new VBox(10);
         root.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(levelInputBox, validateButton, addButton);
+        root.getChildren().addAll(levelInputBox, heightInputBox, validateButton, addButton);
 
-        Scene scene = new Scene(root, 300, 150);
+        Scene scene = new Scene(root, 300, 200); // Ajuster la taille pour accueillir les nouveaux champs
         primaryStage.setTitle("Gestion des niveaux et pièces");
         primaryStage.setScene(scene);
         primaryStage.show();
