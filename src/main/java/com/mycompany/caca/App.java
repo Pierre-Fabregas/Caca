@@ -213,7 +213,11 @@ try {
         Button btFin = new Button("Home");
         pane.add(btFin, 6, 5);
         btFin.setOnAction(evt -> {
-          primaryStage.close();
+    Stage newStage = new Stage();            // Crée un nouveau stage
+    Ajout ajoutWindow = new Ajout(this);     // Crée une nouvelle instance de Ajout
+    ajoutWindow.start(newStage);             // Lance Ajout sur le nouveau stage
+    primaryStage.close();
+           
             
             
             

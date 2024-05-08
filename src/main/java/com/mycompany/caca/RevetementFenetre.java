@@ -475,16 +475,7 @@ try {
         Text label5 = new Text("Revêtements sol:");
         Text label6 = new Text("Hauteur plafond:");
         Text label7 = new Text("Revêtements plafond");
-        // Création de la grille pour organiser les éléments
-      /*  GridPane root = new GridPane();
-        root.addRow(0, new Label("Rectangle:"), rectangleComboBox, saveButtonRectangle);
-        root.addRow(1, label1, AComboBox,saveButtonA, new Label("Nombre de portes:"), A1Text ,saveButton1, new Label("Nombre de fenêtres:"), A2Text , saveButton6);
-        root.addRow(2, label2, BComboBox,saveButtonB, new Label("Nombre de portes:"), B1Text ,saveButton2, new Label("Nombre de fenêtres:"), B2Text , saveButton7);
-        root.addRow(3, label3, CComboBox,saveButtonC, new Label("Nombre de portes:"), C1Text ,saveButton3, new Label("Nombre de fenêtres:"), C2Text , saveButton8);
-        root.addRow(4, label4, DComboBox,saveButtonD, new Label("Nombre de portes:"), D1Text ,saveButton4, new Label("Nombre de fenêtres:"), D2Text , saveButton9);
-        root.addRow(5, label5, EComboBox,saveButtonE);
-        root.addRow(8,new Label(" "), new Label(" "),new Label(" "), label6, FText ,saveButtonF);
-        root.addRow(11,new Label(" "), new Label(" "),new Label(" "),new Label(" "),new Label(" "),new Label(" "), new Label(" "),new Label(" "),FinButton);*/
+        
 
                GridPane root = new GridPane();
         root.addRow(0, new Label("Rectangle:"), rectangleComboBox, saveButtonPiece);
@@ -574,11 +565,4 @@ try {
 }
 
 
-// Surface mur haut bas = hauteur plafond x largeur - nb porte - nb fenetre
-// Surface mur droite gauche = hauteur plafond x longueur - nb porte - nb fenetre
-// Surface Sol = longueur x largeur - tremis
 
-
-// prix mur haut bas = (prix m2)x(Surface) + prix porte + prix fenetre
-// prix mur droite gauche = (prix m2)x(Surface) + prix porte + prix fenetre
-// prix sol = (prix m2)xsurface + prix trémis
