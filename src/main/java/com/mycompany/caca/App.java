@@ -36,6 +36,13 @@ public class App extends Application {
      List<Mur> listeMurs;
      List<Plafond> listePlafonds;
      List<Sol> listeSols;
+     private static final Color[] COLORS = {
+    Color.RED, Color.GREEN, Color.BLUE, Color.ORANGE, Color.BLUE, Color.PURPLE, Color.CYAN,
+    Color.MAGENTA, Color.YELLOW, Color.GRAY, Color.PINK, Color.LIME, Color.BROWN
+             
+            
+};
+     private int currentColorIndex = 0; // Index pour suivre la couleur actuelle
     
     
     public Stage getPrimaryStage() {
@@ -246,13 +253,16 @@ try {
                 rectangle.setY(liste_recs.get(i).getOri_y());
                 rectangle.setWidth(liste_recs.get(i).getLar() *10);
                 rectangle.setHeight(liste_recs.get(i).getLon() *10);
-                rectangle.setStroke(Color.BLACK);
+                rectangle.setStroke(COLORS[currentColorIndex]);
                 rectangle.setFill(Color.WHITE);
 
                 stack.setAlignment(Pos.CENTER);
                 stack.getChildren().addAll(rectangle, text);
                 stack.setLayoutX(liste_recs.get(i).getOri_x());
                 stack.setLayoutY(liste_recs.get(i).getOri_y());
+                
+// Mettez à jour l'indice de couleur pour le prochain rectangle
+    currentColorIndex = (currentColorIndex + 1) % COLORS.length;
 
                 paneH.getChildren().addAll(stack);
                 NombreRectangle=i+1;
