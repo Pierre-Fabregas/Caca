@@ -10,6 +10,7 @@ package com.mycompany.caca;
  */
 
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -71,7 +72,7 @@ public class Ajout extends Application {
         addButton.setVisible(false);
         addButton.setOnAction(event -> {
             primaryStage.close();
-            app.openMainWindow();
+            app.openMainWindow(idNiveau,hauteurSousPlafond);
         });
 
         // VBox pour aligner tous les éléments verticalement et centrer

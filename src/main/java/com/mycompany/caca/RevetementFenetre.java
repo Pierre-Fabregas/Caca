@@ -32,12 +32,15 @@ public class RevetementFenetre extends Application {
     List<Mur> listeMurs;
     List<Plafond> listePlafonds;
     List<Sol> listeSols;
-    
+    int idNiveau;
+    double hauteurSousPlafond;    
     
     
     // Ajout du constructeur pour initialiser le nombre de rectangles
-    public RevetementFenetre(int nombreRectangles, List<Mur> listeMurs,List<Plafond> listePlafonds, List<Sol> listeSols) {
+    public RevetementFenetre(int nombreRectangles, List<Mur> listeMurs,List<Plafond> listePlafonds, List<Sol> listeSols, int idNiveau, double hauteurSousPlafond) {
         this.nombreRectangles = nombreRectangles;
+        this.idNiveau=idNiveau;
+        this.hauteurSousPlafond = hauteurSousPlafond;
         this.listeMurs = listeMurs;
         this.listePlafonds = listePlafonds;
         this.listeSols = listeSols;
@@ -138,6 +141,140 @@ public class RevetementFenetre extends Application {
         //  else {
         //      System.out.println("Aucun mur trouve");}
     //  }
+      
+      
+      
+   public double calculerPrixPiece(Piece piece) {
+        double prixTotal = 0;
+
+        // Calcul du prix de chaque mur
+        for (Mur mur : new Mur[]{piece.getMur1(), piece.getMur2(), piece.getMur3(), piece.getMur4()}) {
+        double surfaceMur = calculerSurfaceMur(mur);
+        int nbrePortes = mur.getNbrePortes();
+        int nbreFenetres = mur.getNbreFenetres();
+        double prixRevetement = ElementRevetement(mur.getListeRevetement());
+        double prixMur = (surfaceMur - (1.2 * 1.2 * nbreFenetres) - (0.9 * 2.10 * nbrePortes)) * prixRevetement;
+        System.out.println("Prix mur" + prixMur);
+        prixTotal = prixTotal+prixMur;
+    }
+
+    // Calcul du prix du sol
+    double surfaceSol = calculerSurfaceSol(piece.getSol());
+    int nbreTremiesSol = piece.getSol().getTremie();
+    double prixRevetementSol = ElementRevetement(piece.getSol().getListeRevetement());
+    double prixSol = (surfaceSol - (2 * 1 * nbreTremiesSol)) * prixRevetementSol;
+    System.out.println("Prix sol" + prixSol);
+     prixTotal = prixTotal+prixSol;
+
+    // Calcul du prix du plafond
+    double surfacePlafond = calculerSurfacePlafond(piece.getPlafond());
+    int nbreTremiesPlafond = piece.getPlafond().getTremie();
+    double prixRevetementPlafond = ElementRevetement(piece.getPlafond().getListeRevetement());
+    double prixPlafond = (surfacePlafond - (2 * 1 * nbreTremiesPlafond)) * prixRevetementPlafond;
+    System.out.println("Prix plafond" + prixPlafond);
+     prixTotal = prixTotal+prixPlafond;
+
+    return prixTotal;
+}
+
+// Fonction pour calculer la surface d'un mur
+private double calculerSurfaceMur(Mur mur) {
+    double longueur=0;
+    if (mur.getNumero_mur() == 1 || mur.getNumero_mur() == 3) {
+        longueur = Math.abs(((mur.getCoinDebut().getX() - mur.getCoinFin().getX()) * 0.1));
+    }
+    if (mur.getNumero_mur() == 2 || mur.getNumero_mur() == 4) {
+        longueur = Math.abs((mur.getCoinDebut().getY() - mur.getCoinFin().getY()) * 0.1);
+    }
+    double hauteur = mur.getHauteur();
+     System.out.println("surface mur" +longueur * hauteur);
+    return longueur * hauteur;
+}
+
+
+
+// Fonction pour calculer la surface du sol
+private double calculerSurfaceSol(Sol sol) {
+    double longueur = (sol.getCoin1().getX() - sol.getCoin2().getX() * 0.1);
+    double largeur = (sol.getCoin1().getY() - sol.getCoin3().getY() * 0.1);
+    System.out.println("surface sol " +longueur * largeur);
+    return longueur * largeur;
+}
+
+// Fonction pour calculer la surface du plafond
+private double calculerSurfacePlafond(Plafond plafond) {
+    double longueur = (plafond.getCoin1().getX() - plafond.getCoin2().getX() * 0.1);
+    double largeur = (plafond.getCoin1().getY() - plafond.getCoin3().getY() * 0.1);
+     System.out.println("surface plafond" + longueur * largeur);
+    return longueur * largeur;
+}
+
+    // Fonction pour calculer le prix unitaire du revêtement
+    public double ElementRevetement(int Revetement) {
+        double prix = 0;
+
+        switch (Revetement) {
+            case 1:
+                prix = 10.95;
+                break;
+            case 2:
+                prix = 49.75;
+                break;
+            case 3:
+                prix = 50.60;
+                break;
+            case 4:
+                prix = 97.85;
+                break;
+            case 5:
+                prix = 67.80;
+                break;
+            case 6:
+                prix = 32.90;
+                break;
+            case 7:
+                prix = 15.20;
+                break;
+            case 8:
+                prix = 77.30;
+                break;
+            case 9:
+                prix = 29.90;
+                break;
+            case 10:
+                prix = 89.45;
+                break;
+            case 11:
+                prix = 42.50;
+                break;
+            case 12:
+                prix = 25.40;
+                break;
+            case 13:
+                prix = 46.36;
+                break;
+            case 14:
+                prix = 23.55;
+                break;
+            case 15:
+                prix = 48.10;
+                break;
+            case 16:
+                prix = 31.99;
+                break;
+            case 17:
+                prix = 17.95;
+                break;
+            case 18:
+                prix = 33.90;
+                break;
+            case 19:
+                prix = 10.35;
+                break;
+        }
+
+        return prix;
+    }
           
      
     private void saveTextField(Button saveButton, TextField textField, String label) {
@@ -419,7 +556,19 @@ try {
         Button FinButton = new Button("Fin");
         FinButton.setOnAction(event -> {
             primaryStage.close();    
+            
+            for (Piece piece : liste_pieces) {
+            double prixPiece = calculerPrixPiece(piece);
+            System.out.println("Le prix de la pièce est : " + prixPiece + " €");
+        }
+            
+            
         });
+        
+        String textePreRempli = String.valueOf(hauteurSousPlafond);
+
+// Préremplir la zone de texte avec la chaîne de caractères
+        FText.setText(textePreRempli);
 
         // Création des libellés 
         Text label1 = new Text("Revêtements mur intérieur droit:");

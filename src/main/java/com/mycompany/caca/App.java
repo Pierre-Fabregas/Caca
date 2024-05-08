@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -53,9 +54,14 @@ public class App extends Application {
        
     }
     
-    
+    int idNiveau;
+    double hauteurSousPlafond;
 
-    public void openMainWindow() {
+    public void openMainWindow(int idNiveau, double hauteurSousPlafond) {
+        this.idNiveau = idNiveau;
+        this.hauteurSousPlafond = hauteurSousPlafond;
+
+
         listeMurs = new ArrayList<>();
         listePlafonds = new ArrayList<>();
         listeSols = new ArrayList<>();
@@ -138,9 +144,9 @@ listeMurs.add(mur4);
     
 
     // Calcul et affichage de la surface
-    surface.setText(Double.toString(rec.surface()));
-    System.out.println("Rectangle : " + lon.getText() + " x " + lar.getText() +
-            " (" + cx.getText() + "," + cy.getText() + ") ajouté à la liste");
+  //  surface.setText(Double.toString(rec.surface()));
+  //  System.out.println("Rectangle : " + lon.getText() + " x " + lar.getText() +
+   //         " (" + cx.getText() + "," + cy.getText() + ") ajouté à la liste");
 
         });
 
@@ -335,7 +341,7 @@ PrintWriter pw;
         pane.add(btRev, 4, 5);
         btRev.setOnAction(evt -> {
             // Ouvrir une nouvelle fenêtre pour choisir le revêtement
-            RevetementFenetre revetmentWindow = new RevetementFenetre(liste_recs.size(), listeMurs, listePlafonds, listeSols);
+            RevetementFenetre revetmentWindow = new RevetementFenetre(liste_recs.size(), listeMurs, listePlafonds, listeSols,idNiveau,hauteurSousPlafond);
 
             revetmentWindow.start(new Stage());
         });
