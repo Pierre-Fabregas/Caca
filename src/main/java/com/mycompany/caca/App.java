@@ -108,10 +108,10 @@ public class App extends Application {
                       Double.parseDouble(cy.getText()));
    
    int rectangleId = liste_recs.size() + 1;
-    Coin coin1 = new Coin(liste_murs.size() + 1, rectangleId, 1, Double.parseDouble(cx.getText()), Double.parseDouble(cy.getText()));
-    Coin coin2 = new Coin(liste_murs.size() + 2, rectangleId, 2, Double.parseDouble(cx.getText()) + Double.parseDouble(lon.getText()), Double.parseDouble(cy.getText()));
-    Coin coin3 = new Coin(liste_murs.size() + 3, rectangleId, 3, Double.parseDouble(cx.getText()) + Double.parseDouble(lon.getText()), Double.parseDouble(cy.getText()) + Double.parseDouble(lar.getText()));
-    Coin coin4 = new Coin(liste_murs.size() + 4, rectangleId, 4, Double.parseDouble(cx.getText()), Double.parseDouble(cy.getText()) + Double.parseDouble(lar.getText()));
+    Coin coin1 = new Coin(liste_murs.size() + 1, rectangleId, 1, Double.parseDouble(cx.getText()), Double.parseDouble(cy.getText()),+ idNiveau);
+    Coin coin2 = new Coin(liste_murs.size() + 2, rectangleId, 2, Double.parseDouble(cx.getText()) + Double.parseDouble(lon.getText()), Double.parseDouble(cy.getText()), idNiveau);
+    Coin coin3 = new Coin(liste_murs.size() + 3, rectangleId, 3, Double.parseDouble(cx.getText()) + Double.parseDouble(lon.getText()), Double.parseDouble(cy.getText()) + Double.parseDouble(lar.getText()),idNiveau);
+    Coin coin4 = new Coin(liste_murs.size() + 4, rectangleId, 4, Double.parseDouble(cx.getText()), Double.parseDouble(cy.getText()) + Double.parseDouble(lar.getText()),idNiveau);
 
     liste_coins.add(coin1);
     liste_coins.add(coin2);
@@ -249,8 +249,8 @@ try {
                 Text text = new Text("Rec " + (i + 1)); // Ajout du numéro
                 StackPane stack = new StackPane();
                 Rectangle rectangle = new Rectangle();
-                rectangle.setX(liste_recs.get(i).getOri_x());
-                rectangle.setY(liste_recs.get(i).getOri_y());
+                rectangle.setX(liste_recs.get(i).getOri_x() );
+                rectangle.setY(liste_recs.get(i).getOri_y() );
                 rectangle.setWidth(liste_recs.get(i).getLar() *10);
                 rectangle.setHeight(liste_recs.get(i).getLon() *10);
                 rectangle.setStroke(COLORS[currentColorIndex]);
@@ -258,8 +258,8 @@ try {
 
                 stack.setAlignment(Pos.CENTER);
                 stack.getChildren().addAll(rectangle, text);
-                stack.setLayoutX(liste_recs.get(i).getOri_x());
-                stack.setLayoutY(liste_recs.get(i).getOri_y());
+                stack.setLayoutX(liste_recs.get(i).getOri_x()*10);
+                stack.setLayoutY(liste_recs.get(i).getOri_y()*10);
                 
 // Mettez à jour l'indice de couleur pour le prochain rectangle
     currentColorIndex = (currentColorIndex + 1) % COLORS.length;
@@ -267,6 +267,7 @@ try {
                 paneH.getChildren().addAll(stack);
                 NombreRectangle=i+1;
             }
+       
         });
 
         VBox paneV = new VBox();

@@ -12,18 +12,20 @@ package com.mycompany.caca;
 
 
 public class Coin {
+    int idNiveau;
     int idcoin;
     int rectangleId;
     int coinNumber;
     double cx, cy;
    
 
-    public Coin(int idcoin, int rectangleId, int coinNumber, double cx, double cy) {
+    public Coin(int idcoin, int rectangleId, int coinNumber, double cx, double cy, int idNiveau) {
         this.rectangleId = rectangleId;
         this.coinNumber = coinNumber;
         this.cx = cx;
         this.cy = cy;
         this.idcoin = idcoin;
+        this.idNiveau = idNiveau;
     }
 
     public double getX() {

@@ -349,7 +349,7 @@ saveButton6.setOnAction(event -> {
             try { 
             pwmur = new PrintWriter (new FileOutputStream("mur2.txt"));
             for (Mur mur : liste_murs2) {
-            pwmur.println("Mur;" + mur.idMur + ";" + mur.rectangleId + ";" + mur.numero_mur + ";" + mur.nbrePortes + ";" + mur.nbreFenetres + ";" + mur.coinDebut.idcoin + ";" + mur.coinFin.idcoin + ";" + mur.listeRevetement +";" + mur.hauteur);
+            pwmur.println("Mur;" + mur.idMur + ";" + mur.rectangleId + ";" + mur.numero_mur + ";" + mur.nbrePortes + ";" + mur.nbreFenetres + ";" + mur.coinDebut.idcoin + ";" + mur.coinFin.idcoin + ";" + mur.listeRevetement +";" + mur.hauteur + ";" + mur.idNiveau);
                }
             pwmur.close();
             } catch (FileNotFoundException e) {
@@ -367,7 +367,7 @@ saveButton6.setOnAction(event -> {
 try { 
     pwsol = new PrintWriter (new FileOutputStream("sol2.txt"));
     for (Sol sol : liste_sols2) {
-        pwsol.println("Sol;" +  sol.rectangleId + ";" + sol.coin1.idcoin + ";" + sol.coin2.idcoin + ";" + sol.coin3.idcoin + ";" + sol.coin4.idcoin + ";" + sol.listeRevetement + ";" + sol.tremie );
+        pwsol.println("Sol;" +  sol.rectangleId + ";" + sol.coin1.idcoin + ";" + sol.coin2.idcoin + ";" + sol.coin3.idcoin + ";" + sol.coin4.idcoin + ";" + sol.listeRevetement + ";" + sol.tremie + ";" + sol.idNiveau);
     }
     pwsol.close();
 } catch (FileNotFoundException e) {
@@ -382,7 +382,7 @@ try {
 try { 
     pwplafond = new PrintWriter (new FileOutputStream("plafond2.txt"));
     for (Plafond plafond : liste_plafonds2) {
-        pwplafond.println("Plafond;" +  plafond.rectangleId + ";" + plafond.coin1.idcoin + ";" + plafond.coin2.idcoin + ";" + plafond.coin3.idcoin + ";" + plafond.coin4.idcoin + ";" + plafond.listeRevetement + ";" + plafond.tremie );
+        pwplafond.println("Plafond;" +  plafond.rectangleId + ";" + plafond.coin1.idcoin + ";" + plafond.coin2.idcoin + ";" + plafond.coin3.idcoin + ";" + plafond.coin4.idcoin + ";" + plafond.listeRevetement + ";" + plafond.tremie + ";" + plafond.idNiveau);
     }
     pwplafond.close();
 } catch (FileNotFoundException e) {
