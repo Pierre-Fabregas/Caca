@@ -59,13 +59,7 @@ public class RevetementFenetre extends Application {
         
     }
     
-   /* private void ComboboxValue(ComboBox<Integer> comboBox) {
-       prix_revetementValue=comboBox.getValue();
-           
-            return  prix_revetementValue;
-          
-        
-    }*/
+  
       public double Prix_mur(int nbrePortes, int nbreFenetres, double longueur, double hauteur, double prix_revetement) {
      double prix;      
      prix=(longueur * hauteur - 0.6 * nbrePortes - 0.6 * nbreFenetres) * prix_revetement + 200 * nbrePortes + 200 * nbreFenetres;
@@ -73,27 +67,27 @@ public class RevetementFenetre extends Application {
         return prix;
      }
       
-      public Mur RetrouverMur( int rectangleId, int numero_mur){
+      public Mur RetrouverMur( int rectangleId, int numero_mur, int idNiveau){
         for (Mur mur: listeMurs) {
-            if (rectangleId == mur.getRectangleId() && numero_mur == mur.getNumero_mur()){
+            if (rectangleId == mur.getRectangleId() && numero_mur == mur.getNumero_mur() && mur.getIdNiveau() == idNiveau){
                 return mur;}
         }
     return null;
     
       }
       
-      public Plafond RetrouverPlafond( int rectangleId){
+      public Plafond RetrouverPlafond( int rectangleId, int idNiveau){
         for (Plafond plafond: listePlafonds) {
-            if (rectangleId == plafond.getRectangleId() ){
+            if (rectangleId == plafond.getRectangleId() && plafond.getIdNiveau() == idNiveau ){
                 return plafond;}
         }
     return null;
     
       }
       
-      public Sol RetrouverSol( int rectangleId){
+      public Sol RetrouverSol( int rectangleId, int idNiveau){
         for (Sol sol: listeSols) {
-            if (rectangleId == sol.getRectangleId() ){
+            if (rectangleId == sol.getRectangleId() && sol.getIdNiveau() == idNiveau ){
                 return sol;}
         }
     return null;
@@ -101,8 +95,8 @@ public class RevetementFenetre extends Application {
       }
       
       
-      private Mur MajMur (int rectangleId, int numero_mur, int nbrePortes, int nbreFenetres, int listeRevetement, double hauteur){
-          Mur mur = RetrouverMur( rectangleId, numero_mur);
+      private Mur MajMur (int rectangleId, int numero_mur, int nbrePortes, int nbreFenetres, int listeRevetement, double hauteur,int idNiveau){
+          Mur mur = RetrouverMur( rectangleId, numero_mur,idNiveau);
          // if ( mur=! null){    à remettre si on ajoute le null
               mur.setListeRevetement(listeRevetement);
               mur.setNbrePortes(nbrePortes);
@@ -115,8 +109,8 @@ public class RevetementFenetre extends Application {
         //      System.out.println("Aucun mur trouve");}
     //  }
               
-      private Plafond MajPlafond (int rectangleId, int listeRevetement, int tremie){
-          Plafond plafond = RetrouverPlafond( rectangleId);
+      private Plafond MajPlafond (int rectangleId, int listeRevetement, int tremie, int idNiveau){
+          Plafond plafond = RetrouverPlafond( rectangleId,idNiveau);
          // if ( mur=! null){    à remettre si on ajoute le null
               plafond.setListeRevetement(listeRevetement);
               plafond.setTremie(tremie);
@@ -129,8 +123,8 @@ public class RevetementFenetre extends Application {
     //  }
       
       
-      private Sol MajSol (int rectangleId, int listeRevetement, int tremie){
-          Sol sol = RetrouverSol(rectangleId);
+      private Sol MajSol (int rectangleId, int listeRevetement, int tremie, int idNiveau){
+          Sol sol = RetrouverSol(rectangleId, idNiveau);
          // if ( mur=! null){    à remettre si on ajoute le null
               sol.setListeRevetement(listeRevetement);
               sol.setTremie(tremie);
@@ -319,44 +313,16 @@ private double calculerSurfacePlafond(Plafond plafond) {
         TextField HText = createTextField();
         
         
-       // Création des boutons "Enregistrer"
-      /*  Button saveButtonRectangle = new Button("Enregistrer");
-        saveButtonRectangle.setOnAction(event -> {
-            saveTextField(saveButtonRectangle, A1Text, "Nombre de portes");
-          
-        });*/
+      
         rectangleId= rectangleComboBox.getValue();
        
-      /*  Button saveButton1 = new Button("Enregistrer");
-        saveButton1.setOnAction(event -> {
-            saveTextField(saveButton1, A1Text, "Nombre de portes");
-        });
-
-        Button saveButton2 = new Button("Enregistrer");
-        saveButton2.setOnAction(event -> {
-           saveTextField(saveButton2, B1Text, "Nombre de portes");
-        });
-
-        Button saveButton3 = new Button("Enregistrer");
-        saveButton3.setOnAction(event -> {
-            saveTextField(saveButton3, C1Text, "Nombre de portes");
-        });
-
-        Button saveButton4 = new Button("Enregistrer");
-        saveButton4.setOnAction(event -> {
-            saveTextField(saveButton4, D1Text, "Nombre de portes");
-        });
-
-        Button saveButton5 = new Button("Enregistrer");
-        saveButton5.setOnAction(event -> {
-            
-        });*/
+     
         
    
         Button saveButton6 = new Button("Enregistrer");
 saveButton6.setOnAction(event -> {
     saveTextField(saveButton6, A2Text, "Nombre de fenetres");
-    liste_murs2.add(MajMur (rectangleComboBox.getValue(), 2, Integer.parseInt(A1Text.getText()),Integer.parseInt(A2Text.getText()) , AComboBox.getValue(), Integer.parseInt(FText.getText())));
+    liste_murs2.add(MajMur (rectangleComboBox.getValue(), 2, Integer.parseInt(A1Text.getText()),Integer.parseInt(A2Text.getText()) , AComboBox.getValue(), Double.parseDouble(FText.getText()),idNiveau));
     
      
 });
@@ -366,19 +332,19 @@ saveButton6.setOnAction(event -> {
         saveButton7.setOnAction(event -> {
              saveTextField(saveButton7, B2Text, "Nombre de fenetres");
 
-             liste_murs2.add(MajMur (rectangleComboBox.getValue(), 4, Integer.parseInt(B1Text.getText()),Integer.parseInt(B2Text.getText()) , BComboBox.getValue(), Integer.parseInt(FText.getText())));
+             liste_murs2.add(MajMur (rectangleComboBox.getValue(), 4, Integer.parseInt(B1Text.getText()),Integer.parseInt(B2Text.getText()) , BComboBox.getValue(), Double.parseDouble(FText.getText()),idNiveau));
         });
 
         Button saveButton8 = new Button("Enregistrer");
         saveButton8.setOnAction(event -> {
              saveTextField(saveButton8, C2Text, "Nombre de fenetres");
-             liste_murs2.add(MajMur (rectangleComboBox.getValue(), 1, Integer.parseInt(C1Text.getText()),Integer.parseInt(C2Text.getText()) , CComboBox.getValue(), Integer.parseInt(FText.getText())));
+             liste_murs2.add(MajMur (rectangleComboBox.getValue(), 1, Integer.parseInt(C1Text.getText()),Integer.parseInt(C2Text.getText()) , CComboBox.getValue(), Double.parseDouble(FText.getText()), idNiveau));
         });
 
         Button saveButton9 = new Button("Enregistrer");
         saveButton9.setOnAction(event -> {
             saveTextField(saveButton9, D2Text, "Nombre de fenetres");
-            liste_murs2.add(MajMur (rectangleComboBox.getValue(), 3, Integer.parseInt(D1Text.getText()),Integer.parseInt(D2Text.getText()) , DComboBox.getValue(), Integer.parseInt(FText.getText())));
+            liste_murs2.add(MajMur (rectangleComboBox.getValue(), 3, Integer.parseInt(D1Text.getText()),Integer.parseInt(D2Text.getText()) , DComboBox.getValue(), Double.parseDouble(FText.getText()), idNiveau));
             PrintWriter pwmur;
             try { 
             pwmur = new PrintWriter (new FileOutputStream("mur2.txt"));
@@ -396,7 +362,7 @@ saveButton6.setOnAction(event -> {
 
         Button saveButton10 = new Button("Enregistrer");
         saveButton10.setOnAction(event -> {
-             liste_sols2.add(MajSol (rectangleComboBox.getValue(), EComboBox.getValue(), Integer.parseInt(GText.getText())));
+             liste_sols2.add(MajSol (rectangleComboBox.getValue(), EComboBox.getValue(), Integer.parseInt(GText.getText()), idNiveau));
              PrintWriter pwsol;
 try { 
     pwsol = new PrintWriter (new FileOutputStream("sol2.txt"));
@@ -411,7 +377,7 @@ try {
         
         Button saveButton11 = new Button("Enregistrer");
         saveButton11.setOnAction(event -> {
-           liste_plafonds2.add(MajPlafond (rectangleComboBox.getValue(), FComboBox.getValue(), Integer.parseInt(HText.getText())));
+           liste_plafonds2.add(MajPlafond (rectangleComboBox.getValue(), FComboBox.getValue(), Integer.parseInt(HText.getText()), idNiveau));
              PrintWriter pwplafond;
 try { 
     pwplafond = new PrintWriter (new FileOutputStream("plafond2.txt"));
@@ -427,48 +393,7 @@ try {
         
 Button saveButtonPiece = new Button("Enregistrer Piece");
        saveButtonPiece.setOnAction(event -> {        
-/*Mur mur1 = null;
-Mur mur2 = null;
-Mur mur3 = null;
-Mur mur4 = null;
 
-for (Plafond plafond : liste_plafonds2) {
-    for (Sol sol : liste_sols2) {
-        for (Mur mur : liste_murs2) {
-            if (sol.getRectangleId() == mur.getRectangleId() && mur.getRectangleId() == plafond.getRectangleId() && plafond.getRectangleId()==sol.getRectangleId()) {
-                if (mur.getNumero_mur() == 1) {
-                    mur1 = mur;
-                }
-                if (mur.getNumero_mur() == 2) {
-                    mur2 = mur;
-                }
-                if (mur.getNumero_mur() == 3) {
-                    mur3 = mur;
-                }
-                if (mur.getNumero_mur() == 4) {
-                    mur4 = mur;
-                }
-                if (mur1 != null && mur2 != null && mur3 != null && mur4 != null) {
-                    Piece piece = new Piece(plafond.getRectangleId(), mur1, mur2, mur3, mur4, sol, plafond);
-                    liste_pieces.add(piece);
-                }
-            }
-        }
-        
-        PrintWriter pwpiece;
-try { 
-    pwpiece = new PrintWriter (new FileOutputStream("piece.txt"));
-    for (Piece piece : liste_pieces) {
-        pwpiece.println("Piece;" +  piece.rectangleId + ";" + piece.mur1 + ";" + piece.mur2 + ";" + piece.mur3 + ";" + piece.mur4 + ";" + piece.sol + ";" + piece.plafond );
-    }
-    pwpiece.close();
-} catch (FileNotFoundException e) {
-    e.printStackTrace();
-}
-        
-        
-    }
-}*/
 for (Plafond plafond : liste_plafonds2) {
     for (Sol sol : liste_sols2) {
         // Initialiser les murs
@@ -521,37 +446,6 @@ try {
 
 });           
         
-   /*      Button saveButtonA= new Button("Enregistrer");
-         saveButtonA.setOnAction(event -> {
-           saveButtonAction(saveButtonA, AComboBox , "Revêtements mur intérieur droit:");
-         
-           
-       });
-
-        Button saveButtonB = new Button("Enregistrer");
-        saveButtonB.setOnAction(event -> {
-        saveButtonAction(saveButtonB, BComboBox , "Revêtements mur intérieur gauche:");
-});
-        
-        Button saveButtonC = new Button("Enregistrer");
-        saveButtonC.setOnAction(event -> {
-        saveButtonAction(saveButtonC, CComboBox , "Revêtements mur intérieur haut:");
-});
-        
-        Button saveButtonD = new Button("Enregistrer");
-        saveButtonD.setOnAction(event -> {
-        saveButtonAction(saveButtonD, DComboBox , "Revêtements mur intérieur bas:");
-});
-        
-        Button saveButtonE = new Button("Enregistrer");
-        saveButtonE.setOnAction(event -> {
-        saveButtonAction(saveButtonE, EComboBox , "Revêtements sol:");
-        });
-        
-        Button saveButtonF = new Button("Enregistrer");
-        saveButtonF.setOnAction(event -> {
-            saveTextField(saveButtonF, FText, "Hauteur plafond");
-        });*/
         
         Button FinButton = new Button("Fin");
         FinButton.setOnAction(event -> {
@@ -569,7 +463,10 @@ try {
 
 // Préremplir la zone de texte avec la chaîne de caractères
         FText.setText(textePreRempli);
-
+        
+        TextField hauteurPlafondField = new TextField(String.valueOf(hauteurSousPlafond));
+        hauteurPlafondField.setEditable(false); // Rend le TextField non éditable
+        
         // Création des libellés 
         Text label1 = new Text("Revêtements mur intérieur droit:");
         Text label2 = new Text("Revêtements mur intérieur gauche:");
@@ -597,7 +494,7 @@ try {
         root.addRow(4, label4, DComboBox, new Label("Nombre de portes:"), D1Text , new Label("Nombre de fenêtres:"), D2Text , saveButton9);
         root.addRow(5, label5, EComboBox, new Label("Nombre de trémie") , GText  , saveButton10);
         root.addRow(6, label7, FComboBox, new Label("Nombre de trémie") , HText  , saveButton11);
-        root.addRow(8,new Label(" "), new Label(" "),new Label(" "), label6, FText );
+        root.addRow(8,new Label(" "), new Label(" "),new Label(" "), label6, hauteurPlafondField );
         root.addRow(11,new Label(" "), new Label(" "),new Label(" "),new Label(" "),new Label(" "),new Label(" "), new Label(" "),new Label(" "),FinButton);
         
         

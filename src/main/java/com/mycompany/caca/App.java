@@ -4,10 +4,7 @@
  */
 package com.mycompany.caca;
 
-/**
- *
- * @author fabre
- */
+
 import java.util.List;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -117,18 +114,18 @@ public class App extends Application {
     liste_coins.add(coin3);
     liste_coins.add(coin4);
     
-Plafond plafond1 = new Plafond(rectangleId,coin1,coin2,coin3,coin4, 0,0);
+Plafond plafond1 = new Plafond(rectangleId,coin1,coin2,coin3,coin4, 0,0,idNiveau);
 liste_plafonds.add(plafond1);
 listePlafonds.add(plafond1);
 
-Sol sol1 = new Sol(rectangleId,coin1,coin2,coin3,coin4, 0,0);
+Sol sol1 = new Sol(rectangleId,coin1,coin2,coin3,coin4, 0,0,idNiveau);
 liste_sols.add(sol1);
 listeSols.add(sol1);
     
-Mur mur1 = new Mur(liste_murs.size() + 1, rectangleId, 1, 0, 0, coin1, coin2, 0, 0);
-Mur mur2 = new Mur(liste_murs.size() + 2, rectangleId, 2, 0, 0, coin2, coin3, 0, 0);
-Mur mur3 = new Mur(liste_murs.size() + 3, rectangleId, 3, 0, 0, coin3, coin4, 0, 0);
-Mur mur4 = new Mur(liste_murs.size() + 4, rectangleId, 4, 0, 0, coin4, coin1, 0, 0);
+Mur mur1 = new Mur(liste_murs.size() + 1, rectangleId, 1, 0, 0, coin1, coin2, 0, 0,idNiveau);
+Mur mur2 = new Mur(liste_murs.size() + 2, rectangleId, 2, 0, 0, coin2, coin3, 0, 0,idNiveau);
+Mur mur3 = new Mur(liste_murs.size() + 3, rectangleId, 3, 0, 0, coin3, coin4, 0, 0,idNiveau);
+Mur mur4 = new Mur(liste_murs.size() + 4, rectangleId, 4, 0, 0, coin4, coin1, 0, 0,idNiveau);
 
 liste_murs.add(mur1);
 liste_murs.add(mur2);
@@ -143,10 +140,7 @@ listeMurs.add(mur4);
     liste_recs.add(rec);
     
 
-    // Calcul et affichage de la surface
-  //  surface.setText(Double.toString(rec.surface()));
-  //  System.out.println("Rectangle : " + lon.getText() + " x " + lar.getText() +
-   //         " (" + cx.getText() + "," + cy.getText() + ") ajouté à la liste");
+    
 
         });
 
@@ -211,118 +205,7 @@ try {
               
 });
         
-        // Bouton permettant d'ajouter un rectangle à la liste liste_recs et de calculer sa surface.
- /*     Button btAdd = new Button("Ajouter rectangle");
-pane.add(btAdd, 0, 5);
-// Expression lambda pour construire un EventHandler<ActionEvent>
-btAdd.setOnAction(evt -> {
-    
-    Rec rec = new Rec(Double.parseDouble(lon.getText()),
-            Double.parseDouble(lar.getText()),
-            Double.parseDouble(cx.getText()),
-            Double.parseDouble(cy.getText()));
-    
-   // Coin (String.parseString("Coin;" + liste_recs.size()+","+1)) = new Coin (String.parseString("Coin;" + liste_recs.size()+","+1),rec.getOri_x(), rec.getOri_y());
-    //Coin (String.parseString("Coin;" + liste_recs.size()+","+2)) = new Coin (String.parseString("Coin;" + liste_recs.size()+","+2),(rec.getOri_x() + rec.getLar()), rec.getOri_y());
-    //Coin (String.parseString("Coin;" + liste_recs.size()+","+3)) = new Coin (String.parseString("Coin;" + liste_recs.size()+","+2),rec.getOri_x() , (rec.getOri_y() + rec.getLon()));
-    //Coin (String.parseString("Coin;" + liste_recs.size()+","4+)) = new Coin (String.parseString("Coin;" + liste_recs.size()+","+2),rec.getOri_x() , (rec.getOri_y() + rec.getLon()));
-    
-    
-    
-    // Ajout du rectangle à la liste
-    liste_recs.add(rec);
-    // Calcul et affichage de la surface
-    surface.setText(Double.toString(rec.surface()));
-    System.out.println("Rectangle : " + lon.getText() + " x " + lar.getText() +
-            " (" + cx.getText() + "," + cy.getText() + ") ajouté à la liste");
-
-    
-    // Écriture des informations des coins dans un fichier texte
-    PrintWriter pwCoin;
-try {
-    pwCoin = new PrintWriter(new FileOutputStream("coin.txt")); // Ouverture du fichier en mode ajout
-    for (Coin coin : liste_coins) {
-        // Écriture des coins
-        pwCoin.println("Coin;" + liste_recs.size()+","+1 + ";" + rec.getOri_x() + ";" + rec.getOri_y()); // Coin supérieur gauche
-        pwCoin.println("Coin;" + liste_recs.size()+","+2 + ";" + (rec.getOri_x() + rec.getLar()) + ";" + rec.getOri_y()); // Coin supérieur droit
-        pwCoin.println("Coin;" + liste_recs.size()+","+3 + ";" + rec.getOri_x() + ";" + (rec.getOri_y() + rec.getLon())); // Coin inférieur gauche
-        pwCoin.println("Coin;" + liste_recs.size()+","+4 + ";" + (rec.getOri_x() + rec.getLar()) + ";" + (rec.getOri_y() + rec.getLon())); // Coin inférieur droit
-    }
-    pwCoin.close();
-    System.out.println("Coins ajoutés au fichier des coins");
-} catch (FileNotFoundException e) {
-    e.printStackTrace();
-}
-
-   
-   
-});*/
-
-
-/*Button btSave = new Button("Sauvegarder rectangles");
-pane.add(btSave, 1, 5);
-btSave.setOnAction(evt -> {
-    
-Rec rec = new Rec(Double.parseDouble(lon.getText()),
-            Double.parseDouble(lar.getText()),
-            Double.parseDouble(cx.getText()),
-            Double.parseDouble(cy.getText()));
-
-Coin coin1 = new Coin (1,rec.getOri_x(), rec.getOri_y());
-Coin coin2 = new Coin (2,rec.getOri_x(), rec.getOri_y());
-Coin coin3 = new Coin (3,rec.getOri_x(), rec.getOri_y());
-Coin coin4 = new Coin (4,rec.getOri_x(), rec.getOri_y());
-
-
-   // Coin (String.parseString("Coin;" + liste_recs.size()+","+1)) = new Coin (String.parseString("Coin;" + liste_recs.size()+","+1),rec.getOri_x(), rec.getOri_y());
-    //Coin (String.parseString("Coin;" + liste_recs.size()+","+2)) = new Coin (String.parseString("Coin;" + liste_recs.size()+","+2),(rec.getOri_x() + rec.getLar()), rec.getOri_y());
-    //Coin (String.parseString("Coin;" + liste_recs.size()+","+3)) = new Coin (String.parseString("Coin;" + liste_recs.size()+","+2),rec.getOri_x() , (rec.getOri_y() + rec.getLon()));
-    //Coin (String.parseString("Coin;" + liste_recs.size()+","4+)) = new Coin (String.parseString("Coin;" + liste_recs.size()+","+2),rec.getOri_x() , (rec.getOri_y() + rec.getLon()));
-    
-    
-    
-    // Ajout du rectangle à la liste
-    liste_recs.add(rec);
-    liste_coins.add(coin1);
-    liste_coins.add(coin2);
-    liste_coins.add(coin3);
-    liste_coins.add(coin4);
-    // Calcul et affichage de la surface
-    surface.setText(Double.toString(rec.surface()));
-    System.out.println("Rectangle : " + lon.getText() + " x " + lar.getText() +
-            " (" + cx.getText() + "," + cy.getText() + ") ajouté à la liste");
-    
-String longueurTexte = lon.getText();
-String largeurTexte = lar.getText();
-
-double longueur = Double.parseDouble(longueurTexte);
-double largeur = Double.parseDouble(largeurTexte);
-
-
-PrintWriter pw;
-   /* try {
-        pw = new PrintWriter(new FileOutputStream("rec.txt"));
-        for (Rectangle rectangle : liste_rectangles)
-            pw.println("Rectangle;" + rec.getLon() + ";" + rec.getLar() );
-        pw.close();
-        
-    } catch (FileNotFoundException e) {
-        e.printStackTrace();
-    }   
-    
-    
-
-    try {
-        pw = new PrintWriter(new FileOutputStream("rectangles.txt"));
-        for (Rec rec : liste_recs)
-            pw.println("Rectangle;" + rec.getLon() + ";" + rec.getLar() + ";" + rec.getOri_x() + ";" + rec.getOri_y() + ";" + rec.surface());
-        pw.close();
-        System.out.println("Rectangles ajoutés à la liste");
-    } catch (FileNotFoundException e) {
-        e.printStackTrace();
-    }           
-    
-});*/
+           
 
 
 

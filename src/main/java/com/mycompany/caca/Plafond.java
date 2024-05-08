@@ -19,8 +19,9 @@ public class Plafond {
     Coin coin4;
     int listeRevetement;
     int tremie;
+    int idNiveau;
 
-    public Plafond(int rectangleId, Coin coin1, Coin coin2, Coin coin3, Coin coin4, int listeRevetement, int tremie) {
+    public Plafond(int rectangleId, Coin coin1, Coin coin2, Coin coin3, Coin coin4, int listeRevetement, int tremie, int idNiveau) {
         
         this.rectangleId = rectangleId;
         this.coin1 = coin1;
@@ -29,8 +30,18 @@ public class Plafond {
         this.coin4 = coin4;
         this.listeRevetement = listeRevetement;
         this.tremie = tremie;
+        this.idNiveau = idNiveau;
     }
 
+    public int getIdNiveau() {
+        return idNiveau;
+    }
+
+    public void setIdNiveau(int idNiveau) {
+        this.idNiveau = idNiveau;
+    }
+
+    
     public void setTremie(int tremie) {
         this.tremie = tremie;
     }
