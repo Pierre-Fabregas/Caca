@@ -13,6 +13,7 @@ import java.util.List;
 public class Mur {
 
     int idMur;
+    int idNiveau;
     int rectangleId; 
     int numero_mur; 
     int nbrePortes;
@@ -22,7 +23,7 @@ public class Mur {
     int listeRevetement;
     double hauteur; // Hauteur du mur
 
-    public Mur(int idMur, int rectangleId, int numero_mur, int nbrePortes, int nbreFenetres, Coin coinDebut, Coin coinFin, int listeRevetement, double hauteur) {
+    public Mur(int idMur, int rectangleId, int numero_mur, int nbrePortes, int nbreFenetres, Coin coinDebut, Coin coinFin, int listeRevetement, double hauteur, int idNiveau) {
         this.idMur = idMur;
         this.rectangleId = rectangleId;
         this.numero_mur = numero_mur;
@@ -32,21 +33,18 @@ public class Mur {
         this.coinFin = coinFin;
         this.listeRevetement = listeRevetement;
         this.hauteur = hauteur;
+        this.idNiveau = idNiveau;
+    }
+
+    public int getIdNiveau() {
+        return idNiveau;
+    }
+
+    public void setIdNiveau(int idNiveau) {
+        this.idNiveau = idNiveau;
     }
     
-    
-    
-    
-    
-    
-    
-    
-    /*public int RetrouverMur( int rectangleId, int numero_mur){
-        for (Mur mur: Liste_murs) {
-            if (rectangleId == mur.getRectangleId() && numero_mur == mur.getNumero_mur()){
-                return mur.getIdMur();}
-        }
-    }*/
+  
             
 
     public void setIdMur(int idMur) {
