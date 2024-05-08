@@ -81,10 +81,7 @@ public class App extends Application {
         pane.add(new Label("Cy:"), 0, 3);
         TextField cy = new TextField();
         pane.add(cy, 1, 3);
-
-        pane.add(new Label("Surface rectangle:"), 0, 4);
-        Label surface = new Label("--");
-        pane.add(surface, 1, 4);
+       
 
         // Initialisation de la liste de rectangles
         ArrayList<Rec> liste_recs = new ArrayList<Rec>();
@@ -210,7 +207,7 @@ try {
 
 
 
-        Button btFin = new Button("Home");
+        Button btFin = new Button("Accueil");
         pane.add(btFin, 6, 5);
         btFin.setOnAction(evt -> {
     Stage newStage = new Stage();            // Crée un nouveau stage
@@ -247,8 +244,8 @@ try {
                 Rectangle rectangle = new Rectangle();
                 rectangle.setX(liste_recs.get(i).getOri_x());
                 rectangle.setY(liste_recs.get(i).getOri_y());
-                rectangle.setWidth(liste_recs.get(i).getLar());
-                rectangle.setHeight(liste_recs.get(i).getLon());
+                rectangle.setWidth(liste_recs.get(i).getLar() *10);
+                rectangle.setHeight(liste_recs.get(i).getLon() *10);
                 rectangle.setStroke(Color.BLACK);
                 rectangle.setFill(Color.WHITE);
 

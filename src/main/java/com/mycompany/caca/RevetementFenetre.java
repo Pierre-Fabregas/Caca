@@ -175,10 +175,10 @@ public class RevetementFenetre extends Application {
 private double calculerSurfaceMur(Mur mur) {
     double longueur=0;
     if (mur.getNumero_mur() == 1 || mur.getNumero_mur() == 3) {
-        longueur = Math.abs(((mur.getCoinDebut().getX() - mur.getCoinFin().getX()) * 0.1));
+        longueur = Math.abs(((mur.getCoinDebut().getX() - mur.getCoinFin().getX()) ));
     }
     if (mur.getNumero_mur() == 2 || mur.getNumero_mur() == 4) {
-        longueur = Math.abs((mur.getCoinDebut().getY() - mur.getCoinFin().getY()) * 0.1);
+        longueur = Math.abs((mur.getCoinDebut().getY() - mur.getCoinFin().getY()) );
     }
     double hauteur = mur.getHauteur();
      System.out.println("surface mur" +longueur * hauteur);
@@ -189,16 +189,16 @@ private double calculerSurfaceMur(Mur mur) {
 
 // Fonction pour calculer la surface du sol
 private double calculerSurfaceSol(Sol sol) {
-    double longueur = (sol.getCoin1().getX() - sol.getCoin2().getX() * 0.1);
-    double largeur = (sol.getCoin1().getY() - sol.getCoin3().getY() * 0.1);
+    double longueur = (sol.getCoin1().getX() - sol.getCoin2().getX() );
+    double largeur = (sol.getCoin1().getY() - sol.getCoin3().getY() );
     System.out.println("surface sol " +longueur * largeur);
     return longueur * largeur;
 }
 
 // Fonction pour calculer la surface du plafond
 private double calculerSurfacePlafond(Plafond plafond) {
-    double longueur = (plafond.getCoin1().getX() - plafond.getCoin2().getX() * 0.1);
-    double largeur = (plafond.getCoin1().getY() - plafond.getCoin3().getY() * 0.1);
+    double longueur = (plafond.getCoin1().getX() - plafond.getCoin2().getX() );
+    double largeur = (plafond.getCoin1().getY() - plafond.getCoin3().getY() );
      System.out.println("surface plafond" + longueur * largeur);
     return longueur * largeur;
 }
