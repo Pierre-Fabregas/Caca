@@ -21,7 +21,7 @@ public class Ajout extends Application {
     private App app;
     private Button addButton;
  static int idNiveau = 0; // Variable statique pour conserver le niveau entre les instances
-    private double hauteurSousPlafond; // Attribut pour stocker la hauteur sous plafond
+    private double hauteurSousPlafond; // Attribut pour stocker la hauteur sous plafondpp
 
     public Ajout(App app) {
         this.app = app;
