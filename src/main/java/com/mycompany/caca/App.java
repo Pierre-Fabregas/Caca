@@ -26,6 +26,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.shape.Polygon;
 
 public class App extends Application {
   
@@ -34,6 +35,7 @@ public class App extends Application {
     private Stage primaryStage;
     private int NombreRectangle;
      List<Mur> listeMurs;
+     private int NombreTriangle;
      List<Plafond> listePlafonds;
      List<Sol> listeSols;
      private static final Color[] COLORS = {
@@ -47,6 +49,9 @@ public class App extends Application {
     
     public Stage getPrimaryStage() {
         return primaryStage;
+    }
+    public static double distancePoints(double x1, double y1, double x2, double y2) {
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
     
 
@@ -97,6 +102,10 @@ public class App extends Application {
         ArrayList<Mur> liste_murs = new ArrayList<Mur>();
         ArrayList<Plafond> liste_plafonds = new ArrayList<Plafond>();
         ArrayList<Sol> liste_sols = new ArrayList<Sol>();
+        ArrayList<Mur> liste_murstriangle = new ArrayList<Mur>();
+        ArrayList<Plafond_Triangle> liste_plafondstriangle = new ArrayList<Plafond_Triangle>();
+        ArrayList<Sol_Triangle> liste_solstriangle = new ArrayList<Sol_Triangle>();
+        ArrayList<Triangle> listeTriangles = new ArrayList<Triangle>();
         
         Button btAdd = new Button("Ajouter rectangle");
         pane.add(btAdd, 0, 5);
@@ -268,8 +277,159 @@ try {
                 paneH.getChildren().addAll(stack);
                 NombreRectangle=i+1;
             }
+            for (int i = 0; i < listeTriangles.size(); i++) {
+    Text text = new Text("Tri " + (i + 1)); // Ajout du numéro
+    StackPane stack = new StackPane();
+    
+    // Récupération des coordonnées des sommets du triangle
+    double Ax = listeTriangles.get(i).getAcx() * 10;
+    double Ay = listeTriangles.get(i).getAcy() * 10;
+    double Bx = listeTriangles.get(i).getBcx() * 10;
+    double By = listeTriangles.get(i).getBcy() * 10;
+    double Cx = listeTriangles.get(i).getCcx() * 10;
+    double Cy = listeTriangles.get(i).getCcy() * 10;
+
+    Polygon triangle = new Polygon(Ax, Ay, Bx, By, Cx, Cy);
+    triangle.setStroke(COLORS[currentColorIndex]);
+    triangle.setFill(Color.WHITE);
+
+    stack.setAlignment(Pos.CENTER);
+    stack.getChildren().addAll(triangle, text);
+    stack.setLayoutX(Math.min(Ax, Math.min(Bx, Cx))); // Positionnement du triangle en fonction de la coordonnée x minimale
+    stack.setLayoutY(Math.min(Ay, Math.min(By, Cy))); // Positionnement du triangle en fonction de la coordonnée y minimale
+
+    // Mettez à jour l'indice de couleur pour le prochain triangle
+    currentColorIndex = (currentColorIndex + 1) % COLORS.length;
+
+    paneH.getChildren().addAll(stack);
+    NombreTriangle = i + 1;
+}
+
        
         });
+        
+        
+        
+
+        // Place nodes in the pane at positions column,row
+        pane.add(new Label("Coordonnées Sommet A (x,y):"), 5, 0);
+        TextField Acx = new TextField();
+        TextField Acy = new TextField();
+        pane.add(Acx, 6, 0);
+        pane.add(Acy, 7, 0);
+
+        pane.add(new Label("Coordonnées Sommet B (x,y):"), 5, 1);
+        TextField Bcx = new TextField();
+        TextField Bcy = new TextField();
+        pane.add(Bcx, 6, 1);
+        pane.add(Bcy, 7, 1);
+
+        pane.add(new Label("Coordonnées Sommet C (x,y):"), 5, 2);
+        TextField Ccx = new TextField();
+        TextField Ccy = new TextField();
+        pane.add(Ccx, 6, 2);
+        pane.add(Ccy, 7, 2);
+        
+        
+
+        Button btAddT = new Button("Ajouter triangle");
+        pane.add(btAddT, 9, 5);
+        btAddT.setOnAction(evt -> {
+         Triangle triangle = new Triangle(Double.parseDouble(Acx.getText()),
+                    Double.parseDouble(Acy.getText()),
+                    Double.parseDouble(Bcx.getText()),
+                    Double.parseDouble(Bcy.getText()),
+                    Double.parseDouble(Ccx.getText()),
+                    Double.parseDouble(Ccx.getText()),
+                    distancePoints(Double.parseDouble(Acx.getText()), Double.parseDouble(Acy.getText()), Double.parseDouble(Bcx.getText()), Double.parseDouble(Bcy.getText())),
+                    distancePoints(Double.parseDouble(Bcx.getText()), Double.parseDouble(Bcy.getText()), Double.parseDouble(Ccx.getText()), Double.parseDouble(Ccy.getText())),
+                    distancePoints(Double.parseDouble(Ccx.getText()), Double.parseDouble(Ccy.getText()), Double.parseDouble(Acx.getText()), Double.parseDouble(Acy.getText()))
+                 );
+         
+          int rectangleId = liste_recs.size() + 1;
+    Coin coinA = new Coin(liste_murs.size() + 1, rectangleId, 1, Double.parseDouble(Acx.getText()), Double.parseDouble(Acy.getText()),+ idNiveau);
+    Coin coinB = new Coin(liste_murs.size() + 2, rectangleId, 2, Double.parseDouble(Bcx.getText()) , Double.parseDouble(Bcy.getText()), idNiveau);
+    Coin coinC = new Coin(liste_murs.size() + 2, rectangleId, 2, Double.parseDouble(Ccx.getText()) , Double.parseDouble(Ccy.getText()), idNiveau);
+    
+
+    liste_coins.add(coinA);
+    liste_coins.add(coinB);
+    liste_coins.add(coinC);
+  
+Plafond_Triangle plafond = new Plafond_Triangle(rectangleId,coinA, coinB, coinC, 0, 0, idNiveau);
+liste_plafondstriangle.add(plafond);
+
+Sol_Triangle sol = new Sol_Triangle(rectangleId,coinA, coinB, coinC, 0, 0, idNiveau);
+liste_solstriangle.add(sol);
+
+Mur mur1 = new Mur(liste_murs.size() + 1, rectangleId, 1, 0, 0, coinA, coinB, 0, 0,idNiveau);
+Mur mur2 = new Mur(liste_murs.size() + 2, rectangleId, 2, 0, 0, coinB, coinC, 0, 0,idNiveau);
+Mur mur3 = new Mur(liste_murs.size() + 3, rectangleId, 3, 0, 0, coinC, coinA, 0, 0,idNiveau);
+
+
+liste_murstriangle.add(mur1);
+liste_murstriangle.add(mur2);
+liste_murstriangle.add(mur3);
+
+listeMurs.add(mur1);
+listeMurs.add(mur2);
+listeMurs.add(mur3);
+
+
+
+            listeTriangles.add(triangle);
+                
+                
+                
+                });
+        
+        Button btSaveT = new Button("Sauvegarder triangles");
+        pane.add(btSaveT, 10, 5);
+        btSaveT.setOnAction(evt -> {
+        PrintWriter pwT;
+    try {
+        pwT = new PrintWriter(new FileOutputStream("triangle.txt"));
+        for (Triangle triangle : listeTriangles) {   
+            pwT.println("Triangle;" + triangle.getAcx() + ";" + triangle.getAcy() + ";" + triangle.getBcx() + ";" + triangle.getBcy() + ";" + triangle.getCcx() + ";" + triangle.getCcy()+ ";" + distancePoints(Double.parseDouble(Acx.getText()), Double.parseDouble(Acy.getText()), Double.parseDouble(Bcx.getText()), Double.parseDouble(Bcy.getText())) + ";" + distancePoints(Double.parseDouble(Bcx.getText()), Double.parseDouble(Bcy.getText()), Double.parseDouble(Ccx.getText()), Double.parseDouble(Ccy.getText()))+ ";"+distancePoints(Double.parseDouble(Ccx.getText()), Double.parseDouble(Ccy.getText()), Double.parseDouble(Acx.getText()), Double.parseDouble(Acy.getText())));
+        }
+       
+        pwT.close();
+        System.out.println("Triangles et coins sauvegardés dans le fichier triangles.txt");
+        } catch (FileNotFoundException e) {
+        e.printStackTrace();
+    }  
+    PrintWriter pwcoinT;
+    try { 
+        pwcoinT= new PrintWriter (new FileOutputStream("coin.txt"));
+        for (Coin coin : liste_coins) {
+            pwcoinT.println("Coin;" + coin.idcoin + ";" + coin.rectangleId + ";" + coin.coinNumber + ";" + coin.cx + ";" + coin.cy);
+        }
+        pwcoinT.close();
+        } catch (FileNotFoundException e) {
+        e.printStackTrace();
+    }  
+    PrintWriter pwmurT;
+try { 
+    pwmurT = new PrintWriter (new FileOutputStream("mur1 triangle.txt"));
+    for (Mur mur : liste_murstriangle) {
+        pwmurT.println("Mur;" + mur.idMur + ";" + mur.rectangleId + ";" + mur.numero_mur + ";" + mur.nbrePortes + ";" + mur.nbreFenetres + ";" + mur.coinDebut.idcoin + ";" + mur.coinFin.idcoin + ";" + mur.hauteur);
+    }
+    pwmurT.close();
+} catch (FileNotFoundException e) {
+    e.printStackTrace();
+}
+});
+        
+        Button btRevT = new Button("Choisir revêtement triangle");
+        pane.add(btRevT, 7, 5);
+        btRevT.setOnAction(evt -> {
+            // Ouvrir une nouvelle fenêtre pour choisir le revêtement
+            RevetementFenetreTriangle revetmentWindow = new RevetementFenetreTriangle(listeTriangles.size(), liste_murstriangle, liste_plafondstriangle, liste_solstriangle,idNiveau,hauteurSousPlafond);
+                                                      
+            revetmentWindow.start(new Stage());
+        });
+       
+        
 
         VBox paneV = new VBox();
         paneV.setPadding(new Insets(10, 50, 50, 50));
@@ -279,7 +439,7 @@ try {
         paneV.getChildren().add(paneH);
 
         // Graphe de scène avec des nœuds
-        Scene scene = new Scene(paneV, 1000, 600);  // Construire une scène à partir de la racine du graphe de scène
+        Scene scene = new Scene(paneV, 1500, 600);  // Construire une scène à partir de la racine du graphe de scène
         primaryStage.setScene(scene);               // The stage sets scene
         primaryStage.show();                        // Définir la visibilité (l'afficher)
     }
