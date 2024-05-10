@@ -120,11 +120,13 @@ public class Mur {
         return hauteur;
     }
 
-       
-    
     @Override
     public String toString() {
-        return "Mur{" + "idMur=" + idMur + ", rectangleId=" + rectangleId + ", murNumber=" + numero_mur + ", nbrePortes=" + nbrePortes + ", nbreFenetres=" + nbreFenetres + ", coinDebut=" + coinDebut + ", coinFin=" + coinFin + ", listeRevetement=" + listeRevetement + ", hauteur=" + hauteur + '}';
+        return "Mur{" + "idMur=" + idMur + ", idNiveau=" + idNiveau + ", rectangleId=" + rectangleId + ", numero_mur=" + numero_mur + ", nbrePortes=" + nbrePortes + ", nbreFenetres=" + nbreFenetres + ", coinDebut=" + coinDebut + ", coinFin=" + coinFin + ", listeRevetement=" + listeRevetement + ", hauteur=" + hauteur + '}';
     }
+
+       
+    
+  
 }
 
