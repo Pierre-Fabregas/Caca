@@ -19,7 +19,7 @@ public class Ajout extends Application {
     private Stage primaryStage;
     private App app;
     private Button addButton;
-    private int idNiveau; // Attribut pour stocker l'identifiant du niveau
+    private int idNiveau; // Attribut pour stocker l'identifiant du niveaupods
     private double hauteurSousPlafond; // Attribut pour stocker la hauteur sous plafond
 
     public Ajout(App app) {
