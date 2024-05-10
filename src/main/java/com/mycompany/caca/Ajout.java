@@ -19,7 +19,7 @@ public class Ajout extends Application {
     private Stage primaryStage;
     private App app;
     private Button addButton;
-    private int idNiveau; // Attribut pour stocker l'identifiant du niveaupods
+ static int idNiveau = 0; // Variable statique pour conserver le niveau entre les instances
     private double hauteurSousPlafond; // Attribut pour stocker la hauteur sous plafond
 
     public Ajout(App app) {
@@ -34,7 +34,7 @@ public class Ajout extends Application {
         HBox levelInputBox = new HBox(5);
         levelInputBox.setAlignment(Pos.CENTER);
         Label levelLabel = new Label("Niveau:");
-        TextField levelField = new TextField();
+         TextField levelField = new TextField(String.valueOf(idNiveau)); // Initialise avec la valeur actuelle de idNiveau
         levelField.setPromptText("Entrez un niveau");
         levelField.setPrefWidth(100);
         levelInputBox.getChildren().addAll(levelLabel, levelField);

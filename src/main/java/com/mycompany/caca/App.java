@@ -217,6 +217,7 @@ try {
         Button btFin = new Button("Accueil");
         pane.add(btFin, 6, 5);
         btFin.setOnAction(evt -> {
+             Ajout.idNiveau++;  // Incrémente le niveau avant de rouvrir la fenêtre
     Stage newStage = new Stage();            // Crée un nouveau stage
     Ajout ajoutWindow = new Ajout(this);     // Crée une nouvelle instance de Ajout
     ajoutWindow.start(newStage);             // Lance Ajout sur le nouveau stage
