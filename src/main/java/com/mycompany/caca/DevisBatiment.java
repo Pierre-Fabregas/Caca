@@ -15,6 +15,17 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class DevisBatiment extends Application {
+    double prixmur1;
+    double prixmur2;
+    double prixmur3;
+    double prixmur4;
+    double prixPlafond;
+    double prixSol;
+    double prixPiece;
+    double prixniveau;
+    double prixtotal;
+    
+    
 
     @Override
     public void start(Stage primaryStage) {
