@@ -71,17 +71,28 @@ public class Ajout extends Application {
             app.openMainWindow(idNiveau,hauteurSousPlafond);
         });
 
+        Button DevisBatimentButton = new Button("Devis Batiment");
+        DevisBatimentButton.setOnAction(event -> {
+    DevisBatiment devisBatiment = new DevisBatiment(); // Création de l'instance de DevisBatiment
+    Stage devisStage = new Stage(); // Création d'une nouvelle fenêtre
+    devisBatiment.start(devisStage); // Affichage de la fenêtre du devis
+});
+        
         // VBox pour aligner tous les éléments verticalement et centrer
         VBox root = new VBox(10);
         root.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(levelInputBox, heightInputBox, validateButton, addButton);
+        root.getChildren().addAll(levelInputBox, heightInputBox, validateButton, addButton, DevisBatimentButton );
 
-        Scene scene = new Scene(root, 300, 200); // Ajuster la taille pour accueillir les nouveaux champs
+        Scene scene = new Scene(root, 400, 400); // Ajuster la taille pour accueillir les nouveaux champs
         primaryStage.setTitle("Gestion des niveaux et pièces");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
+  
+    
+    
+    
     public static void main(String[] args) {
         launch(args);
     }
