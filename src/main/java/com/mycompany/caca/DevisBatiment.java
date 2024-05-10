@@ -26,7 +26,7 @@ public class DevisBatiment extends Application {
         vbox.setSpacing(10);
 
         // Lecture des données à partir du fichier et ajout dans la VBox
-        try (BufferedReader reader = new BufferedReader(new FileReader("/prix.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("prix.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 Label label = new Label(line);
