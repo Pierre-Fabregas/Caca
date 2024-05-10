@@ -14,18 +14,43 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 public class Revetement {
-    private int idRevetement;
-    private String designation;
-    private boolean pourMur;
-    private boolean pourSol;
-    private boolean pourPlafond;
-    private double prixUnitaire;
-    private static File Revetementfichier = new File("listeRevetement.txt");
+     int idRevetement;
+   String designation;
+    boolean pourMur;
+    boolean pourSol;
+     boolean pourPlafond;
+     double prixUnitaire;
+   static File Revetementfichier = new File("listeRevetement.txt");
 
     @Override
      public String toString() {
         return designation;
     }
+     
+     private static Revetement[] stockagRevetements(int nbRevetements) {
+    File Revetementfichier = new File("listeRevetement.txt");
+    try (Scanner scanner = new Scanner(Revetementfichier)) {
+        Revetement[] revetements = new Revetement[nbRevetements + 1]; // +1 car les indices commencent à 1
+        scanner.nextLine(); // Si ton fichier a un en-tête, décommente cette ligne
+        while (scanner.hasNextLine()) {
+            String ligneRevetement = scanner.nextLine();
+            String[] parts = ligneRevetement.split(";");
+            int idRevetement = Integer.parseInt(parts[0]);
+            String designation = parts[1];
+            boolean pourMur = Integer.parseInt(parts[2]) == 1;
+            boolean pourSol = Integer.parseInt(parts[3]) == 1;
+            boolean pourPlafond = Integer.parseInt(parts[4]) == 1;
+            double prixUnitaire = Double.parseDouble(parts[5]);
+
+            revetements[idRevetement] = new Revetement(idRevetement, designation, pourMur, pourSol, pourPlafond, prixUnitaire);
+            System.out.println("Loaded: " + designation + " - PourSol: " + pourSol);
+        }
+        return revetements;
+    } catch (FileNotFoundException e) {
+        System.out.println("Erreur : listeRevetement.txt non trouvé.");
+        return null;
+    }
+}
      
      
      public double ElementRevetement (int Revetement){
@@ -72,58 +97,7 @@ public class Revetement {
         
         return prix;
      }
-             
-     
-     
-     
-     
-     
-     
-
-    public static int comptageRevetements() {
-        try (Scanner scanner = new Scanner(Revetementfichier)) {
-            int nbRevetements = 0;
-            while (scanner.hasNextLine()) { // Comptage du nombre de revetements
-                nbRevetements++;
-                scanner.nextLine();
-            }
-            scanner.close();
-            return nbRevetements;
-
-        } catch (FileNotFoundException e) {
-            System.out.println("Erreur : listeRevetement.txt non trouve.");
-            return 0;
-        }
-    }
-
-    public static Revetement[] stockagRevetements(int nbRevetements) {
-        try (Scanner scanner = new Scanner(Revetementfichier)) {
-            Revetement[] revetements = new Revetement[nbRevetements]; // creation d'un tableau de nb de revetements
-                                                                      // cases qui stockera des objets revetements
-            scanner.nextLine();
-            while (scanner.hasNextLine()) { // creation des objets revetements et stockage dans le tableau
-                String ligneRevetement = scanner.nextLine();
-                int idRevetement = Integer.parseInt(ligneRevetement.split(";")[0]);
-                String designation = ligneRevetement.split(";")[1];
-                Boolean pourMur = (Integer.parseInt(ligneRevetement.split(";")[2]) == 1);
-                Boolean pourSol = (Integer.parseInt(ligneRevetement.split(";")[3]) == 1);
-                Boolean pourPlafond = (Integer.parseInt(ligneRevetement.split(";")[4]) == 1);
-                double prixUnitaire = Double.parseDouble(ligneRevetement.split(";")[5]);
-                Revetement revetement = new Revetement(idRevetement, designation, pourMur, pourSol, pourPlafond,
-                        prixUnitaire); // utilisation du constructeur de la classe Revetement avec les parametres
-                                       // definis precedaments en decoupant la ligne a chaque semicolon
-                revetements[idRevetement] = revetement;
-                // si on veut acceder a un revetement on accede a la case du tableau
-                // correspondant a l'id du revetement (la case 0 est donc vide comme les id
-                // commencent a 1)
-            }
-            scanner.close();
-            return revetements;
-        } catch (FileNotFoundException e) {
-            System.out.println("Erreur : listeRevetement.txt non trouve.");
-            return null;
-        }
-    }
+            
 
     // --------------------------------------------------------------------------------
     // Constructeur
@@ -146,5 +120,6 @@ public class Revetement {
     public double getPrixUnitaire() {
         return prixUnitaire;
     }
+    
     
 }
