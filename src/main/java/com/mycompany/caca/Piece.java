@@ -17,8 +17,9 @@ public class Piece {
     Mur mur4;
     Sol sol;
     Plafond plafond;
+    int idNiveau;
 
-    public Piece(int rectangleId, Mur mur1, Mur mur2, Mur mur3, Mur mur4, Sol sol, Plafond plafond) {
+    public Piece(int rectangleId, Mur mur1, Mur mur2, Mur mur3, Mur mur4, Sol sol, Plafond plafond, int idNiveau) {
         this.rectangleId = rectangleId;
         this.mur1 = mur1;
         this.mur2 = mur2;
@@ -26,6 +27,7 @@ public class Piece {
         this.mur4 = mur4;
         this.sol = sol;
         this.plafond = plafond;
+        this.idNiveau = idNiveau;
     }
 
     public void setRectangleId(int rectangleId) {
