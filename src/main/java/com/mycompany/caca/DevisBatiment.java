@@ -31,6 +31,15 @@ import javafx.scene.text.FontWeight;
         double prixPlafond;
         double prixSol;
         double prixPiece;
+         double idpieceTR;
+        double prixmur1TR;
+        double prixmur2TR;
+        double prixmur3TR;
+        double idNiveauTR; 
+        double prixPlafondTR;
+        double prixSolTR;
+        double prixPieceTR;
+        
         
         
          Map<Double, Double> prixParNiveau = new HashMap<>();  // Map pour stocker les prix par niveau
@@ -40,21 +49,23 @@ import javafx.scene.text.FontWeight;
         public void start(Stage primaryStage) {
             vbox.setPadding(new Insets(10));
             vbox.setSpacing(8);
-
+           lireFichierDevisTriangle();
             // Lecture du fichier et initialisation des attributs
             lireFichierDevis();
              // Affichage des prix par niveau
         prixParNiveau.forEach((niveau, prix) -> {
-            Label label = new Label("Niveau " + (Double) niveau + ": " + prix + " €");
-            vbox.getChildren().add(label);
+      int niveauInt = (int) Math.round(niveau);
+        Label label = new Label("Le Prix du Niveau  " + niveauInt + " :  " + prix + " €");
+        vbox.getChildren().add(label);
+           
         });
 
         // Affichage du prix total
-        Label totalLabel = new Label("Prix Total: " + prixTotal + " €");
+        Label totalLabel = new Label("Le Prix Total est : " + prixTotal + " €");
        totalLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));  // Style en gras et taille plus grande
         vbox.getChildren().add(totalLabel);
 
-            Scene scene = new Scene(vbox, 400, 400);
+            Scene scene = new Scene(vbox, 800, 800);
             primaryStage.setTitle("Devis du Bâtiment");
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -92,6 +103,34 @@ import javafx.scene.text.FontWeight;
                 vbox.getChildren().add(new Label("Erreur lors de la lecture du fichier."));
             }
         }
+private void lireFichierDevisTriangle() {
+    String path = "prixTriangle.txt"; // Chemin relatif du fichier pour les pièces triangulaires
+    try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(";");
+            if (parts.length >= 8) { // Assurez-vous que toutes les parties nécessaires sont présentes
+                idNiveauTR = Double.parseDouble(parts[1]); // Id du niveau
+                 idpieceTR = Double.parseDouble(parts[2]); // Id de la pièce (triangleId)
+                 prixmur1TR = Double.parseDouble(parts[3]); // Prix du mur 1
+                prixmur2TR = Double.parseDouble(parts[4]); // Prix du mur 2
+                prixmur3TR = Double.parseDouble(parts[5]); // Prix du mur 3
+                 prixSolTR = Double.parseDouble(parts[6]); // Prix du sol
+                 prixPlafondTR = Double.parseDouble(parts[7]); // Prix du plafond
+                 prixPieceTR = Double.parseDouble(parts[8]); // Prix de la pièce
+
+                // Agréger les prix par niveau
+                prixParNiveau.merge(idNiveauTR, prixPieceTR, Double::sum);
+            }
+        }
+        // Calculer le prix total après avoir rempli la map
+        prixTotal = prixParNiveau.values().stream().mapToDouble(Double::doubleValue).sum();
+    } catch (IOException e) {
+        e.printStackTrace();
+        // Vous pourriez vouloir ajouter un label d'erreur à votre VBox ici si nécessaire
+        vbox.getChildren().add(new Label("Erreur lors de la lecture du fichier."));
+    }
+}
 
 
     
@@ -101,6 +140,7 @@ import javafx.scene.text.FontWeight;
             launch(args);
         }
     }
+
 
 
 
