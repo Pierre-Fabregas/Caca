@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.mavenproject2;
+package com.mycompany.caca;
 
 /**
  *
@@ -540,9 +540,12 @@ FinButton.setOnAction(event -> {
         }
     }
 }
-PrintWriter pwpiece;
+
+    
+    PrintWriter pwpiece;
 try { 
-    pwpiece = new PrintWriter (new FileOutputStream("piece.txt"));
+    // Crée un nouveau fichier ou écrase un fichier existant sans append
+        pwpiece = new PrintWriter (new FileOutputStream("piece.txt"));
     for (Piece piece : liste_pieces) {
         pwpiece.println("Piece;" +  piece.rectangleId + ";" + piece.mur1 + ";" + piece.mur2 + ";" + piece.mur3 + ";" + piece.mur4 + ";" + piece.sol + ";" + piece.plafond );
     }

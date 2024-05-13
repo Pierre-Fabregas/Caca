@@ -1,4 +1,4 @@
-package com.mycompany.mavenproject2;
+package com.mycompany.caca;
 import java.io.*;
 
 /**
