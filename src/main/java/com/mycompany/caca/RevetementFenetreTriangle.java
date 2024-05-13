@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.caca;
+package com.mycompany.mavenproject2;
 
 /**
  *
@@ -605,7 +605,7 @@ try {
         
 
                GridPane root = new GridPane();
-        root.addRow(0, new Label("Rectangle:"), rectangleComboBox);
+        root.addRow(0, new Label("Triangle:"), rectangleComboBox);
         root.addRow(1, label1, AComboBox, new Label("Nombre de portes:"), A1Text , new Label("Nombre de fenêtres:"), A2Text , saveButton6);
         root.addRow(2, label2, BComboBox, new Label("Nombre de portes:"), B1Text , new Label("Nombre de fenêtres:"), B2Text , saveButton7);
         root.addRow(3, label3, CComboBox, new Label("Nombre de portes:"), C1Text , new Label("Nombre de fenêtres:"), C2Text , saveButton8);

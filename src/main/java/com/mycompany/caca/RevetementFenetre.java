@@ -1,8 +1,8 @@
-/*
+    /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.caca;
+package com.mycompany.mavenproject2;
 
 /**
  *
@@ -565,17 +565,17 @@ try {
         System.out.println("Le prix de la pièce est : " + prixPiece + " €");
     }
     
-    PrintWriter pwprix;
-try { 
-    pwprix = new PrintWriter (new FileOutputStream("prix.txt"));
+PrintWriter pwprix;
+try {
+    // Active le mode "append" en passant true comme second argument à FileOutputStream
+    pwprix = new PrintWriter(new FileOutputStream("prix.txt", true)); 
     for (Prix prix : liste_prix) {
-        pwprix.println("Prix;" +  prix.idNiveau + ";" + prix.rectangleId + ";" + prix.prixmur1 + ";" + prix.prixmur2 + ";" + ";" + prix.prixmur2 + ";" + prix.prixmur4 + ";" + prix.prixsol + ";" + prix.prixplafond +";" + prix.prixpiece );
+        pwprix.println("Prix;" +  prix.idNiveau + ";" + prix.rectangleId + ";" + prix.prixmur1 + ";" + prix.prixmur2 + ";" + prix.prixmur3 + ";" + prix.prixmur4 + ";" + prix.prixsol + ";" + prix.prixplafond + ";" + prix.prixpiece);
     }
     pwprix.close();
 } catch (FileNotFoundException e) {
     e.printStackTrace();
-}
-    
+}  
     
 });
 
@@ -598,7 +598,7 @@ try {
         
 
                GridPane root = new GridPane();
-        root.addRow(0, new Label("Rectangle:"), rectangleComboBox, saveButtonPiece);
+        root.addRow(0, new Label("Pièce:"), rectangleComboBox, saveButtonPiece);
         root.addRow(1, label1, AComboBox, new Label("Nombre de portes:"), A1Text , new Label("Nombre de fenêtres:"), A2Text , saveButton6);
         root.addRow(2, label2, BComboBox, new Label("Nombre de portes:"), B1Text , new Label("Nombre de fenêtres:"), B2Text , saveButton7);
         root.addRow(3, label3, CComboBox, new Label("Nombre de portes:"), C1Text , new Label("Nombre de fenêtres:"), C2Text , saveButton8);

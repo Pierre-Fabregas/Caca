@@ -1,129 +1,109 @@
 
-package com.mycompany.caca;
+    package com.mycompany.mavenproject2;
 
 
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import java.util.HashMap;
-import java.util.Map;
-import static javafx.application.Application.launch;
+    import java.io.BufferedReader;
+    import java.io.FileReader;
+    import java.io.IOException;
+    import javafx.application.Application;
+    import javafx.geometry.Insets;
+    import javafx.scene.Scene;
+    import javafx.scene.control.Label;
+    import javafx.scene.layout.VBox;
+    import javafx.stage.Stage;
+    import java.util.HashMap;
+    import java.util.Map;
+    import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
-public class DevisBatiment extends Application {
-    VBox vbox = new VBox();
-    double prixmur1;
-    double prixmur2;
-    double prixmur3;
-    double prixmur4;
-    double prixPlafond;
-    double prixSol;
-    double prixPiece;
-    double prixniveau;
-    double prixtotal;
+    import static javafx.application.Application.launch;
 
-    // Méthode pour lire le fichier prix.txt et stocker les variables appropriées
-    private void lirePrixFichier(String nomFichier) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(nomFichier))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(";");
-                if (parts.length >= 11) { // Assurez-vous que la ligne contient toutes les informations nécessaires
-                    prixmur1 = Double.parseDouble(parts[3]);
-                    prixmur2 = Double.parseDouble(parts[4]);
-                    // Prixmur3, prixmur4, prixsol et prixplafond suivent un modèle similaire...
-                    prixmur3 = Double.parseDouble(parts[5]);
-                    prixmur4 = Double.parseDouble(parts[6]);
-                    prixSol = Double.parseDouble(parts[8]);
-                    prixPlafond = Double.parseDouble(parts[9]);
-                }
-            }
-        } catch (IOException | NumberFormatException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    private void lirePrixTriangleFichier(String nomFichier) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(nomFichier))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(";");
-                if (parts.length >= 11) { // Assurez-vous que la ligne contient toutes les informations nécessaires
-                    prixmur1 = Double.parseDouble(parts[3]);
-                    prixmur2 = Double.parseDouble(parts[4]);
-                    // Prixmur3, prixmur4, prixsol et prixplafond suivent un modèle similaire...
-                    prixmur3 = Double.parseDouble(parts[5]);
-                    prixSol = Double.parseDouble(parts[6]);
-                    prixPlafond = Double.parseDouble(parts[7]);
-                }
-            }
-        } catch (IOException | NumberFormatException e) {
-            e.printStackTrace();
-        }
-    }
 
-    @Override
-public void start(Stage primaryStage) {
-    primaryStage.setTitle("Devis Bâtiment");
+    public class DevisBatiment extends Application {
+        VBox vbox = new VBox();
+        double idpiece;
+        double prixmur1;
+        double prixmur2;
+        double prixmur3;
+        double prixmur4;
+        double idNiveau; 
+        double prixPlafond;
+        double prixSol;
+        double prixPiece;
+        
+        
+         Map<Double, Double> prixParNiveau = new HashMap<>();  // Map pour stocker les prix par niveau
+    double prixTotal = 0;  // Prix total de tous les niveaux
 
-    // Appel de la méthode pour lire le fichier prix.txt
-    lirePrixFichier("prix.txt");
+         @Override
+        public void start(Stage primaryStage) {
+            vbox.setPadding(new Insets(10));
+            vbox.setSpacing(8);
 
-    // Création d'une VBox pour organiser les éléments verticalement
-    VBox vbox = new VBox();
-    vbox.setPadding(new Insets(10));
-    vbox.setSpacing(10);
-
-    // Calcul du prix total
-    double prixTotal = 0;
-
-    // Utilisation d'une Map pour stocker les prix par niveau
-    Map<Integer, Double> prixParNiveau = new HashMap<>();
-
-    // Lecture des données à partir du fichier et calcul des prix par niveau
-    try (BufferedReader reader = new BufferedReader(new FileReader("prix.txt"))) {
-        String line;
-        while ((line = reader.readLine()) != null) {
-            String[] parts = line.split(";");
-            if (parts.length >= 11) { // Assurez-vous que la ligne contient toutes les informations nécessaires
-                int idNiveau = Integer.parseInt(parts[1]);
-                double prixPiece = Double.parseDouble(parts[10]);
-
-                // Mise à jour du prix total
-                prixTotal += prixPiece;
-
-                // Mise à jour des prix par niveau
-                prixParNiveau.put(idNiveau, prixParNiveau.getOrDefault(idNiveau, 0.0) + prixPiece);
-            }
-        }
-
-        // Affichage des prix par niveau
-        for (Map.Entry<Integer, Double> entry : prixParNiveau.entrySet()) {
-            Label label = new Label("Prix pour le niveau " + entry.getKey() + ": " + entry.getValue());
+            // Lecture du fichier et initialisation des attributs
+            lireFichierDevis();
+             // Affichage des prix par niveau
+        prixParNiveau.forEach((niveau, prix) -> {
+            Label label = new Label("Niveau " + (Double) niveau + ": " + prix + " €");
             vbox.getChildren().add(label);
-        }
+        });
 
         // Affichage du prix total
-        Label totalLabel = new Label("Prix total: " + prixTotal);
+        Label totalLabel = new Label("Prix Total: " + prixTotal + " €");
+       totalLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));  // Style en gras et taille plus grande
         vbox.getChildren().add(totalLabel);
-    } catch (IOException | NumberFormatException e) {
-        e.printStackTrace();
+
+            Scene scene = new Scene(vbox, 400, 400);
+            primaryStage.setTitle("Devis du Bâtiment");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        }
+
+        private void lireFichierDevis() {
+            String path = "prix.txt"; // Chemin relatif du fichier, adapté à votre structure de projet
+            try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split(";");
+                    // Assurez-vous que toutes les parties nécessaires sont présentes
+                    if (parts.length >= 10) {
+                        idNiveau = Double.parseDouble(parts[1]); // Id du niveau
+                        idpiece = Double.parseDouble(parts[2]); // Id de la pièce (rectangleId)
+                        prixmur1 = Double.parseDouble(parts[3]); // Prix du mur 1
+                        prixmur2 = Double.parseDouble(parts[4]); // Prix du mur 2
+                        prixmur3 = Double.parseDouble(parts[5]); // Prix du mur 3
+                        prixmur4 = Double.parseDouble(parts[6]); // Prix du mur 4
+                        prixSol = Double.parseDouble(parts[7]); // Prix du sol
+                        prixPlafond = Double.parseDouble(parts[8]); // Prix du plafond
+                        prixPiece = Double.parseDouble(parts[9]); // Prix de la pièce
+                        // Notez que nous lisons les valeurs mais ne faisons rien avec pour l'instant
+                    
+                    
+                  // Agréger les prix par niveau
+                prixParNiveau.merge(idNiveau, prixPiece, Double::sum);
+            }
+        }
+        // Calculer le prix total après avoir rempli la map
+        prixTotal = prixParNiveau.values().stream().mapToDouble(Double::doubleValue).sum();
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Vous pourriez vouloir ajouter un label d'erreur à votre VBox ici si nécessaire
+                vbox.getChildren().add(new Label("Erreur lors de la lecture du fichier."));
+            }
+        }
+
+
+    
+
+
+        public static void main(String[] args) {
+            launch(args);
+        }
     }
 
-    // Création de la scène et affichage de la fenêtre
-    Scene scene = new Scene(vbox, 400, 300);
-    primaryStage.setScene(scene);
-    primaryStage.show();
-}
 
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-}
+
+
+

@@ -1,6 +1,6 @@
 
 
-package com.mycompany.caca;
+package com.mycompany.mavenproject2;
 
 
 

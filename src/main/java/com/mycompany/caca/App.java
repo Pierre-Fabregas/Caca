@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.caca;
+package com.mycompany.mavenproject2;
 
 
 import java.util.List;
@@ -259,6 +259,7 @@ try {
         Button btFin = new Button("Accueil");
         pane.add(btFin, 11, 5);
         btFin.setOnAction(evt -> {
+            Ajout.idNiveau++;  // Incrémente le niveau chaque fois que le bouton est cliqué
     Stage newStage = new Stage();            // Crée un nouveau stage
     Ajout ajoutWindow = new Ajout(this );     // Crée une nouvelle instance de Ajout
     ajoutWindow.start(newStage);             // Lance Ajout sur le nouveau stage
@@ -282,7 +283,7 @@ try {
 
         Pane paneH = new Pane();
 
-        Button btShow = new Button("Dessiner rectangles");
+        Button btShow = new Button("Dessiner Pièces");
         pane.add(btShow, 10, 5);
         btShow.setOnAction(evt -> {
             // Dessiner les rectangles ici
