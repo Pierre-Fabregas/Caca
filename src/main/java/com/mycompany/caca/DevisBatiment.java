@@ -48,6 +48,25 @@ public class DevisBatiment extends Application {
             e.printStackTrace();
         }
     }
+    
+    private void lirePrixTriangleFichier(String nomFichier) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(nomFichier))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(";");
+                if (parts.length >= 11) { // Assurez-vous que la ligne contient toutes les informations nécessaires
+                    prixmur1 = Double.parseDouble(parts[3]);
+                    prixmur2 = Double.parseDouble(parts[4]);
+                    // Prixmur3, prixmur4, prixsol et prixplafond suivent un modèle similaire...
+                    prixmur3 = Double.parseDouble(parts[5]);
+                    prixSol = Double.parseDouble(parts[6]);
+                    prixPlafond = Double.parseDouble(parts[7]);
+                }
+            }
+        } catch (IOException | NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
 public void start(Stage primaryStage) {

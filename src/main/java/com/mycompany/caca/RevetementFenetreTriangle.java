@@ -72,27 +72,27 @@ public class RevetementFenetreTriangle extends Application {
         return prix;
      }
       
-      public Mur RetrouverMur( int rectangleId, int numero_mur, int idNiveau){
+      public Mur RetrouverMur( int TriangleId, int numero_mur, int idNiveau){
         for (Mur mur: liste_murstriangle) {
-            if (rectangleId == mur.getRectangleId() && numero_mur == mur.getNumero_mur() && mur.getIdNiveau() == idNiveau){
+            if (TriangleId == mur.getRectangleId() && numero_mur == mur.getNumero_mur() && mur.getIdNiveau() == idNiveau){
                 return mur;}
         }
     return null;
     
       }
       
-      public Plafond_Triangle RetrouverPlafond( int rectangleId, int idNiveau){
+      public Plafond_Triangle RetrouverPlafond( int TriangleId, int idNiveau){
         for (Plafond_Triangle plafond: liste_plafondstriangle) {
-            if (rectangleId == plafond.getRectangleId() && plafond.getIdNiveau() == idNiveau ){
+            if (TriangleId == plafond.getRectangleId() && plafond.getIdNiveau() == idNiveau ){
                 return plafond;}
         }
     return null;
     
       }
       
-      public Sol_Triangle RetrouverSol( int rectangleId, int idNiveau){
+      public Sol_Triangle RetrouverSol( int TriangleId, int idNiveau){
         for (Sol_Triangle sol: liste_solstriangle) {
-            if (rectangleId == sol.getRectangleId() && sol.getIdNiveau() == idNiveau ){
+            if (TriangleId == sol.getRectangleId() && sol.getIdNiveau() == idNiveau ){
                 return sol;}
         }
     return null;
@@ -100,8 +100,8 @@ public class RevetementFenetreTriangle extends Application {
       }
       
       
-      private Mur MajMur (int rectangleId, int numero_mur, int nbrePortes, int nbreFenetres, int listeRevetement, double hauteur,int idNiveau){
-          Mur mur = RetrouverMur( rectangleId, numero_mur,idNiveau);
+      private Mur MajMur (int TriangleId, int numero_mur, int nbrePortes, int nbreFenetres, int listeRevetement, double hauteur,int idNiveau){
+          Mur mur = RetrouverMur( TriangleId, numero_mur,idNiveau);
          // if ( mur=! null){    à remettre si on ajoute le null
               mur.setListeRevetement(listeRevetement);
               mur.setNbrePortes(nbrePortes);
@@ -114,8 +114,8 @@ public class RevetementFenetreTriangle extends Application {
         //      System.out.println("Aucun mur trouve");}
     //  }
               
-      private Plafond_Triangle MajPlafond (int rectangleId, int listeRevetement, int tremie, int idNiveau){
-          Plafond_Triangle plafond = RetrouverPlafond( rectangleId,idNiveau);
+      private Plafond_Triangle MajPlafond (int TriangleId, int listeRevetement, int tremie, int idNiveau){
+          Plafond_Triangle plafond = RetrouverPlafond( TriangleId,idNiveau);
          // if ( mur=! null){    à remettre si on ajoute le null
               plafond.setListeRevetement(listeRevetement);
               plafond.setTremie(tremie);
@@ -128,8 +128,8 @@ public class RevetementFenetreTriangle extends Application {
     //  }
       
       
-      private Sol_Triangle MajSol (int rectangleId, int listeRevetement, int tremie, int idNiveau){
-          Sol_Triangle sol = RetrouverSol(rectangleId, idNiveau);
+      private Sol_Triangle MajSol (int TriangleId, int listeRevetement, int tremie, int idNiveau){
+          Sol_Triangle sol = RetrouverSol(TriangleId, idNiveau);
          // if ( mur=! null){    à remettre si on ajoute le null
               sol.setListeRevetement(listeRevetement);
               sol.setTremie(tremie);
@@ -148,7 +148,9 @@ public class RevetementFenetreTriangle extends Application {
 
         // Calcul du prix de chaque mur
         for (Mur mur : new Mur[]{piece.getMur1(), piece.getMur2(), piece.getMur3()}) {
-        double surfaceMur = calculerSurfaceMur(mur);
+        double longueur = distancePoints(mur.getCoinDebut().getX(),mur.getCoinDebut().getY(),mur.getCoinFin().getX(),mur.getCoinFin().getY());
+        double hauteur = mur.getHauteur();
+        double surfaceMur = longueur * hauteur;
         int nbrePortes = mur.getNbrePortes();
         int nbreFenetres = mur.getNbreFenetres();
         double prixRevetement = ElementRevetement(mur.getListeRevetement());
@@ -180,7 +182,7 @@ public class RevetementFenetreTriangle extends Application {
    
    
     public double calculerPrixMur1(Mur mur) {
-    double longueur = Math.abs((mur.getCoinDebut().getX() - mur.getCoinFin().getX()));
+    double longueur = distancePoints(mur.getCoinDebut().getX(),mur.getCoinDebut().getY(),mur.getCoinFin().getX(),mur.getCoinFin().getY());
     double hauteur = mur.getHauteur();
     double surfaceMur1 = longueur * hauteur;
     int nbrePortes = mur.getNbrePortes();
@@ -192,7 +194,7 @@ public class RevetementFenetreTriangle extends Application {
 }
 
 public double calculerPrixMur2(Mur mur) {
-    double longueur = Math.abs((mur.getCoinDebut().getY() - mur.getCoinFin().getY()));
+    double longueur = distancePoints(mur.getCoinDebut().getX(),mur.getCoinDebut().getY(),mur.getCoinFin().getX(),mur.getCoinFin().getY());
     double hauteur = mur.getHauteur();
     double surfaceMur2 = longueur * hauteur;
     int nbrePortes = mur.getNbrePortes();
@@ -204,7 +206,7 @@ public double calculerPrixMur2(Mur mur) {
 }
 
 public double calculerPrixMur3(Mur mur) {
-    double longueur = Math.abs((mur.getCoinDebut().getX() - mur.getCoinFin().getX()));
+    double longueur = distancePoints(mur.getCoinDebut().getX(),mur.getCoinDebut().getY(),mur.getCoinFin().getX(),mur.getCoinFin().getY());
     double hauteur = mur.getHauteur();
     double surfaceMur3 = longueur * hauteur;
     int nbrePortes = mur.getNbrePortes();
@@ -235,23 +237,42 @@ public double calculerPrixPlafond(Plafond_Triangle plafond) {
     return prixPlafond;
 }
 
+public static double distancePoints(double x1, double y1, double x2, double y2) {
+    if(x1>x2 && y1>y2){
+        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+    }
+    if(x1<x2 && y1<y2){
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
+    if(x1>x2 && y1<y2){
+        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y2 - y1, 2));
+    }
+    if(x1<x2 && y1>y2){
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y1 - y2, 2));
+    }
+    if(x1==x2 && y1==y2){
+        return 0;
+    }
+    if(x1==x2 && y1>y2){
+        return Math.sqrt(Math.pow(y1 - y2, 2));
+    }
+    if(x1==x2 && y1<y2){
+        return Math.sqrt(Math.pow(y2 - y1, 2));
+    }
+    if(x1<x2 && y1==y2){
+        return Math.sqrt(Math.pow(x2 - x1, 2) );
+    }
+    if(x1>x2 && y1==y2){
+        return Math.sqrt(Math.pow(x1 - x2, 2) );
+    }
+    else {
+        return 0;}
+}
 
 private double calculerSurfaceMur(Mur mur) {
     double longueur=0;
-    if (mur.getNumero_mur() == 1) {
-        longueur = Math.abs(((mur.getCoinDebut().getX() - mur.getCoinFin().getX()) ));
-        longueurmur1 = longueur;
-    }
-    if ( mur.getNumero_mur() == 3) {
-        longueur = Math.abs(((mur.getCoinDebut().getX() - mur.getCoinFin().getX()) ));
-        longueurmur2 = longueur;
-    }
-    if (mur.getNumero_mur() == 2 ) {
-        longueur = Math.abs((mur.getCoinDebut().getY() - mur.getCoinFin().getY()) );
-        longueurmur3 = longueur;
-    }
+    longueur = distancePoints(mur.getCoinDebut().getX(),mur.getCoinDebut().getY(),mur.getCoinFin().getX(),mur.getCoinFin().getY());
     double hauteur = mur.getHauteur();
-    hauteurmur = hauteur;
      System.out.println("surface mur" +longueur * hauteur);
     return longueur * hauteur;
 }   
@@ -259,7 +280,6 @@ private double calculerSurfaceMur(Mur mur) {
    double longueurmur2;
    double longueurmur3;
    double longueurmur4;
-   double hauteurmur;
    double surfacesol;
    double surfaceplafond;
    
@@ -269,13 +289,13 @@ private double calculerSurfaceMur(Mur mur) {
 
 
 
-
 // Fonction pour calculer la surface du sol
 public double calculerSurfaceSol(Sol_Triangle sol) {
     // Calcul des longueurs des côtés
-    double sideA = Math.sqrt(Math.pow(sol.coin2.getX() - sol.coin1.getX(), 2) + Math.pow(sol.coin2.getY() - sol.coin1.getY(), 2));
-    double sideB = Math.sqrt(Math.pow(sol.coin3.getX() - sol.coin2.getX(), 2) + Math.pow(sol.coin3.getY() - sol.coin2.getY(), 2));
-    double sideC = Math.sqrt(Math.pow(sol.coin1.getX() - sol.coin3.getX(), 2) + Math.pow(sol.coin1.getY() - sol.coin3.getY(), 2));
+    double sideA = distancePoints(sol.coin2.getX(),sol.coin2.getY(),sol.coin1.getX(),sol.coin1.getY());
+    double sideB = distancePoints(sol.coin3.getX(),sol.coin3.getY(),sol.coin2.getX(),sol.coin2.getY());
+    double sideC = distancePoints(sol.coin1.getX(),sol.coin1.getY(),sol.coin3.getX(),sol.coin3.getY());
+    
 
     // Calcul du demi-périmètre
     double semiPerimeter = (sideA + sideB + sideC) / 2;
@@ -289,9 +309,9 @@ public double calculerSurfaceSol(Sol_Triangle sol) {
 // Fonction pour calculer la surface du plafond
 public double calculerSurfacePlafond(Plafond_Triangle plafond) {
     // Calcul des longueurs des côtés
-    double sideA = Math.sqrt(Math.pow(plafond.coin2.getX() - plafond.coin1.getX(), 2) + Math.pow(plafond.coin2.getY() - plafond.coin1.getY(), 2));
-    double sideB = Math.sqrt(Math.pow(plafond.coin3.getX() - plafond.coin2.getX(), 2) + Math.pow(plafond.coin3.getY() - plafond.coin2.getY(), 2));
-    double sideC = Math.sqrt(Math.pow(plafond.coin1.getX() - plafond.coin3.getX(), 2) + Math.pow(plafond.coin1.getY() - plafond.coin3.getY(), 2));
+     double sideA = distancePoints(plafond.coin2.getX(),plafond.coin2.getY(),plafond.coin1.getX(),plafond.coin1.getY());
+    double sideB = distancePoints(plafond.coin3.getX(),plafond.coin3.getY(),plafond.coin2.getX(),plafond.coin2.getY());
+    double sideC = distancePoints(plafond.coin1.getX(),plafond.coin1.getY(),plafond.coin3.getX(),plafond.coin3.getY());
 
     // Calcul du demi-périmètre
     double semiPerimeter = (sideA + sideB + sideC) / 2;
@@ -422,7 +442,7 @@ public double calculerSurfacePlafond(Plafond_Triangle plafond) {
         Button saveButton6 = new Button("Enregistrer");
 saveButton6.setOnAction(event -> {
     saveTextField(saveButton6, A2Text, "Nombre de fenetres");
-    liste_murs2.add(MajMur (rectangleComboBox.getValue(), 2, Integer.parseInt(A1Text.getText()),Integer.parseInt(A2Text.getText()) , AComboBox.getValue(), Double.parseDouble(FText.getText()),idNiveau));
+    liste_murs2.add(MajMur (rectangleComboBox.getValue(), 1, Integer.parseInt(A1Text.getText()),Integer.parseInt(A2Text.getText()) , AComboBox.getValue(), Double.parseDouble(FText.getText()),idNiveau));
     
      
 });
@@ -432,14 +452,14 @@ saveButton6.setOnAction(event -> {
         saveButton7.setOnAction(event -> {
              saveTextField(saveButton7, B2Text, "Nombre de fenetres");
 
-             liste_murs2.add(MajMur (rectangleComboBox.getValue(), 4, Integer.parseInt(B1Text.getText()),Integer.parseInt(B2Text.getText()) , BComboBox.getValue(), Double.parseDouble(FText.getText()),idNiveau));
+             liste_murs2.add(MajMur (rectangleComboBox.getValue(),2 , Integer.parseInt(B1Text.getText()),Integer.parseInt(B2Text.getText()) , BComboBox.getValue(), Double.parseDouble(FText.getText()),idNiveau));
         });
 
         Button saveButton8 = new Button("Enregistrer");
         saveButton8.setOnAction(event -> {
              saveTextField(saveButton8, C2Text, "Nombre de fenetres");
-             liste_murs2.add(MajMur (rectangleComboBox.getValue(), 1, Integer.parseInt(C1Text.getText()),Integer.parseInt(C2Text.getText()) , CComboBox.getValue(), Double.parseDouble(FText.getText()), idNiveau));
-        liste_murs2.add(MajMur (rectangleComboBox.getValue(), 3, Integer.parseInt(D1Text.getText()),Integer.parseInt(D2Text.getText()) , DComboBox.getValue(), Double.parseDouble(FText.getText()), idNiveau));
+             liste_murs2.add(MajMur (rectangleComboBox.getValue(), 3, Integer.parseInt(C1Text.getText()),Integer.parseInt(C2Text.getText()) , CComboBox.getValue(), Double.parseDouble(FText.getText()), idNiveau));
+        
             PrintWriter pwmur;
             try { 
             pwmur = new PrintWriter (new FileOutputStream("mur2.txt"));
@@ -554,9 +574,9 @@ try {
     
     PrintWriter pwprix;
 try { 
-    pwprix = new PrintWriter (new FileOutputStream("prix.txt"));
+    pwprix = new PrintWriter (new FileOutputStream("prixTriangle.txt"));
     for (PrixTriangle prix : liste_prixtriangle) {
-        pwprix.println("Prix;" +  prix.idNiveau + ";" + prix.rectangleId + ";" + prix.prixmur1 + ";" + prix.prixmur2 + ";" + ";" + prix.prixmur2 + ";" + prix.prixsol + ";" + prix.prixplafond +";" + prix.prixpiece );
+        pwprix.println("Prix;" +  prix.idNiveau + ";" + prix.rectangleId + ";" + prix.prixmur1 + ";" + prix.prixmur2 + ";" + prix.prixmur3 + ";" + prix.prixsol + ";" + prix.prixplafond +";" + prix.prixpiece );
     }
     pwprix.close();
 } catch (FileNotFoundException e) {
@@ -577,7 +597,7 @@ try {
         // Création des libellés 
         Text label1 = new Text("Revêtements mur AB:");
         Text label2 = new Text("Revêtements mur BC:");
-        Text label3 = new Text("Revêtements mur CAt:");
+        Text label3 = new Text("Revêtements mur CA:");
        
         Text label5 = new Text("Revêtements sol:");
         Text label6 = new Text("Hauteur plafond:");
@@ -592,7 +612,7 @@ try {
         
         root.addRow(5, label5, EComboBox, new Label("Nombre de trémie") , GText  , saveButton10);
         root.addRow(6, label7, FComboBox, new Label("Nombre de trémie") , HText  , saveButton11);
-        root.addRow(8,new Label(" "), new Label(" "),new Label(" "), label6, hauteurPlafondField );
+        root.addRow(8,new Label(" "), new Label(" "),new Label(" "), label6, FText );
         root.addRow(11,new Label(" "), new Label(" "),new Label(" "),new Label(" "),new Label(" "),new Label(" "), new Label(" "),new Label(" "),FinButton);
         
         
