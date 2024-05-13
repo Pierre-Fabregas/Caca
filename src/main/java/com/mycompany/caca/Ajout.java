@@ -3,7 +3,9 @@
 package com.mycompany.caca;
 
 
-
+import java.io.PrintWriter;
+import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.geometry.Pos;
@@ -24,13 +26,18 @@ public class Ajout extends Application {
     private double hauteurSousPlafond; // Attribut pour stocker la hauteur sous plafond
    
 
+  
     public Ajout(App app) {
         this.app = app;
     }
-
+ 
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
+     
+        
+
+            
 
         // HBox pour l'identifiant de niveau
         HBox levelInputBox = new HBox(5);
