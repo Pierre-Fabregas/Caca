@@ -17,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+
 public class Ajout extends Application {
 
     private Stage primaryStage;
@@ -25,7 +26,7 @@ public class Ajout extends Application {
  static int idNiveau = 0; // Variable statique pour conserver le niveau entre les instances
     private double hauteurSousPlafond; // Attribut pour stocker la hauteur sous plafond
    
-
+    
   
     public Ajout(App app) {
         this.app = app;
@@ -97,10 +98,27 @@ public class Ajout extends Application {
     }
 
   
-    
+    private static void resetFiles() {
+        String[] filesToClear = {
+            "prix.txt",
+            "prixTriangle.txt",
+            "piece.txt"
+            // "piece_triangle.txt"
+        };
+
+        // Réinitialisation des fichiers
+        for (String filePath : filesToClear) {
+            FileUtils.clearFile(filePath);
+            System.out.println("Le fichier " + filePath + " a été effacé.");
+        }
+
+        System.out.println("Tous les fichiers spécifiés ont été réinitialisés.");
+    }
     
     
     public static void main(String[] args) {
+        resetFiles();
         launch(args);
+      
     }
 }
