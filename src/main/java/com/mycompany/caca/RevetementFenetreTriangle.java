@@ -8,11 +8,15 @@ package com.mycompany.caca;
  *
  * @author fabre
  */
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.scene.Scene;
@@ -388,13 +392,103 @@ public double calculerSurfacePlafond(Plafond_Triangle plafond) {
 
         return prix;
     }
-          
+    
+    
+    private List<Revetement> liste_revetements = new ArrayList<>();
+    private List<Revetement> revetementsMurs = new ArrayList<>();
+    private List<Revetement> revetementsSol = new ArrayList<>();
+    private List<Revetement> revetementsPlafond = new ArrayList<>();
+    
+    
+    private void lireRevetementsDepuisFichier() {
+        String path = "listeRevetement.txt";
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(";");
+                if (parts.length == 6) {
+                    int idRevetement = Integer.parseInt(parts[0].trim());
+                    String designation = parts[1].trim();
+                    boolean pourMur = Integer.parseInt(parts[2].trim()) == 1;
+                    boolean pourSol = Integer.parseInt(parts[3].trim()) == 1;
+                    boolean pourPlafond = Integer.parseInt(parts[4].trim()) == 1;
+                    double prixUnitaire = Double.parseDouble(parts[5].trim().replace("€", "").replace(",", "."));
+
+                    Revetement revetement = new Revetement(idRevetement, designation, pourMur, pourSol, pourPlafond, prixUnitaire);
+                    liste_revetements.add(revetement);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void trierRevetementsParSurface() {
+        for (Revetement revetement : liste_revetements) {
+            if (revetement.isPourMur()) {
+                revetementsMurs.add(revetement);
+            }
+            if (revetement.isPourSol()) {
+                revetementsSol.add(revetement);
+            }
+            if (revetement.isPourPlafond()) {
+                revetementsPlafond.add(revetement);
+            }
+        }
+    }
+
+    private ComboBox<String> createComboBoxMurS() {
+        ComboBox<String> comboBox = new ComboBox<>();
+        for (Revetement revetement : revetementsMurs) {
+            comboBox.getItems().add(revetement.getDesignation() + " : " + revetement.getPrixUnitaire() + " €");
+        }
+        if (!revetementsMurs.isEmpty()) {
+            comboBox.setValue(revetementsMurs.get(0).getDesignation() + " : " + revetementsMurs.get(0).getPrixUnitaire() + " €");
+        }
+        return comboBox;
+    }
+
+    private ComboBox<String> createComboBoxSolS() {
+        ComboBox<String> comboBox = new ComboBox<>();
+        for (Revetement revetement : revetementsSol) {
+            comboBox.getItems().add(revetement.getDesignation() + " : " + revetement.getPrixUnitaire() + " €");
+        }
+        if (!revetementsSol.isEmpty()) {
+            comboBox.setValue(revetementsSol.get(0).getDesignation() + " : " + revetementsSol.get(0).getPrixUnitaire() + " €");
+        }
+        return comboBox;
+    }
+
+    private ComboBox<String> createComboBoxPlafondS() {
+        ComboBox<String> comboBox = new ComboBox<>();
+        for (Revetement revetement : revetementsPlafond) {
+            comboBox.getItems().add(revetement.getDesignation() + " : " + revetement.getPrixUnitaire() + " €");
+        }
+        if (!revetementsPlafond.isEmpty()) {
+            comboBox.setValue(revetementsPlafond.get(0).getDesignation() + " : " + revetementsPlafond.get(0).getPrixUnitaire() + " €");
+        }
+        return comboBox;
+    }
+    
+    private int PrixRevetement(ComboBox<String> comboBox) {
+    String selectedValue = comboBox.getValue();
+    
+    // Parcours de la liste de revêtements pour trouver le revêtement correspondant à la valeur sélectionnée
+    for (int i = 0; i < liste_revetements.size(); i++) {
+        Revetement revetement = liste_revetements.get(i);
+        String designationPrix = revetement.getDesignation() + " : " + revetement.getPrixUnitaire() + " €";
+        if (Objects.equals(selectedValue, designationPrix)) {
+            // Retourne l'index du revêtement dans la liste (+1 pour obtenir le numéro de la ligne)
+            return i + 1;
+        }
+    }
+    
+    // Si aucun revêtement correspondant n'est trouvé, retourne 0
+    return 0;
+}
      
     private void saveTextField(Button saveButton, TextField textField, String label) {
-    
-        
         System.out.println(label + " : " + textField.getText());
-        
     }
     
     
@@ -403,6 +497,8 @@ public double calculerSurfacePlafond(Plafond_Triangle plafond) {
     @Override
     public void start(Stage primaryStage) {
         appStage = primaryStage;
+         lireRevetementsDepuisFichier();
+        trierRevetementsParSurface();
         ArrayList<Mur> liste_murs2 = new ArrayList<Mur>();
         ArrayList<Plafond_Triangle> liste_plafondstriangle2 = new ArrayList<Plafond_Triangle>();
         ArrayList<Sol_Triangle> liste_solstriangle2 = new ArrayList<Sol_Triangle>();
@@ -412,12 +508,12 @@ public double calculerSurfacePlafond(Plafond_Triangle plafond) {
 
         // Création du menu déroulant
         ComboBox<Integer> rectangleComboBox = createRectangleComboBox();
-        ComboBox<Integer> AComboBox = createComboBoxMur();
-        ComboBox<Integer> BComboBox = createComboBoxMur();
-        ComboBox<Integer> CComboBox = createComboBoxMur();
-        ComboBox<Integer> DComboBox = createComboBoxMur();
-        ComboBox<Integer> EComboBox = createComboBoxSol();
-        ComboBox<Integer> FComboBox = createComboBoxPlafond();
+        ComboBox<String> AComboBox = createComboBoxMurS();
+        ComboBox<String> BComboBox = createComboBoxMurS();
+        ComboBox<String> CComboBox = createComboBoxMurS();
+        ComboBox<String> DComboBox = createComboBoxMurS();
+        ComboBox<String> EComboBox = createComboBoxSolS();
+        ComboBox<String> FComboBox = createComboBoxPlafondS();
         
         
         TextField A1Text = createTextField();
@@ -442,7 +538,7 @@ public double calculerSurfacePlafond(Plafond_Triangle plafond) {
         Button saveButton6 = new Button("Enregistrer");
 saveButton6.setOnAction(event -> {
     saveTextField(saveButton6, A2Text, "Nombre de fenetres");
-    liste_murs2.add(MajMur (rectangleComboBox.getValue(), 1, Integer.parseInt(A1Text.getText()),Integer.parseInt(A2Text.getText()) , AComboBox.getValue(), Double.parseDouble(FText.getText()),idNiveau));
+    liste_murs2.add(MajMur (rectangleComboBox.getValue(), 1, Integer.parseInt(A1Text.getText()),Integer.parseInt(A2Text.getText()) , PrixRevetement(AComboBox), Double.parseDouble(FText.getText()),idNiveau));
     
      
 });
@@ -452,13 +548,13 @@ saveButton6.setOnAction(event -> {
         saveButton7.setOnAction(event -> {
              saveTextField(saveButton7, B2Text, "Nombre de fenetres");
 
-             liste_murs2.add(MajMur (rectangleComboBox.getValue(),2 , Integer.parseInt(B1Text.getText()),Integer.parseInt(B2Text.getText()) , BComboBox.getValue(), Double.parseDouble(FText.getText()),idNiveau));
+             liste_murs2.add(MajMur (rectangleComboBox.getValue(),2 , Integer.parseInt(B1Text.getText()),Integer.parseInt(B2Text.getText()) , PrixRevetement(BComboBox), Double.parseDouble(FText.getText()),idNiveau));
         });
 
         Button saveButton8 = new Button("Enregistrer");
         saveButton8.setOnAction(event -> {
              saveTextField(saveButton8, C2Text, "Nombre de fenetres");
-             liste_murs2.add(MajMur (rectangleComboBox.getValue(), 3, Integer.parseInt(C1Text.getText()),Integer.parseInt(C2Text.getText()) , CComboBox.getValue(), Double.parseDouble(FText.getText()), idNiveau));
+             liste_murs2.add(MajMur (rectangleComboBox.getValue(), 3, Integer.parseInt(C1Text.getText()),Integer.parseInt(C2Text.getText()) , PrixRevetement(CComboBox), Double.parseDouble(FText.getText()), idNiveau));
         
             PrintWriter pwmur;
             try { 
@@ -476,7 +572,7 @@ saveButton6.setOnAction(event -> {
         
         Button saveButton11 = new Button("Enregistrer");
         saveButton11.setOnAction(event -> {
-           liste_plafondstriangle2.add(MajPlafond (rectangleComboBox.getValue(), FComboBox.getValue(), Integer.parseInt(HText.getText()), idNiveau));
+           liste_plafondstriangle2.add(MajPlafond (rectangleComboBox.getValue(), PrixRevetement(FComboBox), Integer.parseInt(HText.getText()), idNiveau));
              PrintWriter pwplafond;
 try { 
     pwplafond = new PrintWriter (new FileOutputStream("plafond_triangle_2.txt"));
@@ -492,7 +588,7 @@ try {
         
          Button saveButton10 = new Button("Enregistrer");
         saveButton10.setOnAction(event -> {
-           liste_solstriangle2.add(MajSol (rectangleComboBox.getValue(), EComboBox.getValue(), Integer.parseInt(GText.getText()), idNiveau));
+           liste_solstriangle2.add(MajSol (rectangleComboBox.getValue(), PrixRevetement(EComboBox), Integer.parseInt(GText.getText()), idNiveau));
              PrintWriter pwsol;
 try { 
     pwsol = new PrintWriter (new FileOutputStream("sol_triangle_2.txt"));
@@ -635,45 +731,6 @@ try {
     textField.setText("0");
     return textField;
 }
-    private ComboBox<Integer> createComboBox() {
-        ComboBox<Integer> comboBox = new ComboBox<>();
-        for (int i = 1; i <= 14; i++) {
-            comboBox.getItems().add(i);
-        }
-        comboBox.setValue(1); // Définition de la valeur par défaut
-        return comboBox;
-    }
-    
-   
-    private ComboBox<Integer> createComboBoxMur() {
-    ComboBox<Integer> comboBox = new ComboBox<>();
-    for (int i = 1; i <= 12; i++) {
-        comboBox.getItems().add(i);
-    }
-    comboBox.getItems().add(19); // Ajout du chiffre 19
-    comboBox.setValue(1); // Définition de la valeur par défaut
-    return comboBox;
-}
-    private ComboBox<Integer> createComboBoxSol() {
-    ComboBox<Integer> comboBox = new ComboBox<>();
-    int[] chiffres = {2, 3, 4, 10, 11, 13, 14, 15, 16, 17, 18, 19};
-    for (int chiffre : chiffres) {
-        comboBox.getItems().add(chiffre);
-    }
-    comboBox.setValue(2); // Définition de la valeur par défaut
-    return comboBox;
-}
-    
-     private ComboBox<Integer> createComboBoxPlafond() {
-    ComboBox<Integer> comboBox = new ComboBox<>();
-    int[] chiffres = {1, 3, 8, 9};
-    for (int chiffre : chiffres) {
-        comboBox.getItems().add(chiffre);
-    }
-    comboBox.setValue(2); // Définition de la valeur par défaut
-    return comboBox;
-}
-
 
     
     
