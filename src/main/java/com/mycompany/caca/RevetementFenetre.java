@@ -544,7 +544,7 @@ saveButton6.setOnAction(event -> {
             liste_murs2.add(MajMur (rectangleComboBox.getValue(), 3, Integer.parseInt(D1Text.getText()),Integer.parseInt(D2Text.getText()) , PrixRevetement(DComboBox), Double.parseDouble(FText.getText()), idNiveau));
             PrintWriter pwmur;
             try { 
-            pwmur = new PrintWriter (new FileOutputStream("mur2.txt"));
+            pwmur = new PrintWriter (new FileOutputStream("mur2.txt", true));
             for (Mur mur : liste_murs2) {
             pwmur.println("Mur;" + mur.idMur + ";" + mur.rectangleId + ";" + mur.numero_mur + ";" + mur.nbrePortes + ";" + mur.nbreFenetres + ";" + mur.coinDebut.idcoin + ";" + mur.coinFin.idcoin + ";" + mur.listeRevetement +";" + mur.hauteur + ";" + mur.idNiveau);
                }
@@ -562,7 +562,7 @@ saveButton6.setOnAction(event -> {
              liste_sols2.add(MajSol (rectangleComboBox.getValue(), PrixRevetement(EComboBox), Integer.parseInt(GText.getText()), idNiveau));
              PrintWriter pwsol;
 try { 
-    pwsol = new PrintWriter (new FileOutputStream("sol2.txt"));
+    pwsol = new PrintWriter (new FileOutputStream("sol2.txt", true));
     for (Sol sol : liste_sols2) {
         pwsol.println("Sol;" +  sol.rectangleId + ";" + sol.coin1.idcoin + ";" + sol.coin2.idcoin + ";" + sol.coin3.idcoin + ";" + sol.coin4.idcoin + ";" + sol.listeRevetement + ";" + sol.tremie + ";" + sol.idNiveau);
     }
@@ -577,7 +577,7 @@ try {
            liste_plafonds2.add(MajPlafond (rectangleComboBox.getValue(), PrixRevetement(FComboBox), Integer.parseInt(HText.getText()), idNiveau));
              PrintWriter pwplafond;
 try { 
-    pwplafond = new PrintWriter (new FileOutputStream("plafond2.txt"));
+    pwplafond = new PrintWriter (new FileOutputStream("plafond2.txt", true));
     for (Plafond plafond : liste_plafonds2) {
         pwplafond.println("Plafond;" +  plafond.rectangleId + ";" + plafond.coin1.idcoin + ";" + plafond.coin2.idcoin + ";" + plafond.coin3.idcoin + ";" + plafond.coin4.idcoin + ";" + plafond.listeRevetement + ";" + plafond.tremie + ";" + plafond.idNiveau);
     }
@@ -643,7 +643,7 @@ FinButton.setOnAction(event -> {
     PrintWriter pwpiece;
 try { 
     // Crée un nouveau fichier ou écrase un fichier existant sans append
-        pwpiece = new PrintWriter (new FileOutputStream("piece.txt"));
+        pwpiece = new PrintWriter (new FileOutputStream("piece.txt", true));
     for (Piece piece : liste_pieces) {
         pwpiece.println("Piece;" +  piece.rectangleId + ";" + piece.mur1 + ";" + piece.mur2 + ";" + piece.mur3 + ";" + piece.mur4 + ";" + piece.sol + ";" + piece.plafond );
     }

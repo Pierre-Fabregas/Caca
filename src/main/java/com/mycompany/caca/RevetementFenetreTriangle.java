@@ -558,9 +558,9 @@ saveButton6.setOnAction(event -> {
         
             PrintWriter pwmur;
             try { 
-            pwmur = new PrintWriter (new FileOutputStream("mur2.txt"));
+            pwmur = new PrintWriter (new FileOutputStream("mur2.txt", true));
             for (Mur mur : liste_murs2) {
-            pwmur.println("Mur;" + mur.idMur + ";" + mur.rectangleId + ";" + mur.numero_mur + ";" + mur.nbrePortes + ";" + mur.nbreFenetres + ";" + mur.coinDebut.idcoin + ";" + mur.coinFin.idcoin + ";" + mur.listeRevetement +";" + mur.hauteur + ";" + mur.idNiveau);
+            pwmur.println("MurT;" + mur.idMur + ";" + mur.rectangleId + ";" + mur.numero_mur + ";" + mur.nbrePortes + ";" + mur.nbreFenetres + ";" + mur.coinDebut.idcoin + ";" + mur.coinFin.idcoin + ";" + mur.listeRevetement +";" + mur.hauteur + ";" + mur.idNiveau);
                }
             pwmur.close();
             } catch (FileNotFoundException e) {
@@ -575,7 +575,7 @@ saveButton6.setOnAction(event -> {
            liste_plafondstriangle2.add(MajPlafond (rectangleComboBox.getValue(), PrixRevetement(FComboBox), Integer.parseInt(HText.getText()), idNiveau));
              PrintWriter pwplafond;
 try { 
-    pwplafond = new PrintWriter (new FileOutputStream("plafond_triangle_2.txt"));
+    pwplafond = new PrintWriter (new FileOutputStream("plafond_triangle_2.txt", true));
     for (Plafond_Triangle plafond : liste_plafondstriangle2) {
         pwplafond.println("Plafond;" +  plafond.rectangleId + ";" + plafond.coin1.idcoin + ";" + plafond.coin2.idcoin + ";" + plafond.coin3.idcoin + ";" + plafond.listeRevetement + ";" + plafond.tremie + ";" + plafond.idNiveau);
     }
@@ -591,7 +591,7 @@ try {
            liste_solstriangle2.add(MajSol (rectangleComboBox.getValue(), PrixRevetement(EComboBox), Integer.parseInt(GText.getText()), idNiveau));
              PrintWriter pwsol;
 try { 
-    pwsol = new PrintWriter (new FileOutputStream("sol_triangle_2.txt"));
+    pwsol = new PrintWriter (new FileOutputStream("sol_triangle_2.txt", true));
     for (Sol_Triangle sol : liste_solstriangle2) {
         pwsol.println("Sol;" +  sol.rectangleId + ";" + sol.coin1.idcoin + ";" + sol.coin2.idcoin + ";" + sol.coin3.idcoin + ";" + sol.listeRevetement + ";" + sol.tremie + ";" + sol.idNiveau);
     }
@@ -646,7 +646,7 @@ FinButton.setOnAction(event -> {
 }
 PrintWriter pwpiece;
 try { 
-    pwpiece = new PrintWriter (new FileOutputStream("piece_triangle.txt"));
+    pwpiece = new PrintWriter (new FileOutputStream("piece_triangle.txt", true));
     for (PieceTriangle piece : liste_piecestriangle) {
         pwpiece.println("Piece;" +  piece.rectangleId + ";" + piece.mur1 + ";" + piece.mur2 + ";" + piece.mur3 + ";" + piece.sol + ";" + piece.plafond );
     }

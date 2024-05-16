@@ -161,7 +161,10 @@ public class App extends Application {
                       Double.parseDouble(cx3.getText()),
                       Double.parseDouble(cy3.getText()),
                       Double.parseDouble(cx4.getText()),
-                      Double.parseDouble(cy4.getText()));
+                      Double.parseDouble(cy4.getText()),
+                      idNiveau
+            );
+            
             
    
    int rectangleId = liste_quadrilateres.size() + 1;
@@ -210,9 +213,9 @@ listeMurs.add(mur4);
         btSave.setOnAction(evt -> {
         PrintWriter pw;
     try {
-        pw = new PrintWriter(new FileOutputStream("rectangles.txt"));
+        pw = new PrintWriter(new FileOutputStream("rectangles.txt", true));
         for (Rec rec : liste_quadrilateres) {
-            pw.println("Rectangle;" + rec.getCx1() + ";" + rec.getCy1() + ";" + rec.getCx2() + ";" + rec.getCy2() + ";" + rec.getCx3()+ ";" + rec.getCy3() + ";" + rec.getCx4() + ";" + rec.getCy4());
+            pw.println("Rectangle;" + rec.getCx1() + ";" + rec.getCy1() + ";" + rec.getCx2() + ";" + rec.getCy2() + ";" + rec.getCx3()+ ";" + rec.getCy3() + ";" + rec.getCx4() + ";" + rec.getCy4()+ ";"+rec.getIdNiveau());
         }
        
         pw.close();
@@ -222,9 +225,9 @@ listeMurs.add(mur4);
     }  
     PrintWriter pwcoin;
     try { 
-        pwcoin= new PrintWriter (new FileOutputStream("coin.txt"));
+        pwcoin= new PrintWriter (new FileOutputStream("coin.txt", true));
         for (Coin coin : liste_coins) {
-            pwcoin.println("Coin;" + coin.idcoin + ";" + coin.rectangleId + ";" + coin.coinNumber + ";" + coin.cx + ";" + coin.cy);
+            pwcoin.println("Coin;" + coin.idcoin + ";" + coin.rectangleId + ";" + coin.coinNumber + ";" + coin.cx + ";" + coin.cy+ ";" + coin.idNiveau);
         }
         pwcoin.close();
         } catch (FileNotFoundException e) {
@@ -232,7 +235,7 @@ listeMurs.add(mur4);
     }  
     PrintWriter pwmur;
 try { 
-    pwmur = new PrintWriter (new FileOutputStream("mur1.txt"));
+    pwmur = new PrintWriter (new FileOutputStream("mur1.txt", true));
     for (Mur mur : liste_murs) {
         pwmur.println("Mur;" + mur.idMur + ";" + mur.rectangleId + ";" + mur.numero_mur + ";" + mur.nbrePortes + ";" + mur.nbreFenetres + ";" + mur.coinDebut.idcoin + ";" + mur.coinFin.idcoin + ";" + mur.listeRevetement +";" + mur.hauteur + ";" + mur.idNiveau);
     }
@@ -242,7 +245,7 @@ try {
 }
     PrintWriter pwplafond;
 try { 
-    pwplafond = new PrintWriter (new FileOutputStream("plafond1.txt"));
+    pwplafond = new PrintWriter (new FileOutputStream("plafond1.txt", true));
     for (Plafond plafond : liste_plafonds) {
         pwplafond.println("Plafond;" +  plafond.rectangleId + ";" + plafond.coin1.idcoin + ";" + plafond.coin2.idcoin + ";" + plafond.coin3.idcoin + ";" + plafond.coin4.idcoin + ";" + plafond.listeRevetement + ";" + plafond.tremie );
     }
@@ -253,7 +256,7 @@ try {
 
 PrintWriter pwsol;
 try { 
-    pwsol = new PrintWriter (new FileOutputStream("sol1.txt"));
+    pwsol = new PrintWriter (new FileOutputStream("sol1.txt", true));
     for (Sol sol : liste_sols) {
         pwsol.println("Sol;" +  sol.rectangleId + ";" + sol.coin1.idcoin + ";" + sol.coin2.idcoin + ";" + sol.coin3.idcoin + ";" + sol.coin4.idcoin + ";" + sol.listeRevetement + ";" + sol.tremie );
     }
@@ -404,7 +407,8 @@ for (int i = 0; i < liste_quadrilateres.size(); i++) {
                     Double.parseDouble(Ccy.getText()),
                     distancePoints(Double.parseDouble(Acx.getText()), Double.parseDouble(Acy.getText()), Double.parseDouble(Bcx.getText()), Double.parseDouble(Bcy.getText())),
                     distancePoints(Double.parseDouble(Bcx.getText()), Double.parseDouble(Bcy.getText()), Double.parseDouble(Ccx.getText()), Double.parseDouble(Ccy.getText())),
-                    distancePoints(Double.parseDouble(Ccx.getText()), Double.parseDouble(Ccy.getText()), Double.parseDouble(Acx.getText()), Double.parseDouble(Acy.getText()))
+                    distancePoints(Double.parseDouble(Ccx.getText()), Double.parseDouble(Ccy.getText()), Double.parseDouble(Acx.getText()), Double.parseDouble(Acy.getText())),
+                    idNiveau
                  );
          
           int TriangleId = listeTriangles.size() + 1;
@@ -447,9 +451,9 @@ liste_murstriangle.add(mur3);
         btSaveT.setOnAction(evt -> {
         PrintWriter pwT;
     try {
-        pwT = new PrintWriter(new FileOutputStream("triangle.txt"));
+        pwT = new PrintWriter(new FileOutputStream("triangle.txt", true));
         for (Triangle triangle : listeTriangles) {   
-            pwT.println("Triangle;" + triangle.getAcx() + ";" + triangle.getAcy() + ";" + triangle.getBcx() + ";" + triangle.getBcy() + ";" + triangle.getCcx() + ";" + triangle.getCcy()+ ";" + distancePoints(Double.parseDouble(Acx.getText()), Double.parseDouble(Acy.getText()), Double.parseDouble(Bcx.getText()), Double.parseDouble(Bcy.getText())) + ";" + distancePoints(Double.parseDouble(Bcx.getText()), Double.parseDouble(Bcy.getText()), Double.parseDouble(Ccx.getText()), Double.parseDouble(Ccy.getText()))+ ";"+distancePoints(Double.parseDouble(Ccx.getText()), Double.parseDouble(Ccy.getText()), Double.parseDouble(Acx.getText()), Double.parseDouble(Acy.getText())));
+            pwT.println("Triangle;" + triangle.getAcx() + ";" + triangle.getAcy() + ";" + triangle.getBcx() + ";" + triangle.getBcy() + ";" + triangle.getCcx() + ";" + triangle.getCcy()+ ";" + distancePoints(Double.parseDouble(Acx.getText()), Double.parseDouble(Acy.getText()), Double.parseDouble(Bcx.getText()), Double.parseDouble(Bcy.getText())) + ";" + distancePoints(Double.parseDouble(Bcx.getText()), Double.parseDouble(Bcy.getText()), Double.parseDouble(Ccx.getText()), Double.parseDouble(Ccy.getText()))+ ";"+distancePoints(Double.parseDouble(Ccx.getText()), Double.parseDouble(Ccy.getText()), Double.parseDouble(Acx.getText()), Double.parseDouble(Acy.getText()))+ ";"+triangle.getIdNiveau());
         }
        
         pwT.close();
@@ -459,9 +463,9 @@ liste_murstriangle.add(mur3);
     }  
     PrintWriter pwcoinT;
     try { 
-        pwcoinT= new PrintWriter (new FileOutputStream("coin.txt"));
+        pwcoinT= new PrintWriter (new FileOutputStream("coinT.txt", true));
         for (Coin coin : liste_coins) {
-            pwcoinT.println("Coin;" + coin.idcoin + ";" + coin.rectangleId + ";" + coin.coinNumber + ";" + coin.cx + ";" + coin.cy);
+            pwcoinT.println("CoinT;" + coin.idcoin + ";" + coin.rectangleId + ";" + coin.coinNumber + ";" + coin.cx + ";" + coin.cy+ ";" + coin.idNiveau);
         }
         pwcoinT.close();
         } catch (FileNotFoundException e) {
@@ -469,9 +473,9 @@ liste_murstriangle.add(mur3);
     }  
     PrintWriter pwmurT;
 try { 
-    pwmurT = new PrintWriter (new FileOutputStream("mur1 triangle.txt"));
+    pwmurT = new PrintWriter (new FileOutputStream("mur1 triangle.txt", true));
     for (Mur mur : liste_murstriangle) {
-        pwmurT.println("Mur;" + mur.idMur + ";" + mur.rectangleId + ";" + mur.numero_mur + ";" + mur.nbrePortes + ";" + mur.nbreFenetres + ";" + mur.coinDebut.idcoin + ";" + mur.coinFin.idcoin + ";" + mur.hauteur);
+        pwmurT.println("MurT;" + mur.idMur + ";" + mur.rectangleId + ";" + mur.numero_mur + ";" + mur.nbrePortes + ";" + mur.nbreFenetres + ";" + mur.coinDebut.idcoin + ";" + mur.coinFin.idcoin + ";" + mur.hauteur);
     }
     pwmurT.close();
 } catch (FileNotFoundException e) {

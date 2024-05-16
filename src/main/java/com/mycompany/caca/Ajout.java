@@ -94,7 +94,19 @@ public class Ajout extends Application {
                 "prix.txt",
                 "prixTriangle.txt",
                 "piece.txt",
-                "piece_triangle.txt"
+                "piece_triangle.txt",
+                "coin.txt",
+                "mur1 triangle.txt",
+                "mur1.txt",
+                "mur2.txt",
+                "plafond.txt",
+                "plafond2.txt",
+                "plafond_triangle_2.txt",
+                "rectangles.txt",
+                "sol1.txt",
+                "sol2.txt",
+                "sol_triangle_2",
+                "triangle.txt"
                 
             };
             FileUtils.deleteFiles(filesToDelete);

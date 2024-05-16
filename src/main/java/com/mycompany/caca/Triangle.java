@@ -19,8 +19,9 @@ public class Triangle {
     private double longAB;
     private double longBC;
     private double longCA;
+    private int idNiveau;
 
-    public Triangle(double Acx, double Acy, double Bcx, double Bcy, double Ccx, double Ccy, double longAB, double longBC, double longCA) {
+    public Triangle(double Acx, double Acy, double Bcx, double Bcy, double Ccx, double Ccy, double longAB, double longBC, double longCA,int idNiveau) {
         this.Acx = Acx;
         this.Acy = Acy;
         this.Bcx = Bcx;
@@ -30,6 +31,15 @@ public class Triangle {
         this.longAB = longAB;
         this.longBC = longBC;
         this.longCA = longCA;
+        this.idNiveau = idNiveau;
+    }
+
+    public int getIdNiveau() {
+        return idNiveau;
+    }
+
+    public void setIdNiveau(int idNiveau) {
+        this.idNiveau = idNiveau;
     }
 
     public void setAcx(double Acx) {

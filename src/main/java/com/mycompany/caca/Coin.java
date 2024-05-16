@@ -35,6 +35,29 @@ public class Coin {
     public double getY() {
         return cy;
     }
+    public double getIdcoin() {
+        return idcoin;
+    }
+
+    public double getRectangleId() {
+        return rectangleId;
+    }
+
+    public double getCoinNumber() {
+        return coinNumber;
+    }
+
+    public double getCx() {
+        return cx;
+    }
+
+    public double getCy() {
+        return cy;
+    }
+
+    public double getIdNiveau() {
+        return idNiveau;
+    }
 
     @Override
     public String toString() {

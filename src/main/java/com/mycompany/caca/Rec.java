@@ -17,8 +17,9 @@ public class Rec {
     private double cy3;
     private double cx4;
     private double cy4;
+    private int idNiveau;
 
-    public Rec(double cx1, double cy1, double cx2, double cy2, double cx3, double cy3, double cx4, double cy4) {
+    public Rec(double cx1, double cy1, double cx2, double cy2, double cx3, double cy3, double cx4, double cy4,int idNiveau) {
         this.cx1 = cx1;
         this.cy1 = cy1;
         this.cx2 = cx2;
@@ -27,6 +28,15 @@ public class Rec {
         this.cy3 = cy3;
         this.cx4 = cx4;
         this.cy4 = cy4;
+        this.idNiveau = idNiveau;
+    }
+
+    public int getIdNiveau() {
+        return idNiveau;
+    }
+
+    public void setIdNiveau(int idNiveau) {
+        this.idNiveau = idNiveau;
     }
 
     public void setCx1(double cx1) {
