@@ -33,7 +33,7 @@ public class App extends Application {
    
     
     private Stage primaryStage;
-    private int NombreRectangle;
+    private int NombreQuadrilatere;
     private int NombreTriangle;
      List<Mur> listeMurs;
      List<Plafond> listePlafonds;
@@ -113,22 +113,32 @@ public class App extends Application {
         pane.setVgap(5.5);
 
         // Place nodes in the pane at positions column,row
-        pane.add(new Label("Longueur:"), 0, 0);
-        TextField lon = new TextField();
-        pane.add(lon, 1, 0);
-        pane.add(new Label("Largeur:"), 0, 1);
-        TextField lar = new TextField();
-        pane.add(lar, 1, 1);
-        pane.add(new Label("Cx:"), 0, 2);
-        TextField cx = new TextField();
-        pane.add(cx, 1, 2);
-        pane.add(new Label("Cy:"), 0, 3);
-        TextField cy = new TextField();
-        pane.add(cy, 1, 3);
-       
+        pane.add(new Label("Coordonnées Coin 1 (x,y):"), 0, 0);
+        TextField cx1 = new TextField();
+        TextField cy1 = new TextField();
+        pane.add(cx1, 1, 0);
+        pane.add(cy1, 2, 0);
+
+        pane.add(new Label("Coordonnées Coin 2 (x,y):"), 0, 1);
+        TextField cx2 = new TextField();
+        TextField cy2 = new TextField();
+        pane.add(cx2, 1, 1);
+        pane.add(cy2, 2, 1);
+
+        pane.add(new Label("Coordonnées Coin 3 (x,y):"), 0, 2);
+        TextField cx3 = new TextField();
+        TextField cy3 = new TextField();
+        pane.add(cx3, 1, 2);
+        pane.add(cy3, 2, 2);
+
+        pane.add(new Label("Coordonnées Coin 4 (x,y):"), 0, 3);
+        TextField cx4 = new TextField();
+        TextField cy4 = new TextField();
+        pane.add(cx4, 1, 3);
+        pane.add(cy4, 2, 3);
 
         // Initialisation de la liste de rectangles
-        ArrayList<Rec> liste_recs = new ArrayList<Rec>();
+        ArrayList<Rec> liste_quadrilateres = new ArrayList<Rec>();
         ArrayList<Rectangle> liste_rectangles = new ArrayList<Rectangle>();
         ArrayList<Coin> liste_coins = new ArrayList<Coin>();
         ArrayList<Mur> liste_murs = new ArrayList<Mur>();
@@ -144,16 +154,21 @@ public class App extends Application {
         pane.add(btAdd, 0, 5);
         // Expression lambda pour construire un EventHandler<ActionEvent>
         btAdd.setOnAction(evt -> {
-            Rec rec = new Rec(Double.parseDouble(lon.getText()),
-                      Double.parseDouble(lar.getText()),
-                      Double.parseDouble(cx.getText()),
-                      Double.parseDouble(cy.getText()));
+            Rec rec = new Rec(Double.parseDouble(cx1.getText()),
+                      Double.parseDouble(cy1.getText()),
+                      Double.parseDouble(cx2.getText()),
+                      Double.parseDouble(cy2.getText()),
+                      Double.parseDouble(cx3.getText()),
+                      Double.parseDouble(cy3.getText()),
+                      Double.parseDouble(cx4.getText()),
+                      Double.parseDouble(cy4.getText()));
+            
    
-   int rectangleId = liste_recs.size() + 1;
-    Coin coin1 = new Coin(liste_murs.size() + 1, rectangleId, 1, Double.parseDouble(cx.getText()), Double.parseDouble(cy.getText()),+ idNiveau);
-    Coin coin2 = new Coin(liste_murs.size() + 2, rectangleId, 2, Double.parseDouble(cx.getText()) + Double.parseDouble(lon.getText()), Double.parseDouble(cy.getText()), idNiveau);
-    Coin coin3 = new Coin(liste_murs.size() + 3, rectangleId, 3, Double.parseDouble(cx.getText()) + Double.parseDouble(lon.getText()), Double.parseDouble(cy.getText()) + Double.parseDouble(lar.getText()),idNiveau);
-    Coin coin4 = new Coin(liste_murs.size() + 4, rectangleId, 4, Double.parseDouble(cx.getText()), Double.parseDouble(cy.getText()) + Double.parseDouble(lar.getText()),idNiveau);
+   int rectangleId = liste_quadrilateres.size() + 1;
+    Coin coin1 = new Coin(liste_murs.size() + 1, rectangleId, 1, Double.parseDouble(cx1.getText()), Double.parseDouble(cy1.getText()),+ idNiveau);
+    Coin coin2 = new Coin(liste_murs.size() + 2, rectangleId, 2, Double.parseDouble(cx2.getText()), Double.parseDouble(cy2.getText()), idNiveau);
+    Coin coin3 = new Coin(liste_murs.size() + 3, rectangleId, 3, Double.parseDouble(cx3.getText()), Double.parseDouble(cy3.getText()),idNiveau);
+    Coin coin4 = new Coin(liste_murs.size() + 4, rectangleId, 4, Double.parseDouble(cx4.getText()), Double.parseDouble(cy4.getText()),idNiveau);
 
     liste_coins.add(coin1);
     liste_coins.add(coin2);
@@ -183,7 +198,7 @@ listeMurs.add(mur3);
 listeMurs.add(mur4);
 
     // Ajout du rectangle à la liste
-    liste_recs.add(rec);
+    liste_quadrilateres.add(rec);
     
 
     
@@ -196,8 +211,8 @@ listeMurs.add(mur4);
         PrintWriter pw;
     try {
         pw = new PrintWriter(new FileOutputStream("rectangles.txt"));
-        for (Rec rec : liste_recs) {
-            pw.println("Rectangle;" + rec.getLon() + ";" + rec.getLar() + ";" + rec.getOri_x() + ";" + rec.getOri_y() + ";" + rec.surface());
+        for (Rec rec : liste_quadrilateres) {
+            pw.println("Rectangle;" + rec.getCx1() + ";" + rec.getCy1() + ";" + rec.getCx2() + ";" + rec.getCy2() + ";" + rec.getCx3()+ ";" + rec.getCy3() + ";" + rec.getCx4() + ";" + rec.getCy4());
         }
        
         pw.close();
@@ -276,7 +291,7 @@ try {
         pane.add(btRev, 3, 5);
         btRev.setOnAction(evt -> {
             // Ouvrir une nouvelle fenêtre pour choisir le revêtement
-            RevetementFenetre revetmentWindow = new RevetementFenetre(liste_recs.size(), listeMurs, listePlafonds, listeSols,idNiveau,hauteurSousPlafond);
+            RevetementFenetre revetmentWindow = new RevetementFenetre(liste_quadrilateres.size(), listeMurs, listePlafonds, listeSols,idNiveau,hauteurSousPlafond);
 
             revetmentWindow.start(new Stage());
         });
@@ -287,28 +302,42 @@ try {
         pane.add(btShow, 10, 5);
         btShow.setOnAction(evt -> {
             // Dessiner les rectangles ici
-            paneH.getChildren().clear(); // Effacer les anciens rectangles
-            for (int i = 0; i < liste_recs.size(); i++) {
-                Text text = new Text("Rec " + (i + 1)); // Ajout du numéro
-                StackPane stack = new StackPane();
-                Rectangle rectangle = new Rectangle();
-                rectangle.setX(liste_recs.get(i).getOri_x() );
-                rectangle.setY(liste_recs.get(i).getOri_y() );
-                rectangle.setWidth(liste_recs.get(i).getLar() *10);
-                rectangle.setHeight(liste_recs.get(i).getLon() *10);
-                rectangle.setStroke(COLORS[currentColorIndex]);
-                rectangle.setFill(Color.WHITE);
+            paneH.getChildren().clear(); // Effacer les anciens quadrilatères
 
-                stack.setAlignment(Pos.CENTER);
-                stack.getChildren().addAll(rectangle, text);
-                stack.setLayoutX(liste_recs.get(i).getOri_x()*10);
-                stack.setLayoutY(liste_recs.get(i).getOri_y()*10);
-                
-// Mettez à jour l'indice de couleur pour le prochain rectangle
+for (int i = 0; i < liste_quadrilateres.size(); i++) {
+    Text text = new Text("Quadrilatère " + (i + 1)); // Ajout du numéro
+    StackPane stack = new StackPane();
+    Polygon quadrilatere = new Polygon();
+    
+    // Ajout des points du quadrilatère
+    quadrilatere.getPoints().addAll(
+        liste_quadrilateres.get(i).getCx1() * 10, liste_quadrilateres.get(i).getCy1() * 10,
+        liste_quadrilateres.get(i).getCx2() * 10, liste_quadrilateres.get(i).getCy2() * 10,
+        liste_quadrilateres.get(i).getCx3() * 10, liste_quadrilateres.get(i).getCy3() * 10,
+        liste_quadrilateres.get(i).getCx4() * 10, liste_quadrilateres.get(i).getCy4() * 10
+    );
+    
+    quadrilatere.setStroke(COLORS[currentColorIndex]);
+    quadrilatere.setFill(Color.WHITE);
+
+    stack.setAlignment(Pos.CENTER);
+    stack.getChildren().addAll(quadrilatere, text);
+    stack.setLayoutX(Math.min(liste_quadrilateres.get(i).getCx1(), 
+                               Math.min(liste_quadrilateres.get(i).getCx2(), 
+                                        Math.min(liste_quadrilateres.get(i).getCx3(), 
+                                                 liste_quadrilateres.get(i).getCx4()))) * 10);
+    stack.setLayoutY(Math.min(liste_quadrilateres.get(i).getCy1(), 
+                               Math.min(liste_quadrilateres.get(i).getCy2(), 
+                                        Math.min(liste_quadrilateres.get(i).getCy3(), 
+                                                 liste_quadrilateres.get(i).getCy4()))) * 10);
+    
+    // Mettez à jour l'indice de couleur pour le prochain quadrilatère
     currentColorIndex = (currentColorIndex + 1) % COLORS.length;
 
-                paneH.getChildren().addAll(stack);
-                NombreRectangle=i+1;
+    paneH.getChildren().addAll(stack);
+    NombreQuadrilatere = i + 1;
+
+
             }
             for (int i = 0; i < listeTriangles.size(); i++) {
             Triangle triangle = listeTriangles.get(i);
