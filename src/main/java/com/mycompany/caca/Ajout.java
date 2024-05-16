@@ -3,6 +3,7 @@
 package com.mycompany.caca;
 
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
@@ -25,12 +26,14 @@ public class Ajout extends Application {
     private Button addButton;
  static int idNiveau = 0; // Variable statique pour conserver le niveau entre les instances
     private double hauteurSousPlafond; // Attribut pour stocker la hauteur sous plafond
-   
+   private static boolean isFirstTime = true;
     
   
     public Ajout(App app) {
         this.app = app;
     }
+    
+    
  
     @Override
     public void start(Stage primaryStage) {
@@ -85,39 +88,43 @@ public class Ajout extends Application {
     Stage devisStage = new Stage(); // Création d'une nouvelle fenêtre
     devisBatiment.start(devisStage); // Affichage de la fenêtre du devis
 });
+     Button Delete = new Button("Delete");
+        Delete.setOnAction(event -> {
+       String[] filesToDelete = {
+                "prix.txt",
+                "prixTriangle.txt",
+                "piece.txt",
+                "piece_triangle.txt"
+                
+            };
+            FileUtils.deleteFiles(filesToDelete);
+            
+            
+    
+});
         
         // VBox pour aligner tous les éléments verticalement et centrer
         VBox root = new VBox(10);
         root.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(levelInputBox, heightInputBox, validateButton, addButton, DevisBatimentButton );
+        root.getChildren().addAll(levelInputBox, heightInputBox, validateButton, addButton, DevisBatimentButton, Delete );
 
         Scene scene = new Scene(root, 400, 400); // Ajuster la taille pour accueillir les nouveaux champs
         primaryStage.setTitle("Gestion des niveaux et pièces");
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-  
-    private static void resetFiles() {
-        String[] filesToClear = {
-            "prix.txt",
-            "prixTriangle.txt",
-            "piece.txt"
-            // "piece_triangle.txt"
-        };
-
-        // Réinitialisation des fichiers
-        for (String filePath : filesToClear) {
-            ResetFile.clearFile(filePath);
-            System.out.println("Le fichier " + filePath + " a été effacé.");
+        
+        
+        if (isFirstTime) {
+            Delete.fire(); // Simuler un clic sur le bouton Delete
+            isFirstTime = false; // Mettre à jour la variable pour indiquer que la première ouverture a eu lieu
         }
-
-        System.out.println("Tous les fichiers spécifiés ont été réinitialisés.");
-    }
+      }  
     
+
+ 
     
     public static void main(String[] args) {
-        resetFiles();
+        
         launch(args);
       
     }
