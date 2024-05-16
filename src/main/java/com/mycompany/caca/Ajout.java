@@ -108,7 +108,7 @@ public class Ajout extends Application {
 
         // Réinitialisation des fichiers
         for (String filePath : filesToClear) {
-            FileUtils.clearFile(filePath);
+            ResetFile.clearFile(filePath);
             System.out.println("Le fichier " + filePath + " a été effacé.");
         }
 

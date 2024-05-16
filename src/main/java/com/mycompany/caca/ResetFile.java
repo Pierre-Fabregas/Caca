@@ -5,7 +5,7 @@ package com.mycompany.caca;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class FileUtils {
+public class ResetFile {
     // Méthode pour effacer le contenu d'un fichier
     public static void clearFile(String filePath) {
         FileWriter fileWriter = null;
