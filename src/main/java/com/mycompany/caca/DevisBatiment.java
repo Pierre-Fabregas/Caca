@@ -114,7 +114,7 @@ public class DevisBatiment extends Application {
             imageButton.setOnAction(e -> dessinerNiveau(primaryStage, niveau) );
             
         
-            HBox hbox = new HBox(10, label, detailButton,imageButton);  // Utilisation de HBox pour aligner le label et le bouton
+            HBox hbox = new HBox(10, label, detailButton,imageButton); 
             vbox.getChildren().add(hbox);
         });
 
@@ -128,41 +128,34 @@ public class DevisBatiment extends Application {
         primaryStage.show();
     }
     
-    private Pane paneA = new Pane();
+    
     private void dessinerNiveau(Stage primaryStage, double niveau) {
   
         List<Rec> quadrilateres = lireRectangles("rectangles.txt", niveau);
         List<Triangle> triangles = lireTriangles("triangle.txt", niveau);
 
         
-        // Créer une nouvelle fenêtre
-    Stage stage = new Stage();
     
-    Scene scene = new Scene(paneA,800, 600);
-    
-    paneA.getChildren().clear();
-    
+        Stage stage = new Stage();
+        Pane paneA = new Pane(); 
+        Scene scene = new Scene(paneA, 800, 600);
     
     
         for (Rec quadrilatere : quadrilateres) {
-            dessinerQuadrilateres(quadrilateres);
+            dessinerQuadrilateres(quadrilateres,paneA);
         }
 
         for (Triangle triangle : triangles) {
-            dessinerTriangles(triangles);
+            dessinerTriangles(triangles,paneA);
         }
         
-        Button Fermer = new Button("Fermer");
-    HBox hbox = new HBox(Fermer);
-    hbox.setAlignment(Pos.BOTTOM_RIGHT);
-    hbox.setPadding(new Insets(10));
-    hbox.setSpacing(10);
-    
-   
-   Fermer.setOnAction(e -> stage.close());
+        Button closeButton = new Button("Fermer");
+        closeButton.setOnAction(e -> stage.close());
+        closeButton.setLayoutX(700);
+        closeButton.setLayoutY(550);
+        paneA.getChildren().add(closeButton);
 
-   
-    paneA.getChildren().add(hbox);
+
         
         stage.setScene(scene);
     stage.show();
@@ -241,7 +234,7 @@ public class DevisBatiment extends Application {
     }
     
     
-    private void dessinerQuadrilateres(List<Rec> quadrilateres) {
+    private void dessinerQuadrilateres(List<Rec> quadrilateres,Pane pane) {
         for (int i = 0; i < quadrilateres.size(); i++) {
             Rec quadrilatere = quadrilateres.get(i);
 
@@ -273,14 +266,14 @@ public class DevisBatiment extends Application {
             
            
 
-            paneA.getChildren().addAll(stack);
+            pane.getChildren().addAll(stack);
             NombreQuadrilatere = i + 1;
             currentColorIndex = (currentColorIndex + 1) % COLORS.length;
         }
     }
     
     
-   private void dessinerTriangles(List<Triangle> triangles) {
+   private void dessinerTriangles(List<Triangle> triangles,Pane pane) {
 
     for (int i = 0; i < triangles.size(); i++) {
             Triangle triangle = triangles.get(i);
@@ -303,7 +296,7 @@ public class DevisBatiment extends Application {
             stackPane.setLayoutX(Math.min(Ax, Math.min(Bx, Cx)));
             stackPane.setLayoutY(Math.min(Ay, Math.min(By, Cy)));
 
-            paneA.getChildren().add(stackPane);
+            pane.getChildren().add(stackPane);
 
             // Mettre à jour l'indice de couleur pour le prochain triangle
             currentColorIndex = (currentColorIndex + 1) % COLORS.length;
