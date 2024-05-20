@@ -587,12 +587,7 @@ try {
 }
             
         });
-        
-Button saveButtonPiece = new Button("Enregistrer Piece");
-       saveButtonPiece.setOnAction(event -> {        
-
-
-});           
+       
         
         
        Button FinButton = new Button("Fin");
@@ -699,7 +694,7 @@ try {
         
 
                GridPane root = new GridPane();
-        root.addRow(0, new Label("Pièce:"), rectangleComboBox, saveButtonPiece);
+        root.addRow(0, new Label("Pièce:"), rectangleComboBox);
         root.addRow(1, label1, AComboBox, new Label("Nombre de portes:"), A1Text , new Label("Nombre de fenêtres:"), A2Text , saveButton6);
         root.addRow(2, label2, BComboBox, new Label("Nombre de portes:"), B1Text , new Label("Nombre de fenêtres:"), B2Text , saveButton7);
         root.addRow(3, label3, CComboBox, new Label("Nombre de portes:"), C1Text , new Label("Nombre de fenêtres:"), C2Text , saveButton8);

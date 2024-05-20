@@ -4,7 +4,7 @@
 
 
 import static com.mycompany.caca.App.distancePoints;
-   import java.io.BufferedReader;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -31,6 +31,7 @@ import javafx.scene.text.FontWeight;
 import static javafx.application.Application.launch;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -92,17 +93,143 @@ public class DevisBatiment extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+   
+public void start(Stage primaryStage) {
+    // Créer un ScrollPane pour contenir le contenu
+    ScrollPane scrollPane = new ScrollPane();
+    
+    // Configurez le ScrollPane pour afficher la barre de défilement verticale
+    scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+    
+    // Créez une VBox pour contenir tous les éléments de l'interface
+    VBox vbox = new VBox();
+    vbox.setPadding(new Insets(10));
+    vbox.setSpacing(8);
+    
+    // Ajoutez le contenu à la VBox
+    lireFichierDevisTriangle();
+    lireFichierDevis();
+
+    // Parcourir chaque niveau et afficher les informations
+    prixParNiveau.forEach((niveau, prix) -> {
+        int niveauInt = (int) Math.round(niveau);
+        Label niveauLabel = new Label("Niveau " + niveauInt + " : " + prix + " €");
+        niveauLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        Button imageButton = new Button("Image");
+        imageButton.setOnAction(e -> dessinerNiveau(primaryStage, niveauInt));
+
+        // Créer un HBox pour contenir le label du niveau et le bouton image
+        HBox niveauBox = new HBox(10, niveauLabel, imageButton);
+        vbox.getChildren().add(niveauBox);
+
+        List<Piece> detailsPieces = detailsParNiveau.get(niveau);
+        if (detailsPieces != null) {
+            for (Piece piece : detailsPieces) {
+                Label pieceLabel = new Label("\tPièce " + piece.nom + " : " + piece.prix + " €");
+                VBox pieceDetailsBox = new VBox(5, 
+                    pieceLabel,
+                    new Label("\t\tMur 1 : " + piece.mur1 + " €"),
+                    new Label("\t\tMur 2 : " + piece.mur2 + " €"),
+                    new Label("\t\tMur 3 : " + piece.mur3 + " €"));
+
+                if (piece.mur4 > 0) {
+                    pieceDetailsBox.getChildren().add(new Label("\t\tMur 4 : " + piece.mur4 + " €"));
+                }
+
+                pieceDetailsBox.getChildren().addAll(
+                    new Label("\t\tPlafond : " + piece.plafond + " €"),
+                    new Label("\t\tSol : " + piece.sol + " €")
+                );
+
+                vbox.getChildren().add(pieceDetailsBox);
+            }
+        }
+    });
+
+    Label totalLabel = new Label("Le Prix Total est : " + prixTotal + " €");
+    totalLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+    vbox.getChildren().add(totalLabel);
+    
+    // Définir la VBox comme contenu du ScrollPane
+    scrollPane.setContent(vbox);
+
+    // Créer une scène avec le ScrollPane comme contenu principal
+    Scene scene = new Scene(scrollPane, 800, 800);
+    
+    // Configurez la scène et affichez-la sur la fenêtre principale
+    primaryStage.setTitle("Devis du Bâtiment");
+    primaryStage.setScene(scene);
+    primaryStage.show();
+}
+
+
+private void lireFichierDevis() {
+    String path = "prix.txt"; // Chemin relatif du fichier, adapté à votre structure de projet
+    try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(";");
+            if (parts.length >= 10) {
+                idNiveau = Double.parseDouble(parts[1]);
+                idpiece = Double.parseDouble(parts[2]);
+                prixmur1 = Double.parseDouble(parts[3]);
+                prixmur2 = Double.parseDouble(parts[4]);
+                prixmur3 = Double.parseDouble(parts[5]);
+                prixmur4 = Double.parseDouble(parts[6]);
+                prixSol = Double.parseDouble(parts[7]);
+                prixPlafond = Double.parseDouble(parts[8]);
+                prixPiece = Double.parseDouble(parts[9]);
+
+                prixParNiveau.merge(idNiveau, prixPiece, Double::sum);
+
+                // Stocker les détails des pièces
+                detailsParNiveau.computeIfAbsent(idNiveau, k -> new ArrayList<>())
+                                .add(new Piece("Pièce " + idpiece, prixPiece, prixmur1, prixmur2, prixmur3, prixmur4, prixSol, prixPlafond));
+            }
+        }
+        prixTotal = prixParNiveau.values().stream().mapToDouble(Double::doubleValue).sum();
+    } catch (IOException e) {
+        e.printStackTrace();
+        vbox.getChildren().add(new Label("Erreur lors de la lecture du fichier."));
+    }
+}
+
+private void lireFichierDevisTriangle() {
+    String path = "prixTriangle.txt"; // Chemin relatif du fichier pour les pièces triangulaires
+    try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(";");
+            if (parts.length >= 8) {
+                idNiveauTR = Double.parseDouble(parts[1]);
+                idpieceTR = Double.parseDouble(parts[2]);
+                prixmur1TR = Double.parseDouble(parts[3]);
+                prixmur2TR = Double.parseDouble(parts[4]);
+                prixmur3TR = Double.parseDouble(parts[5]);
+                prixSolTR = Double.parseDouble(parts[6]);
+                prixPlafondTR = Double.parseDouble(parts[7]);
+                prixPieceTR = Double.parseDouble(parts[8]);
+
+                prixParNiveau.merge(idNiveauTR, prixPieceTR, Double::sum);
+
+                // Stocker les détails des pièces
+                detailsParNiveau.computeIfAbsent(idNiveauTR, k -> new ArrayList<>())
+                                .add(new Piece("PièceT " + idpieceTR, prixPieceTR, prixmur1TR, prixmur2TR, prixmur3TR, 0, prixSolTR, prixPlafondTR));
+            }
+        }
+        prixTotal = prixParNiveau.values().stream().mapToDouble(Double::doubleValue).sum();
+    } catch (IOException e) {
+        e.printStackTrace();
+        vbox.getChildren().add(new Label("Erreur lors de la lecture du fichier."));
+    }
+}
+
+/*    public void start(Stage primaryStage) {
         vbox.setPadding(new Insets(10));
         vbox.setSpacing(8);
         lireFichierDevisTriangle();
         lireFichierDevis();
-         
-    lireFichierDevisTriangle();
-    lireFichierDevis();
- /*   lireFichierMur();
-    lireFichierCoin();
-    lireFichierCoinT();*/
+   
         
         
         prixParNiveau.forEach((niveau, prix) -> {
@@ -127,6 +254,105 @@ public class DevisBatiment extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+    
+    private void lireFichierDevis() {
+        String path = "prix.txt"; // Chemin relatif du fichier, adapté à votre structure de projet
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(";");
+                if (parts.length >= 10) {
+                    idNiveau = Double.parseDouble(parts[1]);
+                    idpiece = Double.parseDouble(parts[2]);
+                    prixmur1 = Double.parseDouble(parts[3]);
+                    prixmur2 = Double.parseDouble(parts[4]);
+                    prixmur3 = Double.parseDouble(parts[5]);
+                    prixmur4 = Double.parseDouble(parts[6]);
+                    prixSol = Double.parseDouble(parts[7]);
+                    prixPlafond = Double.parseDouble(parts[8]);
+                    prixPiece = Double.parseDouble(parts[9]);
+
+                    prixParNiveau.merge(idNiveau, prixPiece, Double::sum);
+
+                    // Stocker les détails des pièces
+                    detailsParNiveau.computeIfAbsent(idNiveau, k -> new ArrayList<>())
+                                    .add(new Piece("Pièce " + idpiece, prixPiece, prixmur1, prixmur2, prixmur3, prixmur4, prixSol, prixPlafond));
+                }
+            }
+            prixTotal = prixParNiveau.values().stream().mapToDouble(Double::doubleValue).sum();
+        } catch (IOException e) {
+            e.printStackTrace();
+            vbox.getChildren().add(new Label("Erreur lors de la lecture du fichier."));
+        }
+    }
+
+     private void lireFichierDevisTriangle() {
+        String path = "prixTriangle.txt"; // Chemin relatif du fichier pour les pièces triangulaires
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(";");
+                if (parts.length >= 8) {
+                    idNiveauTR = Double.parseDouble(parts[1]);
+                    idpieceTR = Double.parseDouble(parts[2]);
+                    prixmur1TR = Double.parseDouble(parts[3]);
+                    prixmur2TR = Double.parseDouble(parts[4]);
+                    prixmur3TR = Double.parseDouble(parts[5]);
+                    prixSolTR = Double.parseDouble(parts[6]);
+                    prixPlafondTR = Double.parseDouble(parts[7]);
+                    prixPieceTR = Double.parseDouble(parts[8]);
+
+                    prixParNiveau.merge(idNiveauTR, prixPieceTR, Double::sum);
+
+                    // Stocker les détails des pièces
+                    detailsParNiveau.computeIfAbsent(idNiveauTR, k -> new ArrayList<>())
+                                    .add(new Piece("Pièce " + idpieceTR, prixPieceTR, prixmur1TR, prixmur2TR, prixmur3TR, 0, prixSolTR, prixPlafondTR));
+                }
+            }
+            prixTotal = prixParNiveau.values().stream().mapToDouble(Double::doubleValue).sum();
+        } catch (IOException e) {
+            e.printStackTrace();
+            vbox.getChildren().add(new Label("Erreur lors de la lecture du fichier."));
+        }
+    }
+     
+     private void afficherDetails(Double niveau) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Détails du Niveau " + niveau.intValue());
+        alert.setHeaderText(null);
+
+        VBox dialogVbox = new VBox(10);
+        List<Piece> detailsPieces = detailsParNiveau.get(niveau);
+        if (detailsPieces != null) {
+            for (Piece piece : detailsPieces) {
+                Label pieceLabel = new Label(piece.nom + " : " + piece.prix + " €");
+                Button detailButton = new Button("Détails");
+                detailButton.setOnAction(e -> afficherDetailsPiece(piece));
+
+                HBox hbox = new HBox(10, pieceLabel, detailButton);
+                dialogVbox.getChildren().add(hbox);
+            }
+        }
+
+        alert.getDialogPane().setContent(dialogVbox);
+        alert.showAndWait();
+    }
+
+    private void afficherDetailsPiece(Piece piece) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Détails de la " + piece.nom);
+        alert.setHeaderText(null);
+
+        String details = "Prix du mur 1: " + piece.mur1 + " €\n" +
+                         "Prix du mur 2: " + piece.mur2 + " €\n" +
+                         "Prix du mur 3: " + piece.mur3 + " €\n" +
+                         "Prix du mur 4: " + piece.mur4 + " €\n" +
+                         "Prix du sol: " + piece.sol + " €\n" +
+                         "Prix du plafond: " + piece.plafond + " €\n";
+
+        alert.setContentText(details);
+        alert.showAndWait();
+    }*/
     
     
     private void dessinerNiveau(Stage primaryStage, double niveau) {
@@ -304,104 +530,9 @@ public class DevisBatiment extends Application {
 }
     
     
-     private void lireFichierDevis() {
-        String path = "prix.txt"; // Chemin relatif du fichier, adapté à votre structure de projet
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(";");
-                if (parts.length >= 10) {
-                    idNiveau = Double.parseDouble(parts[1]);
-                    idpiece = Double.parseDouble(parts[2]);
-                    prixmur1 = Double.parseDouble(parts[3]);
-                    prixmur2 = Double.parseDouble(parts[4]);
-                    prixmur3 = Double.parseDouble(parts[5]);
-                    prixmur4 = Double.parseDouble(parts[6]);
-                    prixSol = Double.parseDouble(parts[7]);
-                    prixPlafond = Double.parseDouble(parts[8]);
-                    prixPiece = Double.parseDouble(parts[9]);
+     
 
-                    prixParNiveau.merge(idNiveau, prixPiece, Double::sum);
-
-                    // Stocker les détails des pièces
-                    detailsParNiveau.computeIfAbsent(idNiveau, k -> new ArrayList<>())
-                                    .add(new Piece("Pièce " + idpiece, prixPiece, prixmur1, prixmur2, prixmur3, prixmur4, prixSol, prixPlafond));
-                }
-            }
-            prixTotal = prixParNiveau.values().stream().mapToDouble(Double::doubleValue).sum();
-        } catch (IOException e) {
-            e.printStackTrace();
-            vbox.getChildren().add(new Label("Erreur lors de la lecture du fichier."));
-        }
-    }
-
-     private void lireFichierDevisTriangle() {
-        String path = "prixTriangle.txt"; // Chemin relatif du fichier pour les pièces triangulaires
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(";");
-                if (parts.length >= 8) {
-                    idNiveauTR = Double.parseDouble(parts[1]);
-                    idpieceTR = Double.parseDouble(parts[2]);
-                    prixmur1TR = Double.parseDouble(parts[3]);
-                    prixmur2TR = Double.parseDouble(parts[4]);
-                    prixmur3TR = Double.parseDouble(parts[5]);
-                    prixSolTR = Double.parseDouble(parts[6]);
-                    prixPlafondTR = Double.parseDouble(parts[7]);
-                    prixPieceTR = Double.parseDouble(parts[8]);
-
-                    prixParNiveau.merge(idNiveauTR, prixPieceTR, Double::sum);
-
-                    // Stocker les détails des pièces
-                    detailsParNiveau.computeIfAbsent(idNiveauTR, k -> new ArrayList<>())
-                                    .add(new Piece("Pièce " + idpieceTR, prixPieceTR, prixmur1TR, prixmur2TR, prixmur3TR, 0, prixSolTR, prixPlafondTR));
-                }
-            }
-            prixTotal = prixParNiveau.values().stream().mapToDouble(Double::doubleValue).sum();
-        } catch (IOException e) {
-            e.printStackTrace();
-            vbox.getChildren().add(new Label("Erreur lors de la lecture du fichier."));
-        }
-    }
-
-    private void afficherDetails(Double niveau) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Détails du Niveau " + niveau.intValue());
-        alert.setHeaderText(null);
-
-        VBox dialogVbox = new VBox(10);
-        List<Piece> detailsPieces = detailsParNiveau.get(niveau);
-        if (detailsPieces != null) {
-            for (Piece piece : detailsPieces) {
-                Label pieceLabel = new Label(piece.nom + " : " + piece.prix + " €");
-                Button detailButton = new Button("Détails");
-                detailButton.setOnAction(e -> afficherDetailsPiece(piece));
-
-                HBox hbox = new HBox(10, pieceLabel, detailButton);
-                dialogVbox.getChildren().add(hbox);
-            }
-        }
-
-        alert.getDialogPane().setContent(dialogVbox);
-        alert.showAndWait();
-    }
-
-    private void afficherDetailsPiece(Piece piece) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Détails de la " + piece.nom);
-        alert.setHeaderText(null);
-
-        String details = "Prix du mur 1: " + piece.mur1 + " €\n" +
-                         "Prix du mur 2: " + piece.mur2 + " €\n" +
-                         "Prix du mur 3: " + piece.mur3 + " €\n" +
-                         "Prix du mur 4: " + piece.mur4 + " €\n" +
-                         "Prix du sol: " + piece.sol + " €\n" +
-                         "Prix du plafond: " + piece.plafond + " €\n";
-
-        alert.setContentText(details);
-        alert.showAndWait();
-    }
+    
 
     public static void main(String[] args) {
         launch(args);
