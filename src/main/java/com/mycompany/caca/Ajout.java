@@ -99,7 +99,7 @@ public class Ajout extends Application {
                 "mur1 triangle.txt",
                 "mur1.txt",
                 "mur2.txt",
-                "plafond.txt",
+                "plafond1.txt",
                 "plafond2.txt",
                 "plafond_triangle_2.txt",
                 "rectangles.txt",
