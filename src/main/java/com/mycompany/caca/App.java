@@ -583,7 +583,8 @@ public class App extends Application {
      Button btFin = new Button("Accueil");
      Button btRev = new Button("Choisir revêtement");
      Button btRevT = new Button("Choisir revêtement triangle");
-     ComboBox<String> forme = new ComboBox<>();
+     ComboBox<String> forme = ComboboxRecTri();
+     
         
      private static final Color[] COLORS = {
      Color.RED, Color.GREEN, Color.BLUE, Color.ORANGE, Color.BLUE, Color.PURPLE, Color.CYAN,
@@ -623,8 +624,8 @@ public class App extends Application {
         pane.setVgap(5.5);
 
         
-        forme.getItems().addAll("Rectangle", "Triangle");
-        forme.setValue("Rectangle");
+        
+        
         pane.add(forme, 0, 0);
         Forme_choisie();
         forme.setOnAction(evt -> {Forme_choisie();});
@@ -1107,6 +1108,13 @@ try {
 }
      }
      
+     private ComboBox<String> ComboboxRecTri() {
+        ComboBox<String> combobox = new ComboBox<>();
+         combobox.getItems().addAll("Rectangle", "Triangle");
+         combobox.setValue("Rectangle");
+        
+        return combobox;
+    }
      
      
     public static void main(String[] args) {
