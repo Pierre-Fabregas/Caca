@@ -3,8 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.caca;
-/*
-import java.util.List;
+
+/*import java.util.List;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
@@ -613,7 +613,9 @@ public class App extends Application {
         this.hauteurSousPlafond = hauteurSousPlafond;
        
         
-
+        paneH.getChildren().clear();
+        liste_quadrilateres.clear();
+        listeTriangles.clear();
         listeMurs = new ArrayList<>();
         listePlafonds = new ArrayList<>();
         listeSols = new ArrayList<>();
