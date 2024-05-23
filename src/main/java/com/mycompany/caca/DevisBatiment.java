@@ -5,9 +5,12 @@
 
 import static com.mycompany.caca.App.distancePoints;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -110,6 +113,10 @@ public void start(Stage primaryStage) {
     lireFichierDevisTriangle();
     lireFichierDevis();
 
+       Button saveButton = new Button("Enregistrer les informations");
+    saveButton.setOnAction(e -> Sauvegardedesinformations());
+    vbox.getChildren().add(saveButton);
+    
     // Parcourir chaque niveau et afficher les informations
     prixParNiveau.forEach((niveau, prix) -> {
         int niveauInt = (int) Math.round(niveau);
@@ -163,6 +170,45 @@ public void start(Stage primaryStage) {
 }
 
 
+    private void Sauvegardedesinformations() {
+        String filePath = "informations_devis.txt";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            prixParNiveau.forEach((niveau, prix) -> {
+                try {
+                    int niveauInt = (int) Math.round(niveau);
+                    writer.write("Niveau " + niveauInt + " : " + prix + " €\n");
+                    
+                    List<Piece> detailsPieces = detailsParNiveau.get(niveau);
+                    if (detailsPieces != null) {
+                        for (Piece piece : detailsPieces) {
+                            writer.write("\tPièce " + piece.nom + " : " + piece.prix + " €\n");
+                            writer.write("\t\tMur 1 : " + piece.mur1 + " €\n");
+                            writer.write("\t\tMur 2 : " + piece.mur2 + " €\n");
+                            writer.write("\t\tMur 3 : " + piece.mur3 + " €\n");
+
+                            if (piece.mur4 > 0) {
+                                writer.write("\t\tMur 4 : " + piece.mur4 + " €\n");
+                            }
+
+                            writer.write("\t\tPlafond : " + piece.plafond + " €\n");
+                            writer.write("\t\tSol : " + piece.sol + " €\n");
+                        }
+                    }
+                        // Afficher le chemin absolu du fichier dans la console
+        System.out.println("Informations enregistrées dans : " + new File(filePath).getAbsolutePath());
+        
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            writer.write("Le Prix Total est : " + prixTotal + " €\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+            vbox.getChildren().add(new Label("Erreur lors de l'enregistrement des informations dans le fichier."));
+        }
+    }
+    
+    
 private void lireFichierDevis() {
     String path = "prix.txt"; // Chemin relatif du fichier, adapté à votre structure de projet
     try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
