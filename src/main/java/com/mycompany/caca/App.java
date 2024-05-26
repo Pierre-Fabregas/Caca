@@ -680,7 +680,29 @@ public class App extends Application {
          CreerPieceRectangulaire();
          sauvegarderRectangles(); 
          dessinerPiece();
-
+         PrintWriter pwobjet;
+    try { 
+        pwobjet= new PrintWriter (new FileOutputStream("infos_objets.txt", true));
+        for (Coin coin : liste_coins) {
+        pwobjet.println("Coin;" + coin.idcoin + ";" + coin.rectangleId + ";" + coin.coinNumber + ";" + coin.cx + ";" + coin.cy+ ";" + coin.idNiveau);
+        }
+        for (Sol sol : liste_sols) {
+        pwobjet.println("Sol;" +  sol.rectangleId + ";" + sol.coin1.idcoin + ";" + sol.coin2.idcoin + ";" + sol.coin3.idcoin + ";" + sol.coin4.idcoin + ";" + sol.listeRevetement + ";" + sol.tremie );
+    }
+        for (Plafond plafond : liste_plafonds) {
+        pwobjet.println("Plafond;" +  plafond.rectangleId + ";" + plafond.coin1.idcoin + ";" + plafond.coin2.idcoin + ";" + plafond.coin3.idcoin + ";" + plafond.coin4.idcoin + ";" + plafond.listeRevetement + ";" + plafond.tremie );
+    }
+        for (Mur mur : liste_murs) {
+        pwobjet.println("Mur;" + mur.idMur + ";" + mur.rectangleId + ";" + mur.numero_mur + ";" + mur.nbrePortes + ";" + mur.nbreFenetres + ";" + mur.coinDebut.idcoin + ";" + mur.coinFin.idcoin + ";" + mur.listeRevetement +";" + mur.hauteur + ";" + mur.idNiveau);
+    }
+        for (Coin coin : liste_coins) {
+        pwobjet.println("Coin;" + coin.idcoin + ";" + coin.rectangleId + ";" + coin.coinNumber + ";" + coin.cx + ";" + coin.cy+ ";" + coin.idNiveau);
+        }
+        pwobjet.close();
+        } catch (FileNotFoundException e) {
+        e.printStackTrace();
+        
+    }  
         });
         
         

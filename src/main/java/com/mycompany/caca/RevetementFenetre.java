@@ -552,6 +552,16 @@ saveButton6.setOnAction(event -> {
             } catch (FileNotFoundException e) {
             e.printStackTrace();
             }
+          /* PrintWriter pwmur;
+            try { 
+            pwmur = new PrintWriter (new FileOutputStream("infos_objets.txt", true)); // true pour ne pas ecraser
+            for (Mur mur : liste_murs2) {
+            pwmur.println("Mur;" + mur.idMur + ";" + mur.rectangleId + ";" + mur.numero_mur + ";" + mur.nbrePortes + ";" + mur.nbreFenetres + ";" + mur.coinDebut.idcoin + ";" + mur.coinFin.idcoin + ";" + mur.listeRevetement +";" + mur.hauteur + ";" + mur.idNiveau);
+               }
+            pwmur.close();
+            } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            }*/
 
         });
         
@@ -570,6 +580,17 @@ try {
 } catch (FileNotFoundException e) {
     e.printStackTrace();
 }
+         
+              
+             
+try (PrintWriter pwmur = new PrintWriter(new FileOutputStream("infos_objets.txt", true))) {
+    for (Sol sol : liste_sols2) {
+        pwmur.println("Sol;" +  sol.rectangleId + ";" + sol.coin1.idcoin + ";" + sol.coin2.idcoin + ";" + sol.coin3.idcoin + ";" + sol.coin4.idcoin + ";" + sol.listeRevetement + ";" + sol.tremie + ";" + sol.idNiveau);
+    }
+    pwmur.close();
+} catch (FileNotFoundException e) {
+    e.printStackTrace();
+}
         });
         
         Button saveButton11 = new Button("Enregistrer");
@@ -585,7 +606,15 @@ try {
 } catch (FileNotFoundException e) {
     e.printStackTrace();
 }
-            
+         
+try (PrintWriter pwmur = new PrintWriter(new FileOutputStream("infos_objets.txt", true))) {
+    for (Plafond plafond : liste_plafonds2) {
+        pwmur.println("Plafond;" +  plafond.rectangleId + ";" + plafond.coin1.idcoin + ";" + plafond.coin2.idcoin + ";" + plafond.coin3.idcoin + ";" + plafond.coin4.idcoin + ";" + plafond.listeRevetement + ";" + plafond.tremie + ";" + plafond.idNiveau);
+    }
+    pwmur.close();
+} catch (FileNotFoundException e) {
+    e.printStackTrace();
+}
         });
        
         
@@ -643,6 +672,18 @@ try {
         pwpiece.println("Piece;" +  piece.rectangleId + ";" + piece.mur1 + ";" + piece.mur2 + ";" + piece.mur3 + ";" + piece.mur4 + ";" + piece.sol + ";" + piece.plafond );
     }
     pwpiece.close();
+} catch (FileNotFoundException e) {
+    e.printStackTrace();
+}
+ 
+    try (PrintWriter pwmur = new PrintWriter(new FileOutputStream("infos_objets.txt", true))) {
+    int IDniveau;
+    for (Piece piece : liste_pieces) {
+        
+        pwmur.println("Piece;" +  piece.rectangleId + ";" + piece.mur1.idMur + ";" + piece.mur2.idMur + ";" + piece.mur3.idMur + ";" + piece.mur4.idMur + ";" + piece.sol.rectangleId + ";" + piece.plafond.rectangleId + ";" + piece.idNiveau  );
+    }
+    pwmur.println("Niveau;" + idNiveau);
+    pwmur.close();
 } catch (FileNotFoundException e) {
     e.printStackTrace();
 }

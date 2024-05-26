@@ -43,7 +43,7 @@ import javafx.scene.text.Text;
 
 public class DevisBatiment extends Application {
     VBox vbox = new VBox();  // VBox pour contenir tous les éléments de l'interface
-    double idpiece;
+    int idpiece;
     double prixmur1;
     double prixmur2;
     double prixmur3;
@@ -52,7 +52,7 @@ public class DevisBatiment extends Application {
     double prixPlafond;
     double prixSol;
     double prixPiece;
-    double idpieceTR;
+    int idpieceTR;
     double prixmur1TR;
     double prixmur2TR;
     double prixmur3TR;
@@ -217,7 +217,7 @@ private void lireFichierDevis() {
             String[] parts = line.split(";");
             if (parts.length >= 10) {
                 idNiveau = Double.parseDouble(parts[1]);
-                idpiece = Double.parseDouble(parts[2]);
+                idpiece = Integer.parseInt(parts[2]);
                 prixmur1 = Double.parseDouble(parts[3]);
                 prixmur2 = Double.parseDouble(parts[4]);
                 prixmur3 = Double.parseDouble(parts[5]);
@@ -248,7 +248,7 @@ private void lireFichierDevisTriangle() {
             String[] parts = line.split(";");
             if (parts.length >= 8) {
                 idNiveauTR = Double.parseDouble(parts[1]);
-                idpieceTR = Double.parseDouble(parts[2]);
+                idpieceTR = Integer.parseInt(parts[2]);
                 prixmur1TR = Double.parseDouble(parts[3]);
                 prixmur2TR = Double.parseDouble(parts[4]);
                 prixmur3TR = Double.parseDouble(parts[5]);
