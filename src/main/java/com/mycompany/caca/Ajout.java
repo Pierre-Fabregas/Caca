@@ -32,6 +32,7 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 
@@ -58,6 +59,18 @@ public class Ajout extends Application {
         }
     }
  
+         private void copyFileContentToBatiment(File sourceFile) throws IOException {
+        File destFile = new File("batiment.txt");
+        try (BufferedReader reader = new BufferedReader(new FileReader(sourceFile));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(destFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                writer.write(line);
+                writer.newLine();
+            }
+        }
+    }
+         
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -116,6 +129,21 @@ public class Ajout extends Application {
         
         Button batiment = new Button("batiment.txt");  
         batiment.setOnAction(event -> {
+                 // Choisir un fichier et copier son contenu dans batiment.txt
+           
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Ouvrir un fichier texte");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers texte", "*.txt"));
+            File selectedFile = fileChooser.showOpenDialog(primaryStage);
+
+            if (selectedFile != null) {
+                try {
+                    copyFileContentToBatiment(selectedFile);
+                    System.out.println("Le contenu du fichier a été copié dans batiment.txt !");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             try {
             BufferedReader reader = new BufferedReader(new FileReader("batiment.txt"));
             List<String> coins = new ArrayList<>();
