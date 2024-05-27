@@ -127,7 +127,7 @@ public class Ajout extends Application {
         
         
         
-        Button batiment = new Button("batiment.txt");  
+        Button batiment = new Button("Lire un fichier");  
         batiment.setOnAction(event -> {
                  // Choisir un fichier et copier son contenu dans batiment.txt
            
