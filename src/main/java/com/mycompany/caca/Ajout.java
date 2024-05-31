@@ -203,7 +203,7 @@ public class Ajout extends Application {
         
          try {
         // Lecture du contenu du fichier prix.txt
-        BufferedReader prixReader = new BufferedReader(new FileReader("prix.txt"));
+        BufferedReader prixReader = new BufferedReader(new FileReader("prixLecture.txt"));
         StringBuilder prixContent = new StringBuilder();
         String line;
         while ((line = prixReader.readLine()) != null) {
@@ -257,7 +257,8 @@ public class Ajout extends Application {
                 "informations_devis.txt",
                 "triangle.txt",
                 "infos_objets.txt",
-                "triangledessin.txt"
+                "triangledessin.txt",
+                "Sauvegarde.txt"
                 
             };
             FileUtils.deleteFiles(filesToDelete);
