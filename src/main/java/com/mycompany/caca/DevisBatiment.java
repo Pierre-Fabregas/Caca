@@ -122,10 +122,7 @@ public void start(Stage primaryStage) {
     Sauvegarder.setOnAction(e -> sauvegarderBatiment());
     vbox.getChildren().add(Sauvegarder);
     
-    Button OuvrirSauvegarde = new Button("Ouvrir sauvegarde");
-    OuvrirSauvegarde.setOnAction(e -> ouvrirSauvegarde());
-    vbox.getChildren().add(OuvrirSauvegarde);
-
+ 
     
     // Parcourir chaque niveau et afficher les informations
     prixParNiveau.forEach((niveau, prix) -> {

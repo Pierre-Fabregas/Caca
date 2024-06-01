@@ -20,6 +20,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -29,6 +32,7 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -43,9 +47,12 @@ public class Ajout extends Application {
     private Stage primaryStage;
     private App app;
     private Button addButton;
- static int idNiveau = 0; // Variable statique pour conserver le niveau entre les instances
+    static int idNiveau = 0; // Variable statique pour conserver le niveau entre les instances
     private double hauteurSousPlafond; // Attribut pour stocker la hauteur sous plafond
-   private static boolean isFirstTime = true;
+    private static boolean isFirstTime = true;
+    private VBox creationLayout;
+    private VBox devisLayout;
+    private VBox ouvrirLayout;
     
   
     public Ajout(App app) {
@@ -71,13 +78,74 @@ public class Ajout extends Application {
         }
     }
          
+         private void ouvrirSauvegarde() {
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Ouvrir un fichier Sauvegarde");
+
+    // Définir les filtres pour ne montrer que les fichiers texte
+    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Fichiers texte (*.txt)", "*.txt");
+    fileChooser.getExtensionFilters().add(extFilter);
+
+    // Afficher la boîte de dialogue Ouvrir
+    File selectedFile = fileChooser.showOpenDialog(null);
+
+    if (selectedFile != null) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile))) {
+            // Vider les fichiers texte existants
+            viderFichier("triangle.txt");
+            viderFichier("rectangle.txt");
+            viderFichier("prix.txt");
+            viderFichier("prixTriangle.txt");
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("Triangle")) {
+                    copierLigneDansFichier(line, "triangle.txt");
+                } else if (line.startsWith("Rectangle")) {
+                    copierLigneDansFichier(line, "rectangles.txt");
+                } else if (line.startsWith("PrixT")) {
+                    copierLigneDansFichier(line, "prixTriangle.txt");
+                } else if (line.startsWith("Prix")) {
+                    copierLigneDansFichier(line, "prix.txt");
+                }
+            }
+            System.out.println("Contenu du fichier " + selectedFile.getName() + " lu et traité avec succès.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Erreur lors de la lecture du fichier : " + selectedFile.getName());
+        }
+    }
+    
+    DevisBatiment devisBatiment = new DevisBatiment(); // Création de l'instance de DevisBatiment
+    Stage devisStage = new Stage(); // Création d'une nouvelle fenêtre
+    devisBatiment.start(devisStage);
+}
+
+private void viderFichier(String filename) throws IOException {
+    try (PrintWriter writer = new PrintWriter(filename)) {
+        // Vider le fichier
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
+        System.err.println("Fichier non trouvé : " + filename);
+    }
+}
+
+
+private void copierLigneDansFichier(String line, String filename) {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
+        writer.write(line + "\n");
+    } catch (IOException e) {
+        e.printStackTrace();
+        System.err.println("Erreur lors de l'écriture dans le fichier : " + filename);
+    }
+}
+         
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
      
         
 
-            
 
         // HBox pour l'identifiant de niveau
         HBox levelInputBox = new HBox(5);
@@ -234,6 +302,9 @@ public class Ajout extends Application {
         
         });
         
+        Button OuvrirSauvegarde = new Button("Ouvrir sauvegarde");
+        OuvrirSauvegarde.setOnAction(e -> ouvrirSauvegarde());
+        
         
      Button Delete = new Button("Delete");
         Delete.setOnAction(event -> {
@@ -262,6 +333,7 @@ public class Ajout extends Application {
                 
             };
             FileUtils.deleteFiles(filesToDelete);
+            Delete.setVisible(false);
             
             
     
@@ -278,25 +350,94 @@ public class Ajout extends Application {
             System.out.println("Image not found or failed to load.");
         }
         ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(500);
-        imageView.setFitHeight(500);
+        imageView.setFitWidth(200);
+        imageView.setFitHeight(200);
         imageView.setPreserveRatio(true);
         imageView.setOpacity(10);
         
         
+        Image image1 = null;
+        try {
+            image1 = new Image("ali.jpg");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Image not found or failed to load.");
+        }
+        ImageView imageView1 = new ImageView(image1);
+        imageView1.setFitWidth(200);
+        imageView1.setFitHeight(200);
+        imageView1.setPreserveRatio(true);
+        imageView1.setOpacity(10);
         
         
-        VBox imageContainer = new VBox(imageView);
-        imageContainer.setAlignment(Pos.CENTER);
+        Image image2 = null;
+        try {
+            image2 = new Image("ali2.jpg");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Image not found or failed to load.");
+        }
+        ImageView imageView2 = new ImageView(image2);
+        imageView2.setFitWidth(200);
+        imageView2.setFitHeight(200);
+        imageView2.setPreserveRatio(true);
+        imageView2.setOpacity(10);
         
         
-        VBox contentBox = new VBox(10);
-        contentBox.setAlignment(Pos.CENTER);
-        contentBox.getChildren().addAll(levelInputBox, heightInputBox, validateButton, addButton, DevisBatimentButton, Delete, batiment);
+       
         
-        StackPane root = new StackPane();
-        root.getChildren().addAll(imageView, contentBox);
-        // VBox pour aligner tous les éléments verticalement et centrer
+        
+        MenuBar menuBar = new MenuBar();
+        Menu menuCreation = new Menu("Création d'un bâtiment");
+        Menu menuDevis = new Menu("Devis");
+        Menu menuOuvrir = new Menu("Ouvrir fichier");
+        menuBar.getMenus().addAll(menuCreation, menuDevis, menuOuvrir);
+        
+        MenuItem menuCreation1 = new MenuItem("Création d'un bâtiment");
+        MenuItem menuDevis1 = new MenuItem("Devis");
+        MenuItem menuOuvrir1 = new MenuItem("Ouvrir fichier");
+        
+        menuCreation.getItems().addAll(menuCreation1);
+        menuDevis.getItems().addAll(menuDevis1);
+        menuOuvrir.getItems().addAll(menuOuvrir1);
+
+        creationLayout = new VBox(10);
+        creationLayout.setAlignment(Pos.CENTER);
+        creationLayout.getChildren().addAll(levelInputBox, heightInputBox, validateButton, addButton);
+
+        devisLayout = new VBox(10);
+        devisLayout.setAlignment(Pos.CENTER);
+        devisLayout.getChildren().add(DevisBatimentButton);
+
+        ouvrirLayout = new VBox(10);
+        ouvrirLayout.setAlignment(Pos.CENTER);
+        ouvrirLayout.getChildren().addAll(batiment, OuvrirSauvegarde);
+
+        BorderPane root = new BorderPane();
+        root.setTop(menuBar);
+        root.setCenter(creationLayout);
+
+        menuCreation1.setOnAction(e -> {
+           root.setBottom(imageView1);
+            
+            root.setCenter(creationLayout);
+            System.out.println("creation");
+                });
+        
+        menuDevis1.setOnAction(e -> {
+            root.setBottom(imageView2);
+            root.setCenter(devisLayout);
+            System.out.println("devis");
+                });
+        
+                
+        menuOuvrir1.setOnAction(e -> {
+            root.setBottom(imageView);
+            root.setCenter(ouvrirLayout);
+            System.out.println("ouvrir");
+ 
+                });
+        
         
 
         Scene scene = new Scene(root, 500, 500); // Ajuster la taille pour accueillir les nouveaux champs
@@ -320,3 +461,32 @@ public class Ajout extends Application {
       
     }
 }
+
+
+/*  menuCreation.setOnAction(e -> {
+            creationLayout.setVisible(true);
+            devisLayout.setVisible(false);
+            ouvrirLayout.setVisible(false);
+                });
+        menuDevis.setOnAction(e -> {
+            devisLayout.setVisible(true);
+            ouvrirLayout.setVisible(false);
+            creationLayout.setVisible(false);
+                });
+        menuOuvrir.setOnAction(e -> {
+            devisLayout.setVisible(false);
+            ouvrirLayout.setVisible(true);
+            creationLayout.setVisible(false);
+        });*/
+
+/* VBox imageContainer = new VBox(imageView);
+        imageContainer.setAlignment(Pos.CENTER);
+        
+        
+        VBox contentBox = new VBox(10);
+        contentBox.setAlignment(Pos.CENTER);
+        contentBox.getChildren().addAll(levelInputBox, heightInputBox, validateButton, addButton, DevisBatimentButton, Delete, batiment);
+        
+        StackPane root = new StackPane();
+        root.getChildren().addAll(imageView, contentBox);
+        // VBox pour aligner tous les éléments verticalement et centrer*/
