@@ -514,6 +514,7 @@ try {
 import java.util.List;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import javafx.application.Application;
@@ -680,8 +681,11 @@ public class App extends Application {
          CreerPieceRectangulaire();
          sauvegarderRectangles(); 
          dessinerPiece();
-         PrintWriter pwobjet;
-    try { 
+         
+         
+    
+    
+   /* try { 
         pwobjet= new PrintWriter (new FileOutputStream("infos_objets.txt", true));
         for (Coin coin : liste_coins) {
         pwobjet.println("Coin;" + coin.idcoin + ";" + coin.rectangleId + ";" + coin.coinNumber + ";" + coin.cx + ";" + coin.cy+ ";" + coin.idNiveau);
@@ -702,7 +706,7 @@ public class App extends Application {
         } catch (FileNotFoundException e) {
         e.printStackTrace();
         
-    }  
+    }  */
         });
         
         
@@ -711,7 +715,7 @@ public class App extends Application {
          Creertriangle();
          CreerPieceTriangulaire();
          sauvegarderTriangles();
-         dessinerPiece();
+         dessinerPiece();         
                 });
 
         
@@ -820,7 +824,7 @@ public class App extends Application {
         }
     }
     
-    
+  
     public static double distancePoints(double x1, double y1, double x2, double y2) {
     if(x1>x2 && y1>y2){
         return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
@@ -1048,7 +1052,6 @@ private void sauvegarderTriangles(){
         for (Triangle triangle : listeTriangles) {   
             pwT.println("Triangle;" + triangle.getAcx() + ";" + triangle.getAcy() + ";" + triangle.getBcx() + ";" + triangle.getBcy() + ";" + triangle.getCcx() + ";" + triangle.getCcy()+ ";" + distancePoints(Double.parseDouble(Acx.getText()), Double.parseDouble(Acy.getText()), Double.parseDouble(Bcx.getText()), Double.parseDouble(Bcy.getText())) + ";" + distancePoints(Double.parseDouble(Bcx.getText()), Double.parseDouble(Bcy.getText()), Double.parseDouble(Ccx.getText()), Double.parseDouble(Ccy.getText()))+ ";"+distancePoints(Double.parseDouble(Ccx.getText()), Double.parseDouble(Ccy.getText()), Double.parseDouble(Acx.getText()), Double.parseDouble(Acy.getText()))+ ";"+triangle.getIdNiveau());
         }
-       
         pwT.close();
         System.out.println("Triangles et coins sauvegardés dans le fichier triangles.txt");
         } catch (FileNotFoundException e) {
@@ -1074,6 +1077,8 @@ try {
 } catch (FileNotFoundException e) {
     e.printStackTrace();
 }
+
+
 }
 
      private void sauvegarderRectangles() {
@@ -1083,12 +1088,13 @@ try {
         for (Rec rec : liste_quadrilateres) {
             pw.println("Rectangle;" + rec.getCx1() + ";" + rec.getCy1() + ";" + rec.getCx2() + ";" + rec.getCy2() + ";" + rec.getCx3()+ ";" + rec.getCy3() + ";" + rec.getCx4() + ";" + rec.getCy4()+ ";"+rec.getIdNiveau());
         }
-       
         pw.close();
         System.out.println("Rectangles et coins sauvegardés dans le fichier rectangles.txt");
         } catch (FileNotFoundException e) {
         e.printStackTrace();
     }  
+    
+    
     PrintWriter pwcoin;
     try { 
         pwcoin= new PrintWriter (new FileOutputStream("coin.txt", true));

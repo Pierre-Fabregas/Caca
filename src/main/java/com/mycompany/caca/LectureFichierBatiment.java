@@ -35,7 +35,7 @@ public class LectureFichierBatiment {
         PrintWriter pwwriter;
             try {
     // Active le mode "append" en passant true comme second argument à FileOutputStream
-        pwwriter = new PrintWriter(new FileOutputStream("prix.txt", false)); 
+        pwwriter = new PrintWriter(new FileOutputStream("prixLecture.txt", false)); 
         double prixTotal = 0;
             for (BatimentP batiment : listeBatiments) {
                 double prixTotalBatiment = 0;
@@ -87,7 +87,7 @@ public class LectureFichierBatiment {
                                             pwwriter.println("\t\t\t\tplafond (" + plafond.getIdPlafond() + ") : " + prixPlafond + " €");
                                         
                                            
-                                        }
+                                        }                                        
                                     }
                                     pwwriter.println("  ");
 
@@ -110,7 +110,75 @@ public class LectureFichierBatiment {
 }  
     }
     
-    public double ElementRevetement(int Revetement) {
+    
+         
+    public double PrixRevetement(int Revetement) {
+        double prix = 0;
+
+        switch (Revetement) {
+            case 125:
+                prix = 10.95;
+                break;
+            case 23:
+                prix = 49.75;
+                break;
+            case 43:
+                prix = 50.60;
+                break;
+            case 48:
+                prix = 97.85;
+                break;
+            case 105:
+                prix = 67.80;
+                break;
+            case 60:
+                prix = 32.90;
+                break;
+            case 75:
+                prix = 15.20;
+                break;
+            case 8:
+                prix = 77.30;
+                break;
+            case 19:
+                prix = 29.90;
+                break;
+            case 15:
+                prix = 89.45;
+                break;
+            case 110:
+                prix = 42.50;
+                break;
+            case 102:
+                prix = 25.40;
+                break;
+            case 132:
+                prix = 46.36;
+                break;
+            case 114:
+                prix = 23.55;
+                break;
+            case 156:
+                prix = 48.10;
+                break;
+            case 1126:
+                prix = 31.99;
+                break;
+            case 174:
+                prix = 17.95;
+                break;
+            case 180:
+                prix = 33.90;
+                break;
+            case 115:
+                prix = 10.35;
+                break;
+        }
+
+        return prix;
+    }
+    /*
+    public double PrixRevetement(int Revetement) {
         double prix = 0;
 
         switch (Revetement) {
@@ -174,8 +242,7 @@ public class LectureFichierBatiment {
         }
 
         return prix;
-    }
-          
+    }*/
 /*    private List<Revetement> liste_revetements = new ArrayList<>();
     private List<Revetement> revetementsMurs = new ArrayList<>();
     private List<Revetement> revetementsSol = new ArrayList<>();
@@ -306,7 +373,8 @@ public class LectureFichierBatiment {
     double hauteurMur = trouverHauteurSousPlafond(mur, listePieces, listeNiveaux, listeAppartements);
 
     double surfaceMur = longueurMur * hauteurMur - 1.2 * 1.2 * mur.getNbreFenetres() - 0.9 * 2.1 * mur.getNbrePortes();
-    double prixRevetement = ElementRevetement(mur.getListeRevetement());
+    double prixRevetement = PrixRevetement(mur.getListeRevetement());
+    System.out.println("Le prix du revetement est" + prixRevetement );
     System.out.println("prix mur:" + mur.getIdMur() + "=" + surfaceMur * prixRevetement);
     return surfaceMur * prixRevetement;
 }
@@ -339,7 +407,7 @@ public class LectureFichierBatiment {
             CoinP coin3 = trouverCoinParId(sol.getIdcoin3(), listeCoins);
             CoinP coin4 = trouverCoinParId(sol.getIdcoin4(), listeCoins);
             double surfaceSol = calculerSurface(coin1, coin2, coin3, coin4);
-            double prixRevetementSol = ElementRevetement(sol.getListeRevetement());
+            double prixRevetementSol = PrixRevetement(sol.getListeRevetement());
             prixTotalSol = surfaceSol * prixRevetementSol;
         }
         System.out.println("prix sol:" + sol.getIdSol()+ "=" + prixTotalSol);
@@ -349,17 +417,21 @@ public class LectureFichierBatiment {
     // Méthode pour calculer le prix du plafond d'une pièce
     private double calculerPrixPlafond(PieceP piece, List<PlafondP> listePlafonds, List<CoinP> listeCoins) {
         double prixTotalPlafond = 0;
+    
+            
         PlafondP plafond = trouverPlafondParId(piece.getIdplafond(), listePlafonds);
+        
         if (plafond != null) {
             CoinP coin1 = trouverCoinParId(plafond.getIdcoin1(), listeCoins);
             CoinP coin2 = trouverCoinParId(plafond.getIdcoin2(), listeCoins);
             CoinP coin3 = trouverCoinParId(plafond.getIdcoin3(), listeCoins);
             CoinP coin4 = trouverCoinParId(plafond.getIdcoin4(), listeCoins);
             double surfacePlafond = calculerSurface(coin1, coin2, coin3, coin4);
-            double prixRevetementPlafond = ElementRevetement(plafond.getListeRevetement());
+            double prixRevetementPlafond = PrixRevetement(plafond.getListeRevetement());
             prixTotalPlafond = surfacePlafond * prixRevetementPlafond;
         }
-        System.out.println("prix plafond:" + plafond.getIdPlafond()+ "=" + prixTotalPlafond);
+      
+       
         return prixTotalPlafond;
     }
 
@@ -475,8 +547,8 @@ public class LectureFichierBatiment {
         List<AppartementP> listeAppartements = new ArrayList<>();
         List<NiveauP> listeNiveaux = new ArrayList<>();
         List<BatimentP> listeBatiments = new ArrayList<>();
-        
-         
+
+                
         String filePath = "Tri.txt";
         File file = new File(filePath);
 

@@ -672,13 +672,13 @@ try {
 try { 
     pwprix = new PrintWriter (new FileOutputStream("prixTriangle.txt", true));
     for (PrixTriangle prix : liste_prixtriangle) {
-        pwprix.println("Prix;" +  prix.idNiveau + ";" + prix.rectangleId + ";" + prix.prixmur1 + ";" + prix.prixmur2 + ";" + prix.prixmur3 + ";" + prix.prixsol + ";" + prix.prixplafond +";" + prix.prixpiece );
+        pwprix.println("PrixT;" +  prix.idNiveau + ";" + prix.rectangleId + ";" + prix.prixmur1 + ";" + prix.prixmur2 + ";" + prix.prixmur3 + ";" + prix.prixsol + ";" + prix.prixplafond +";" + prix.prixpiece );
     }
     pwprix.close();
 } catch (FileNotFoundException e) {
     e.printStackTrace();
 }
-    
+
     
 });
 
