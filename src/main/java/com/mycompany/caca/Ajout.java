@@ -418,21 +418,21 @@ private void copierLigneDansFichier(String line, String filename) {
         root.setCenter(creationLayout);
 
         menuCreation1.setOnAction(e -> {
-           root.setBottom(imageView1);
+       //    root.setBottom(imageView1);
             
             root.setCenter(creationLayout);
             System.out.println("creation");
                 });
         
         menuDevis1.setOnAction(e -> {
-            root.setBottom(imageView2);
+         //   root.setBottom(imageView2);
             root.setCenter(devisLayout);
             System.out.println("devis");
                 });
         
                 
         menuOuvrir1.setOnAction(e -> {
-            root.setBottom(imageView);
+          //  root.setBottom(imageView);
             root.setCenter(ouvrirLayout);
             System.out.println("ouvrir");
  

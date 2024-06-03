@@ -12,6 +12,7 @@ package com.mycompany.caca;
 
 
 
+import static com.mycompany.caca.RevetementFenetreTriangle.distancePoints;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -183,7 +184,7 @@ public class RevetementFenetre extends Application {
    
    
     public double calculerPrixMur1(Mur mur) {
-    double longueur = Math.abs((mur.getCoinDebut().getX() - mur.getCoinFin().getX()));
+    double longueur = distancePoints(mur.getCoinDebut().getX(),mur.getCoinDebut().getY(),mur.getCoinFin().getX(),mur.getCoinFin().getY());
     double hauteur = mur.getHauteur();
     double surfaceMur1 = longueur * hauteur;
     int nbrePortes = mur.getNbrePortes();
@@ -195,7 +196,7 @@ public class RevetementFenetre extends Application {
 }
 
 public double calculerPrixMur2(Mur mur) {
-    double longueur = Math.abs((mur.getCoinDebut().getY() - mur.getCoinFin().getY()));
+    double longueur = distancePoints(mur.getCoinDebut().getX(),mur.getCoinDebut().getY(),mur.getCoinFin().getX(),mur.getCoinFin().getY());
     double hauteur = mur.getHauteur();
     double surfaceMur2 = longueur * hauteur;
     int nbrePortes = mur.getNbrePortes();
@@ -207,7 +208,7 @@ public double calculerPrixMur2(Mur mur) {
 }
 
 public double calculerPrixMur3(Mur mur) {
-    double longueur = Math.abs((mur.getCoinDebut().getX() - mur.getCoinFin().getX()));
+    double longueur = distancePoints(mur.getCoinDebut().getX(),mur.getCoinDebut().getY(),mur.getCoinFin().getX(),mur.getCoinFin().getY());
     double hauteur = mur.getHauteur();
     double surfaceMur3 = longueur * hauteur;
     int nbrePortes = mur.getNbrePortes();
@@ -219,7 +220,7 @@ public double calculerPrixMur3(Mur mur) {
 }
 
 public double calculerPrixMur4(Mur mur) {
-    double longueur = Math.abs((mur.getCoinDebut().getY() - mur.getCoinFin().getY()));
+    double longueur = distancePoints(mur.getCoinDebut().getX(),mur.getCoinDebut().getY(),mur.getCoinFin().getX(),mur.getCoinFin().getY());
     double hauteur = mur.getHauteur();
     double surfaceMur4 = longueur * hauteur;
     int nbrePortes = mur.getNbrePortes();
@@ -310,6 +311,9 @@ private double calculerSurfacePlafond(Plafond plafond) {
         double prix = 0;
 
         switch (Revetement) {
+            case 0:
+                prix = 0;
+                break;
             case 1:
                 prix = 10.95;
                 break;
@@ -415,33 +419,38 @@ private double calculerSurfacePlafond(Plafond plafond) {
         }
     }
 
-    private ComboBox<String> createComboBoxMurS() {
+    private ComboBox<String> creeComboBoxMurS() {
         ComboBox<String> comboBox = new ComboBox<>();
         for (Revetement revetement : revetementsMurs) {
             comboBox.getItems().add(revetement.getDesignation() + " : " + revetement.getPrixUnitaire() + " €");
         }
+        comboBox.getItems().add("0");
         if (!revetementsMurs.isEmpty()) {
             comboBox.setValue(revetementsMurs.get(0).getDesignation() + " : " + revetementsMurs.get(0).getPrixUnitaire() + " €");
         }
         return comboBox;
     }
 
-    private ComboBox<String> createComboBoxSolS() {
+    private ComboBox<String> creeComboBoxSolS() {
         ComboBox<String> comboBox = new ComboBox<>();
         for (Revetement revetement : revetementsSol) {
             comboBox.getItems().add(revetement.getDesignation() + " : " + revetement.getPrixUnitaire() + " €");
         }
+        comboBox.getItems().add("0");
+        
+        
         if (!revetementsSol.isEmpty()) {
             comboBox.setValue(revetementsSol.get(0).getDesignation() + " : " + revetementsSol.get(0).getPrixUnitaire() + " €");
         }
         return comboBox;
     }
 
-    private ComboBox<String> createComboBoxPlafondS() {
+    private ComboBox<String> creeComboBoxPlafondS() {
         ComboBox<String> comboBox = new ComboBox<>();
         for (Revetement revetement : revetementsPlafond) {
             comboBox.getItems().add(revetement.getDesignation() + " : " + revetement.getPrixUnitaire() + " €");
         }
+        comboBox.getItems().add("0");
         if (!revetementsPlafond.isEmpty()) {
             comboBox.setValue(revetementsPlafond.get(0).getDesignation() + " : " + revetementsPlafond.get(0).getPrixUnitaire() + " €");
         }
@@ -465,7 +474,7 @@ private double calculerSurfacePlafond(Plafond plafond) {
     return 0;
 }
      
-    private void saveTextField(Button saveButton, TextField textField, String label) {
+    private void sauvegarderTextField(Button saveButton, TextField textField, String label) {
     
         
         System.out.println(label + " : " + textField.getText());
@@ -478,8 +487,12 @@ private double calculerSurfacePlafond(Plafond plafond) {
     @Override
     public void start(Stage primaryStage) {
         appStage = primaryStage;
+        
+        // Lecture des revêtements depuis un fichier et tri par surface
         lireRevetementsDepuisFichier();
         trierRevetementsParSurface();
+        
+        // Création de listes pour stocker les murs, plafonds, sols, pièces et prix
         ArrayList<Mur> liste_murs2 = new ArrayList<Mur>();
         ArrayList<Plafond> liste_plafonds2 = new ArrayList<Plafond>();
         ArrayList<Sol> liste_sols2 = new ArrayList<Sol>();
@@ -489,25 +502,25 @@ private double calculerSurfacePlafond(Plafond plafond) {
 
         // Création du menu déroulant
         ComboBox<Integer> rectangleComboBox = createRectangleComboBox();
-        ComboBox<String> AComboBox = createComboBoxMurS();
-        ComboBox<String> BComboBox = createComboBoxMurS();
-        ComboBox<String> CComboBox = createComboBoxMurS();
-        ComboBox<String> DComboBox = createComboBoxMurS();
-        ComboBox<String> EComboBox = createComboBoxSolS();
-        ComboBox<String> FComboBox = createComboBoxPlafondS();
+        ComboBox<String> AComboBox = creeComboBoxMurS();
+        ComboBox<String> BComboBox = creeComboBoxMurS();
+        ComboBox<String> CComboBox = creeComboBoxMurS();
+        ComboBox<String> DComboBox = creeComboBoxMurS();
+        ComboBox<String> EComboBox = creeComboBoxSolS();
+        ComboBox<String> FComboBox = creeComboBoxPlafondS();
         
-        
-        TextField A1Text = createTextField();
-        TextField A2Text = createTextField();
-        TextField B1Text = createTextField();
-        TextField B2Text = createTextField();
-        TextField C1Text = createTextField();
-        TextField C2Text = createTextField();
-        TextField D1Text = createTextField();
-        TextField D2Text = createTextField();
-        TextField FText = createTextField();
-        TextField GText = createTextField();
-        TextField HText = createTextField();
+        // Création des zones de texte
+        TextField A1Text = creeTextField();
+        TextField A2Text = creeTextField();
+        TextField B1Text = creeTextField();
+        TextField B2Text = creeTextField();
+        TextField C1Text = creeTextField();
+        TextField C2Text = creeTextField();
+        TextField D1Text = creeTextField();
+        TextField D2Text = creeTextField();
+        TextField FText = creeTextField();
+        TextField GText = creeTextField();
+        TextField HText = creeTextField();
         
         
       
@@ -516,33 +529,31 @@ private double calculerSurfacePlafond(Plafond plafond) {
      
         
    
-        Button saveButton6 = new Button("Enregistrer");
-saveButton6.setOnAction(event -> {
-    saveTextField(saveButton6, A2Text, "Nombre de fenetres");
-    liste_murs2.add(MajMur (rectangleComboBox.getValue(), 2, Integer.parseInt(A1Text.getText()),Integer.parseInt(A2Text.getText()) , PrixRevetement(AComboBox), Double.parseDouble(FText.getText()),idNiveau));
-    
-     
-});
-
-
-        Button saveButton7 = new Button("Enregistrer");
-        saveButton7.setOnAction(event -> {
-             saveTextField(saveButton7, B2Text, "Nombre de fenetres");
-
-             liste_murs2.add(MajMur (rectangleComboBox.getValue(), 4, Integer.parseInt(B1Text.getText()),Integer.parseInt(B2Text.getText()) , PrixRevetement(BComboBox), Double.parseDouble(FText.getText()),idNiveau));
+        Button enregistrerBouton6 = new Button("Enregistrer");
+        enregistrerBouton6.setOnAction(event -> {
+        sauvegarderTextField(enregistrerBouton6, A2Text, "Nombre de fenetres");
+        liste_murs2.add(MajMur (rectangleComboBox.getValue(), 2, Integer.parseInt(A1Text.getText()),Integer.parseInt(A2Text.getText()) , PrixRevetement(AComboBox), Double.parseDouble(FText.getText()),idNiveau));
         });
 
-        Button saveButton8 = new Button("Enregistrer");
-        saveButton8.setOnAction(event -> {
-             saveTextField(saveButton8, C2Text, "Nombre de fenetres");
-             liste_murs2.add(MajMur (rectangleComboBox.getValue(), 1, Integer.parseInt(C1Text.getText()),Integer.parseInt(C2Text.getText()) , PrixRevetement(CComboBox), Double.parseDouble(FText.getText()), idNiveau));
+
+        Button enregistrerBouton7 = new Button("Enregistrer");
+        enregistrerBouton7.setOnAction(event -> {
+        sauvegarderTextField(enregistrerBouton7, B2Text, "Nombre de fenetres");
+        liste_murs2.add(MajMur (rectangleComboBox.getValue(), 4, Integer.parseInt(B1Text.getText()),Integer.parseInt(B2Text.getText()) , PrixRevetement(BComboBox), Double.parseDouble(FText.getText()),idNiveau));
         });
 
-        Button saveButton9 = new Button("Enregistrer");
-        saveButton9.setOnAction(event -> {
-            saveTextField(saveButton9, D2Text, "Nombre de fenetres");
-            liste_murs2.add(MajMur (rectangleComboBox.getValue(), 3, Integer.parseInt(D1Text.getText()),Integer.parseInt(D2Text.getText()) , PrixRevetement(DComboBox), Double.parseDouble(FText.getText()), idNiveau));
-            PrintWriter pwmur;
+        Button enregistrerBouton8 = new Button("Enregistrer");
+        enregistrerBouton8.setOnAction(event -> {
+        sauvegarderTextField(enregistrerBouton8, C2Text, "Nombre de fenetres");
+        liste_murs2.add(MajMur (rectangleComboBox.getValue(), 1, Integer.parseInt(C1Text.getText()),Integer.parseInt(C2Text.getText()) , PrixRevetement(CComboBox), Double.parseDouble(FText.getText()), idNiveau));
+        });
+
+        Button enregistrerBouton9 = new Button("Enregistrer");
+        enregistrerBouton9.setOnAction(event -> {
+        sauvegarderTextField(enregistrerBouton9, D2Text, "Nombre de fenetres");
+        liste_murs2.add(MajMur (rectangleComboBox.getValue(), 3, Integer.parseInt(D1Text.getText()),Integer.parseInt(D2Text.getText()) , PrixRevetement(DComboBox), Double.parseDouble(FText.getText()), idNiveau));
+            
+        PrintWriter pwmur;
             try { 
             pwmur = new PrintWriter (new FileOutputStream("mur2.txt", true));
             for (Mur mur : liste_murs2) {
@@ -552,76 +563,68 @@ saveButton6.setOnAction(event -> {
             } catch (FileNotFoundException e) {
             e.printStackTrace();
             }
-          /* PrintWriter pwmur;
-            try { 
-            pwmur = new PrintWriter (new FileOutputStream("infos_objets.txt", true)); // true pour ne pas ecraser
-            for (Mur mur : liste_murs2) {
-            pwmur.println("Mur;" + mur.idMur + ";" + mur.rectangleId + ";" + mur.numero_mur + ";" + mur.nbrePortes + ";" + mur.nbreFenetres + ";" + mur.coinDebut.idcoin + ";" + mur.coinFin.idcoin + ";" + mur.listeRevetement +";" + mur.hauteur + ";" + mur.idNiveau);
-               }
-            pwmur.close();
-            } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            }*/
 
         });
         
         
 
-        Button saveButton10 = new Button("Enregistrer");
-        saveButton10.setOnAction(event -> {
+        Button enregistrerBouton10 = new Button("Enregistrer");
+        enregistrerBouton10.setOnAction(event -> {
              liste_sols2.add(MajSol (rectangleComboBox.getValue(), PrixRevetement(EComboBox), Integer.parseInt(GText.getText()), idNiveau));
+             
              PrintWriter pwsol;
-try { 
-    pwsol = new PrintWriter (new FileOutputStream("sol2.txt", true));
-    for (Sol sol : liste_sols2) {
-        pwsol.println("Sol;" +  sol.rectangleId + ";" + sol.coin1.idcoin + ";" + sol.coin2.idcoin + ";" + sol.coin3.idcoin + ";" + sol.coin4.idcoin + ";" + sol.listeRevetement + ";" + sol.tremie + ";" + sol.idNiveau);
-    }
-    pwsol.close();
-} catch (FileNotFoundException e) {
-    e.printStackTrace();
-}
+            try { 
+                pwsol = new PrintWriter (new FileOutputStream("sol2.txt", true));
+                for (Sol sol : liste_sols2) {
+                    pwsol.println("Sol;" +  sol.rectangleId + ";" + sol.coin1.idcoin + ";" + sol.coin2.idcoin + ";" + sol.coin3.idcoin + ";" + sol.coin4.idcoin + ";" + sol.listeRevetement + ";" + sol.tremie + ";" + sol.idNiveau);
+                }
+            pwsol.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
          
               
              
-try (PrintWriter pwmur = new PrintWriter(new FileOutputStream("infos_objets.txt", true))) {
-    for (Sol sol : liste_sols2) {
-        pwmur.println("Sol;" +  sol.rectangleId + ";" + sol.coin1.idcoin + ";" + sol.coin2.idcoin + ";" + sol.coin3.idcoin + ";" + sol.coin4.idcoin + ";" + sol.listeRevetement + ";" + sol.tremie + ";" + sol.idNiveau);
-    }
-    pwmur.close();
-} catch (FileNotFoundException e) {
-    e.printStackTrace();
-}
+            try (PrintWriter pwmur = new PrintWriter(new FileOutputStream("infos_objets.txt", true))) {
+                for (Sol sol : liste_sols2) {
+                    pwmur.println("Sol;" +  sol.rectangleId + ";" + sol.coin1.idcoin + ";" + sol.coin2.idcoin + ";" + sol.coin3.idcoin + ";" + sol.coin4.idcoin + ";" + sol.listeRevetement + ";" + sol.tremie + ";" + sol.idNiveau);
+                }
+            pwmur.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         });
         
-        Button saveButton11 = new Button("Enregistrer");
-        saveButton11.setOnAction(event -> {
-           liste_plafonds2.add(MajPlafond (rectangleComboBox.getValue(), PrixRevetement(FComboBox), Integer.parseInt(HText.getText()), idNiveau));
-             PrintWriter pwplafond;
-try { 
-    pwplafond = new PrintWriter (new FileOutputStream("plafond2.txt", true));
-    for (Plafond plafond : liste_plafonds2) {
-        pwplafond.println("Plafond;" +  plafond.rectangleId + ";" + plafond.coin1.idcoin + ";" + plafond.coin2.idcoin + ";" + plafond.coin3.idcoin + ";" + plafond.coin4.idcoin + ";" + plafond.listeRevetement + ";" + plafond.tremie + ";" + plafond.idNiveau);
-    }
-    pwplafond.close();
-} catch (FileNotFoundException e) {
-    e.printStackTrace();
-}
+        Button enregistrerBouton11 = new Button("Enregistrer");
+        enregistrerBouton11.setOnAction(event -> {
+        liste_plafonds2.add(MajPlafond (rectangleComboBox.getValue(), PrixRevetement(FComboBox), Integer.parseInt(HText.getText()), idNiveau));
+             
+        PrintWriter pwplafond;
+        try { 
+            pwplafond = new PrintWriter (new FileOutputStream("plafond2.txt", true));
+            for (Plafond plafond : liste_plafonds2) {
+                pwplafond.println("Plafond;" +  plafond.rectangleId + ";" + plafond.coin1.idcoin + ";" + plafond.coin2.idcoin + ";" + plafond.coin3.idcoin + ";" + plafond.coin4.idcoin + ";" + plafond.listeRevetement + ";" + plafond.tremie + ";" + plafond.idNiveau);
+            }
+            pwplafond.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
          
-try (PrintWriter pwmur = new PrintWriter(new FileOutputStream("infos_objets.txt", true))) {
-    for (Plafond plafond : liste_plafonds2) {
-        pwmur.println("Plafond;" +  plafond.rectangleId + ";" + plafond.coin1.idcoin + ";" + plafond.coin2.idcoin + ";" + plafond.coin3.idcoin + ";" + plafond.coin4.idcoin + ";" + plafond.listeRevetement + ";" + plafond.tremie + ";" + plafond.idNiveau);
-    }
-    pwmur.close();
-} catch (FileNotFoundException e) {
-    e.printStackTrace();
-}
+        try (PrintWriter pwmur = new PrintWriter(new FileOutputStream("infos_objets.txt", true))) {
+            for (Plafond plafond : liste_plafonds2) {
+                pwmur.println("Plafond;" +  plafond.rectangleId + ";" + plafond.coin1.idcoin + ";" + plafond.coin2.idcoin + ";" + plafond.coin3.idcoin + ";" + plafond.coin4.idcoin + ";" + plafond.listeRevetement + ";" + plafond.tremie + ";" + plafond.idNiveau);
+            }
+            pwmur.close();
+            } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            }
         });
        
         
         
        Button FinButton = new Button("Fin");
-FinButton.setOnAction(event -> {
-    primaryStage.close();    
+        FinButton.setOnAction(event -> {
+            primaryStage.close();    
     
     for (Plafond plafond : liste_plafonds2) {
     for (Sol sol : liste_sols2) {
@@ -630,13 +633,13 @@ FinButton.setOnAction(event -> {
         Mur mur2 = null;
         Mur mur3 = null;
         Mur mur4 = null;
-        int murCount = 0;
+        int murnuméro = 0;
 
         // Parcourir les murs pour le rectangle courant
         for (Mur mur : liste_murs2) {
             if (mur.getRectangleId() == plafond.getRectangleId() && plafond.getRectangleId() == sol.getRectangleId() && mur.getRectangleId() == sol.getRectangleId()) {
                
-                murCount++;
+                murnuméro++;
                 switch (mur.getNumero_mur()) {
                     case 1:
                         mur1 = mur;
@@ -655,7 +658,7 @@ FinButton.setOnAction(event -> {
         }
 
         // Vérifier si tous les murs ont été trouvés
-        if (murCount == 4) {
+        if (murnuméro == 4) {
             // Créer la pièce
             Piece piece = new Piece(plafond.getRectangleId(), mur1, mur2, mur3, mur4, sol, plafond,idNiveau);
             liste_pieces.add(piece);
@@ -665,30 +668,30 @@ FinButton.setOnAction(event -> {
 
     
     PrintWriter pwpiece;
-try { 
+        try { 
     // Crée un nouveau fichier ou écrase un fichier existant sans append
         pwpiece = new PrintWriter (new FileOutputStream("piece.txt", true));
-    for (Piece piece : liste_pieces) {
-        pwpiece.println("Piece;" +  piece.rectangleId + ";" + piece.mur1 + ";" + piece.mur2 + ";" + piece.mur3 + ";" + piece.mur4 + ";" + piece.sol + ";" + piece.plafond );
-    }
-    pwpiece.close();
-} catch (FileNotFoundException e) {
-    e.printStackTrace();
-}
+            for (Piece piece : liste_pieces) {
+                pwpiece.println("Piece;" +  piece.rectangleId + ";" + piece.mur1 + ";" + piece.mur2 + ";" + piece.mur3 + ";" + piece.mur4 + ";" + piece.sol + ";" + piece.plafond );
+            }
+        pwpiece.close();
+        } catch (FileNotFoundException e) {
+        e.printStackTrace();
+        }
  
     try (PrintWriter pwmur = new PrintWriter(new FileOutputStream("infos_objets.txt", true))) {
-    int IDniveau;
-    for (Piece piece : liste_pieces) {
-        
+        int IDniveau;
+        for (Piece piece : liste_pieces) {
+
         pwmur.println("Piece;" +  piece.rectangleId + ";" + piece.mur1.idMur + ";" + piece.mur2.idMur + ";" + piece.mur3.idMur + ";" + piece.mur4.idMur + ";" + piece.sol.rectangleId + ";" + piece.plafond.rectangleId + ";" + piece.idNiveau  );
     }
-    pwmur.println("Niveau;" + idNiveau);
-    pwmur.close();
-} catch (FileNotFoundException e) {
-    e.printStackTrace();
-}
+        pwmur.println("Niveau;" + idNiveau);
+        pwmur.close();
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
+    }
 
-    for (Piece piece : liste_pieces) {
+     for (Piece piece : liste_pieces) {
         double prixPiece = calculerPrixPiece(piece);
         double prixMur1 = calculerPrixMur1(piece.getMur1());
         double prixMur2 = calculerPrixMur2(piece.getMur2());
@@ -700,21 +703,21 @@ try {
         Prix prix = new Prix(idNiveau, piece.getRectangleId(), prixMur1, prixMur2, prixMur3, prixMur4, prixSol, prixPlafond, prixPiece);
         liste_prix.add(prix);
         System.out.println("Le prix de la pièce est : " + prixPiece + " €");
-    }
+     }
     
-PrintWriter pwprix;
-try {
-    // Active le mode "append" en passant true comme second argument à FileOutputStream
-    pwprix = new PrintWriter(new FileOutputStream("prix.txt", true)); 
-    for (Prix prix : liste_prix) {
-        pwprix.println("Prix;" +  prix.idNiveau + ";" + prix.rectangleId + ";" + prix.prixmur1 + ";" + prix.prixmur2 + ";" + prix.prixmur3 + ";" + prix.prixmur4 + ";" + prix.prixsol + ";" + prix.prixplafond + ";" + prix.prixpiece);
-    }
-    pwprix.close();
-} catch (FileNotFoundException e) {
-    e.printStackTrace();
-}  
+        PrintWriter pwprix;
+    try {
+    
+        pwprix = new PrintWriter(new FileOutputStream("prix.txt", true)); 
+            for (Prix prix : liste_prix) {
+                pwprix.println("Prix;" +  prix.idNiveau + ";" + prix.rectangleId + ";" + prix.prixmur1 + ";" + prix.prixmur2 + ";" + prix.prixmur3 + ";" + prix.prixmur4 + ";" + prix.prixsol + ";" + prix.prixplafond + ";" + prix.prixpiece);
+            }
+        pwprix.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }  
       
-});
+        });
 
         String textePreRempli = String.valueOf(hauteurSousPlafond);
 
@@ -736,12 +739,12 @@ try {
 
                GridPane root = new GridPane();
         root.addRow(0, new Label("Pièce:"), rectangleComboBox);
-        root.addRow(1, label1, AComboBox, new Label("Nombre de portes:"), A1Text , new Label("Nombre de fenêtres:"), A2Text , saveButton6);
-        root.addRow(2, label2, BComboBox, new Label("Nombre de portes:"), B1Text , new Label("Nombre de fenêtres:"), B2Text , saveButton7);
-        root.addRow(3, label3, CComboBox, new Label("Nombre de portes:"), C1Text , new Label("Nombre de fenêtres:"), C2Text , saveButton8);
-        root.addRow(4, label4, DComboBox, new Label("Nombre de portes:"), D1Text , new Label("Nombre de fenêtres:"), D2Text , saveButton9);
-        root.addRow(5, label5, EComboBox, new Label("Nombre de trémie") , GText  , saveButton10);
-        root.addRow(6, label7, FComboBox, new Label("Nombre de trémie") , HText  , saveButton11);
+        root.addRow(1, label1, AComboBox, new Label("Nombre de portes:"), A1Text , new Label("Nombre de fenêtres:"), A2Text , enregistrerBouton6);
+        root.addRow(2, label2, BComboBox, new Label("Nombre de portes:"), B1Text , new Label("Nombre de fenêtres:"), B2Text , enregistrerBouton7);
+        root.addRow(3, label3, CComboBox, new Label("Nombre de portes:"), C1Text , new Label("Nombre de fenêtres:"), C2Text , enregistrerBouton8);
+        root.addRow(4, label4, DComboBox, new Label("Nombre de portes:"), D1Text , new Label("Nombre de fenêtres:"), D2Text , enregistrerBouton9);
+        root.addRow(5, label5, EComboBox, new Label("Nombre de trémie") , GText  , enregistrerBouton10);
+        root.addRow(6, label7, FComboBox, new Label("Nombre de trémie") , HText  , enregistrerBouton11);
         root.addRow(8,new Label(" "), new Label(" "),new Label(" "), label6, hauteurPlafondField );
         root.addRow(11,new Label(" "), new Label(" "),new Label(" "),new Label(" "),new Label(" "),new Label(" "), new Label(" "),new Label(" "),FinButton);
         
@@ -760,7 +763,7 @@ try {
     }
 
     
-    private TextField createTextField() {
+    private TextField creeTextField() {
     TextField textField = new TextField();
     textField.setText("0");
     return textField;
@@ -774,38 +777,7 @@ try {
         return comboBox;
     }
     
-   
-  /*  private ComboBox<Integer> createComboBoxMur() {
-    ComboBox<Integer> comboBox = new ComboBox<>();
-    for (int i = 1; i <= 12; i++) {
-        comboBox.getItems().add(i);
-    }
-    comboBox.getItems().add(19); // Ajout du chiffre 19
-    comboBox.setValue(1); // Définition de la valeur par défaut
-    return comboBox;
-}
-    private ComboBox<Integer> createComboBoxSol() {
-    ComboBox<Integer> comboBox = new ComboBox<>();
-    int[] chiffres = {2, 3, 4, 10, 11, 13, 14, 15, 16, 17, 18, 19};
-    for (int chiffre : chiffres) {
-        comboBox.getItems().add(chiffre);
-    }
-    comboBox.setValue(2); // Définition de la valeur par défaut
-    return comboBox;
-}
-    
-     private ComboBox<Integer> createComboBoxPlafond() {
-    ComboBox<Integer> comboBox = new ComboBox<>();
-    int[] chiffres = {1, 3, 8, 9};
-    for (int chiffre : chiffres) {
-        comboBox.getItems().add(chiffre);
-    }
-    comboBox.setValue(2); // Définition de la valeur par défaut
-    return comboBox;
-}*/
-
-
-    
+ 
     
     private ComboBox<Integer> createRectangleComboBox() {
         ComboBox<Integer> comboBox = new ComboBox<>();

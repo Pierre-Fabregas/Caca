@@ -30,7 +30,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-
 import static javafx.application.Application.launch;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -127,7 +126,7 @@ public void start(Stage primaryStage) {
     // Parcourir chaque niveau et afficher les informations
     prixParNiveau.forEach((niveau, prix) -> {
         int niveauInt = (int) Math.round(niveau);
-        Label niveauLabel = new Label("Niveau " + niveauInt + " : " + prix + " €");
+        Label niveauLabel = new Label("Niveau " + niveauInt + " : " + arrondirAuCentieme(prix) + " €");
         niveauLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         Button imageButton = new Button("Image");
         imageButton.setOnAction(e -> dessinerNiveau(primaryStage, niveauInt));
@@ -139,20 +138,20 @@ public void start(Stage primaryStage) {
         List<Piece> detailsPieces = detailsParNiveau.get(niveau);
         if (detailsPieces != null) {
             for (Piece piece : detailsPieces) {
-                Label pieceLabel = new Label("\tPièce " + piece.nom + " : " + piece.prix + " €");
+                Label pieceLabel = new Label("\tPièce " + piece.nom + " : " + arrondirAuCentieme(piece.prix) + " €");
                 VBox pieceDetailsBox = new VBox(5, 
                     pieceLabel,
-                    new Label("\t\tMur 1 : " + piece.mur1 + " €"),
-                    new Label("\t\tMur 2 : " + piece.mur2 + " €"),
-                    new Label("\t\tMur 3 : " + piece.mur3 + " €"));
+                    new Label("\t\tMur 1 : " + arrondirAuCentieme(piece.mur1) + " €"),
+                    new Label("\t\tMur 2 : " + arrondirAuCentieme(piece.mur2) + " €"),
+                    new Label("\t\tMur 3 : " + arrondirAuCentieme(piece.mur3) + " €"));
 
                 if (piece.mur4 > 0) {
-                    pieceDetailsBox.getChildren().add(new Label("\t\tMur 4 : " + piece.mur4 + " €"));
+                    pieceDetailsBox.getChildren().add(new Label("\t\tMur 4 : " + arrondirAuCentieme(piece.mur4 )+ " €"));
                 }
 
                 pieceDetailsBox.getChildren().addAll(
-                    new Label("\t\tPlafond : " + piece.plafond + " €"),
-                    new Label("\t\tSol : " + piece.sol + " €")
+                    new Label("\t\tPlafond : " + arrondirAuCentieme(piece.plafond) + " €"),
+                    new Label("\t\tSol : " + arrondirAuCentieme(piece.sol) + " €")
                 );
 
                 vbox.getChildren().add(pieceDetailsBox);
@@ -160,7 +159,7 @@ public void start(Stage primaryStage) {
         }
     });
 
-    Label totalLabel = new Label("Le Prix Total est : " + prixTotal + " €");
+    Label totalLabel = new Label("Le Prix Total est : " + arrondirAuCentieme(prixTotal) + " €");
     totalLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
     vbox.getChildren().add(totalLabel);
     
@@ -337,6 +336,11 @@ private void lireFichierDevisTriangle() {
             e.printStackTrace();
         }
         return quadrilateres;
+    }
+    
+    
+    public static double arrondirAuCentieme(double niveau) {
+        return Math.round(niveau * 100.0) / 100.0;
     }
    
         

@@ -579,8 +579,8 @@ public class App extends Application {
      Text labelA = new Text("Coordonnées Sommet A (x,y):");
      Text labelB = new Text("Coordonnées Sommet B (x,y):");
      Text labelC = new Text("Coordonnées Sommet C (x,y):");
-     Button btAdd = new Button("Ajouter rectangle");
-     Button btAddT = new Button("Ajouter triangle");
+     Button btAjouter = new Button("Ajouter rectangle");
+     Button btAjouterT = new Button("Ajouter triangle");
      Button btFin = new Button("Accueil");
      Button btRev = new Button("Choisir revêtement");
      Button btRevT = new Button("Choisir revêtement triangle");
@@ -674,9 +674,9 @@ public class App extends Application {
         
         
         
-        pane.add(btAdd, 3, 5);
+        pane.add(btAjouter, 3, 5);
         // Expression lambda pour construire un EventHandler<ActionEvent>
-        btAdd.setOnAction(evt -> {
+        btAjouter.setOnAction(evt -> {
          Creerrectangle(); 
          CreerPieceRectangulaire();
          sauvegarderRectangles(); 
@@ -710,8 +710,8 @@ public class App extends Application {
         });
         
         
-        pane.add(btAddT, 3, 5);
-        btAddT.setOnAction(evt -> {
+        pane.add(btAjouterT, 3, 5);
+        btAjouterT.setOnAction(evt -> {
          Creertriangle();
          CreerPieceTriangulaire();
          sauvegarderTriangles();
@@ -775,7 +775,7 @@ public class App extends Application {
             cy3.setVisible(true);
             cx4.setVisible(true);
             cy4.setVisible(true);
-            btAdd.setVisible(true);
+            btAjouter.setVisible(true);
             btRev.setVisible(true);
             btFin.setVisible(true);
             label1.setVisible(true);
@@ -788,7 +788,7 @@ public class App extends Application {
             Bcy.setVisible(false);
             Ccx.setVisible(false);
             Ccy.setVisible(false);
-            btAddT.setVisible(false);
+            btAjouterT.setVisible(false);
             btRevT.setVisible(false);
             labelA.setVisible(false);
             labelB.setVisible(false);
@@ -803,7 +803,7 @@ public class App extends Application {
             cy3.setVisible(false);
             cx4.setVisible(false);
             cy4.setVisible(false);
-            btAdd.setVisible(false);
+            btAjouter.setVisible(false);
             btRev.setVisible(false);
             btFin.setVisible(true);
             label1.setVisible(false);
@@ -816,7 +816,7 @@ public class App extends Application {
             Bcy.setVisible(true);
             Ccx.setVisible(true);
             Ccy.setVisible(true);
-            btAddT.setVisible(true);
+            btAjouterT.setVisible(true);
             btRevT.setVisible(true);
             labelA.setVisible(true);
             labelB.setVisible(true);
