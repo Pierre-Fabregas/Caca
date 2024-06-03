@@ -80,4 +80,5 @@
             </plugin>
         </plugins>
     </build>
+    <name>PROJETS2</name>
 </project>
